@@ -282,7 +282,6 @@ for %%D in (
     DevQueryBroker
     EFS
     FDResPub
-    :: Hyper-V
     HvHost
     vmicguestinterface
     vmicheartbeat
@@ -292,7 +291,6 @@ for %%D in (
     vmictimesync
     vmicvmsession
     vmicvss
-    :: Done
     IKEEXT
     InstallService
     MixedRealityOpenXRSvc
