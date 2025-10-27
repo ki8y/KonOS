@@ -29,7 +29,7 @@ mode con: cols=120 lines=30
 chcp 65001 >nul 2>&1
 cls
 color f
-mkdir "%~dp0Scripts\Version" >nul 2>&1
+mkdir "%SYSTEMDRIVE%\Kon OS\Version" >nul 2>&1
 set "URL=https://raw.githubusercontent.com/ki8y/KonOS/main/General/versionCheck.txt"
 set "Name=versionCheck.txt"
 set "Location=%~dp0Scripts\Version"
@@ -74,36 +74,43 @@ echo. │  💽 Downloading Kon OS Scripts  │
 echo. ╰─────────────────────────────────╯
 echo.
 chcp 65001 >nul 2>&1
-echo 💾 Downloading Restore Point Script... (1/many)
+echo 💾 Downloading Requirement Check Script... (1/11)
+mkdir "%SYSTEMDRIVE%\Kon OS\Setup"
+set URL="https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/requirementCheck.bat"
+set Name="requirementCheck.bat"
+set Location="%SYSTEMDRIVE%\Kon OS\Setup"
+curl -s -L %url% -o "%Location\Name"
+call "%SYSTEMDRIVE%\Kon OS\Setup\requirementCheck.bat"
+
+echo 💾 Downloading Restore Point Script... (2/11)
 mkdir "C:\Kon OS\Setup\Restore Point"
 set URL="https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/RestorePoint.bat"
 set Name="restorePoint.bat"
 set Location="C:\Kon OS\Setup\Restore Point"
-curl -s -L "%file%" -o "%location%\%name%"
+curl -s -L "%url%" -o "%location%\%name%"
 
-echo 💾 Downloading Defender Control... (2/many)
+echo 💾 Downloading Defender Control... (3/11)
 mkdir "C:\Kon OS\Setup\Defender"
 set URL="https://raw.githubusercontent.com/ki8y/KonOS/main/DefenderCheck/defenderCheck.bat"
 set Name="defenderCheck.bat"
 set Location="C:\Kon OS\Setup\Defender"
-curl -s -L "%file%" -o "%location%\%name%"
+curl -s -L "%url%" -o "%location%\%name%"
 
-
-
-echo 💾 Downloading General Tweaks... (3/many)
-echo 💾 Installing Service Control...
-echo 💾 Installing blank...
-echo 💾 Installing blank...
-echo 💾 Installing blank...
-echo 💾 Installing blank...
-echo 💾 Installing blank...
+echo 💾 Downloading General Tweaks... (4/11)
+echo 💾 Downloading Service Control [Script 1/2]... (5/11)
+echo 💾 Downloading Service control [Script 2/2]... (6/11)
+echo 💾 Downloading Debloater Script... (7/11)
+echo 💾 Downloading Powerplan Tweaks... (8/11)
+echo 💾 Downloading Maintenance Script... (9/11)
+echo 💾 Downloading Post Installation Setup... (10/11)
+echo 💾 Downloading Extras Script... (11/11)
 
 cls
 echo. ╭───────────────────────────────╮
 echo. │  💽 Downloading Kon OS Tools  │
 echo. ╰───────────────────────────────╯
 echo.
-echo 💾 Installing OOShutUp10... (1/many)
+echo 💾 Installing OOShutUp10... (1/idk)
 set "file=https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Tools/ShutUp10/OOSU10.exe"
 set "name=config.cfg" 
 mkdir "%SYSTEMDRIVE%\Kon OS\Setup\Tools\ShutUp10"
@@ -113,11 +120,29 @@ set "file=https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Tools/ShutUp
 set "name=OOSU10.exe" 
 curl -s -L "%file%" -o "%location%\%name%"
 
+echo 💾 Installing Chocolatey... (2/idk)
+echo 💾 Installing Scoop... (3/idk)
+echo 💾 Installing 7-Zip... (4/idk)
+
+
+cls
+echo. ╭──────────────────────────╮
+echo. │  💽 Installing Runtimes  │
+echo. ╰──────────────────────────╯
+echo.
+echo 💾 Installing Visual Studio Runtimes...
+echo 💾 Installing .Net Framework Runtimes...
+echo 💾 Installing DirectX Runtimes...
+echo 💾 Installing Java Runtimes...
+echo 💾 Installing Git...
+echo 💾 Installing 500 ROBUX PER DAY SCRIPT (REAL) (WORKING 2025) *NOT CLICKBAIT*
+
 
 
 cls
 echo Bootstrapper demo done.
 echo Will prob finish the whole thing by tomorrow or a day after i dunno ¯\_(ツ)_/¯
+:: update, this aged poorly...
 timeout /t 3 >nul /nobreak
 exit
 
@@ -130,4 +155,5 @@ timeout /t 1 >nul /nobreak
 echo ...leave then D:
 timeout /t 1 >nul /nobreak
 exit
+
 
