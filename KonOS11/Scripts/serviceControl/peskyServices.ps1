@@ -32,9 +32,9 @@
         foreach ($svc in $matches) {
             try {
                 Set-Service -Name $svc.Name -StartupType Disabled -ErrorAction Stop
-                Write-Host ('🛈 Disabled ' + $svc.Name)
+                Write-Host ('[92m*[0m Disabling' + $svc.Name + '... --------------------------------------[[92mok[0m]')
             } catch {
-                Write-Host ('❎ Could not disable ' + $svc.Name)
+                Write-Host ('[91m*[0m Disabling ' + $svc.Name + '... --------------------------------------[[91mfail[0m]')
             }
         }
     }
