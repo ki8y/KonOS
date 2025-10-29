@@ -19,6 +19,7 @@ start "" "windowsdefender://"
 echo.
 echo                             When you're done, press any key to continue.
 pause >nul
+
 cls
 echo.
 echo.
@@ -32,13 +33,6 @@ echo            Now, we need to fully eradicate Windows Defender via Sordum's De
 timeout /t 1 >nul
 chcp 437 >nul
 powershell -Command Add-MpPreference -ExclusionPath "'%SYSTEMDRIVE%\Kon OS\'" >nul
-chcp 65001 >nul
-set "file=https://raw.githubusercontent.com/ki8y/Tweaks/main/Modules/DefenderControl.exe"
-set "name=dControl.exe"
-mkdir "%SYSTEMDRIVE%\Kon OS\Modules\dControl"
-set "location=%SYSTEMDRIVE%\Kon OS\Modules\dControl"
-curl -s -L "%file%" -o "%location%\%name%"
-chcp 437 >nul
 powershell -Command "Add-MpPreference -ExclusionProcess 'dControl.exe'"
 chcp 65001 >nul
 timeout /t 1 >nul /nobreak
