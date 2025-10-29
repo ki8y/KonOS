@@ -121,6 +121,9 @@ set "name=OOSU10.exe"
 curl -s -L "%file%" -o "%location%\%name%"
 
 echo 💾 Installing Chocolatey... (2/idk)
+
+
+
 echo 💾 Installing Scoop... (3/idk)
 echo 💾 Installing 7-Zip... (4/idk)
 
@@ -134,7 +137,7 @@ echo 💾 Installing Visual Studio Runtimes...
 echo 💾 Installing .Net Framework Runtimes...
 echo 💾 Installing DirectX Runtimes...
 echo 💾 Installing Java Runtimes...
-echo 💾 Installing Git...
+echo 💾 Installing git...
 echo 💾 Installing 500 ROBUX PER DAY SCRIPT (REAL) (WORKING 2025) *NOT CLICKBAIT*
 
 
@@ -155,5 +158,6 @@ timeout /t 1 >nul /nobreak
 echo ...leave then D:
 timeout /t 1 >nul /nobreak
 exit
+
 
 
