@@ -39,7 +39,7 @@ echo           Now that Windows Defender is off, we can disable it forever with 
 timeout /t 1 >nul
 chcp 437 >nul
 powershell -Command "Add-MpPreference -ExclusionPath "'%SYSTEMDRIVE%\Kon OS\Setup'" >nul
-powershell -Command "Add-MpPreference -ExclusionProcess 'dControl.exe'"
+powershell -Command "Add-MpPreference -ExclusionProcess 'dControl.exe'" >nul
 chcp 65001 >nul
 timeout /t 1 >nul /nobreak
 start "" "%SYSTEMDRIVE%\Kon OS\Modules\dControl\dControl.exe"
@@ -50,13 +50,6 @@ echo           When it turns red and says "Windows Defender is turned off", you 
 echo.
 echo                                           Press any key to continue.
 pause >nul
-
-PowerShell -ExecutionPolicy Unrestricted -NoProfile -Command ^
-"& {
-    Rename-Item -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\CoolService\Parameters' -NewName 'ParametersDISABLED'; ^
-    Rename-Item -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\CoolService\Parameters' -NewName 'ParametersDISABLED'; ^
-    Rename-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\CoolService' -Name 'CoolKey' -NewName 'CoolKeyDISABLED'
-}"
 
 powerShell -ExecutionPolicy Unrestricted -NoProfile -Command ^
 "& {
