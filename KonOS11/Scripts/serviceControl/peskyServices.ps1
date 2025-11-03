@@ -31,8 +31,11 @@
 
         foreach ($svc in $matches) {
             try {
+                cmd.exe /c "sc.exe stop $svc.Name"
+                cmd.exe /c "reg add "HKLM\SYSTEM\CurrentControlSet\Services\$svc.Name" /v Start /t REG_DWORD /d 4 /f"
                 Set-Service -Name $svc.Name -StartupType Disabled -ErrorAction Stop
                 Write-Host ('[92m*[0m Disabling' + $svc.Name + '... --------------------------------------[[92mok[0m]')
+
             } catch {
                 Write-Host ('[91m*[0m Disabling ' + $svc.Name + '... --------------------------------------[[91mfail[0m]')
             }
