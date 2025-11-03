@@ -31,9 +31,9 @@ cls
 color 9
 echo 🛈 Checking Kon OS Version...
     mkdir "%SYSTEMDRIVE%\Kon OS\Version" >nul 2>&1
-    set URL="https://raw.githubusercontent.com/ki8y/KonOS/main/General/versionCheck.txt"
-    set Name="versionCheck.txt"
-    set Location="%SYSTEMDRIVE%\Kon OS\Version\"
+    set "URL=https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/versionCheck.txt"
+    set "Name=versionCheck.txt"
+    set "Location=%SYSTEMDRIVE%\Kon OS\Version\"
     REM curl -s -L "%URL%" -o "%Location%\%Name%"
 title Kon OS Bootstrapper ^| v1.0
 cls
@@ -178,5 +178,6 @@ timeout /t 1 >nul /nobreak
 echo ...leave then D:
 timeout /t 1 >nul /nobreak
 exit
+
 
 
