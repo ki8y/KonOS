@@ -51,9 +51,9 @@ echo.
 echo                                           Press any key to continue.
 pause >nul
 
-powerShell -ExecutionPolicy Unrestricted -NoProfile -Command ^
-"& {
-    Rename-Item -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\WinDefend\Parameters' -NewName 'ParametersDISABLED'; ^
-    Rename-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\WinDefend' -Name ImagePath -NewName 'ImagePathDISABLED'; ^
-    Rename-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\WinDefend' -Name ServiceDll -NewName 'ServiceDllDISABLED' }"
+REM powerShell -ExecutionPolicy Unrestricted -NoProfile -Command ^
+REM "& {
+REM     Rename-Item -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\WinDefend\Parameters' -NewName 'ParametersDISABLED'; ^
+REM     Rename-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\WinDefend' -Name ImagePath -NewName 'ImagePathDISABLED'; ^
+REM     Rename-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\WinDefend' -Name ServiceDll -NewName 'ServiceDllDISABLED' }"
 exit /b
