@@ -32,9 +32,10 @@ color 9
 echo 🛈 Checking Kon OS Version...
     mkdir "%SYSTEMDRIVE%\Kon OS\Version" >nul 2>&1
     set "URL=https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/versionCheck.txt"
-    set "Name=versionCheck.txt"
+    set "NAME=versionCheck.txt"
     set "Location=%SYSTEMDRIVE%\Kon OS\Version\"
-    REM curl -s -L "%URL%" -o "%Location%\%Name%"
+    REM curl -s -L "%URL%" -o "%Location%\%NAME%"
+
 title Kon OS Bootstrapper ^| v1.0
 cls
 echo.[38;5;99m
@@ -78,34 +79,44 @@ echo.
 chcp 65001 >nul 2>&1
 echo 💾 Downloading Requirement Check Script... (1/11)
     mkdir "%SYSTEMDRIVE%\Kon OS\Setup"
-    set URL="https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/requirementCheck.bat"
-    set Name="requirementCheck.bat"
-    set Location="%SYSTEMDRIVE%\Kon OS\Setup"
-    curl -s -L %url% -o "%Location\Name"
+    set "URL=https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/requirementCheck.bat"
+    set "NAME=requirementCheck.bat"
+    set "Location=%SYSTEMDRIVE%\Kon OS\Setup"
+    curl -s -L %url% -o "%Location\NAME"
 call "%SYSTEMDRIVE%\Kon OS\Setup\requirementCheck.bat"
 
 echo 💾 Downloading Restore Point Script... (2/11)
-    mkdir "C:\Kon OS\Setup\Restore Point"
-    set URL="https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/RestorePoint.bat"
-    set Name="restorePoint.bat"
-    set Location="C:\Kon OS\Setup\Restore Point"
-    curl -s -L "%url%" -o "%location%\%name%"
+    mkdir "C:\Kon OS\Setup\Scripts\Restore Point"
+    set "URL=https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/RestorePoint.bat"
+    set "NAME=restorePoint.bat"
+    set "Location=C:\Kon OS\Setup\Restore Point"
+    curl -s -L "%url%" -o "%location%\%NAME%"
 
 echo 💾 Downloading Defender Checker... (3/11)
-    mkdir "C:\Kon OS\Setup\Defender"
-    set URL="https://raw.githubusercontent.com/ki8y/KonOS/main/DefenderCheck/defenderCheck.bat"
-    set Name="defenderCheck.bat"
-    set Location="C:\Kon OS\Setup\Defender"
-    curl -s -L "%url%" -o "%location%\%name%"
+    mkdir "C:\Kon OS\Setup\Scripts\Defender"
+    set "URL=https://raw.githubusercontent.com/ki8y/KonOS/main/DefenderCheck/defenderCheck.bat"
+    set "NAME=defenderCheck.bat"
+    set "Location=C:\Kon OS\Setup\Defender"
+    curl -s -L "%url%" -o "%location%\%NAME%"
 
 echo 💾 Downloading General Tweaks... (4/11)
+    mkdir "C:\Kon OS\Setup\Scripts"
+    set "URL=https://raw.githubusercontent.com/ki8y/KonOS/refs/heads/main/KonOS11/Scripts/General.bat"
+    set "NAME=general.bat"
+    set "Location=%systemDrive%\Kon OS\Setup\Scripts"
+    curl -s -L "%url%" -o "%location%\%NAME%"
 
+echo 💾 Downloading Service Debloater 1/2... (5/11)
+    mkdir "C:\Kon OS\Setup\Scripts\Debloat\Services"
+    set "URL=https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/serviceControl/serviceControl.bat"
+    set "NAME=ServiceControl.bat"
+    set "Location=C:\Kon OS\Setup\Scripts\Debloat\Services"
+    curl -s -L %URL% -o "%location%\%name%"
 
-echo 💾 Downloading Service Control 1/2... (5/11)
-
-
-echo 💾 Downloading Service control 2/2... (6/11)
-
+echo 💾 Downloading Service Debloater 2/2... (6/11)
+    set "URL=https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/serviceControl/serviceControl.bat"
+    set "NAME=ServiceControl.bat"
+    curl -s -L %URL% -o "%location%\%name%"
 
 echo 💾 Downloading Debloater Script... (7/11)
 
@@ -124,20 +135,20 @@ echo. ╰───────────────────────�
 echo.
 echo 💾 Installing OOShutUp10 1/2... (1/idk)
     set "file=https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Tools/ShutUp10/OOSU10.exe"
-    set "name=config.cfg" 
+    set "NAME=config.cfg" 
     mkdir "%SYSTEMDRIVE%\Kon OS\Setup\Tools\ShutUp10"
     set "location=%SYSTEMDRIVE%\Kon OS\Setup\Tools\ShutUp10"
-    curl -s -L "%file%" -o "%location%\%name%"
+    curl -s -L "%file%" -o "%location%\%NAME%"
     echo 💾 Installing OOShutUp10 2/2...
     set "file=https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Tools/ShutUp10/config.cfg"
-    set "name=OOSU10.exe" 
-    curl -s -L "%file%" -o "%location%\%name%"
+    set "NAME=OOSU10.exe" 
+    curl -s -L "%file%" -o "%location%\%NAME%"
 
 echo 💾 Installing Defender Control... (2/idk)
-    set URL="https://raw.githubusercontent.com/ki8y/KonOS/main/DefenderCheck/defenderCheck.bat"
-    set Name="dControl.exe"
-    set Location="C:\Kon OS\Setup\Defender"
-    curl -s -L "%url%" -o "%location%\%name%"
+    set "URL=https://raw.githubusercontent.com/ki8y/KonOS/main/DefenderCheck/defenderCheck.bat"
+    set "NAME=dControl.exe"
+    set "Location=C:\Kon OS\Setup\Defender"
+    curl -s -L "%url%" -o "%location%\%NAME%"
 
 
 echo 💾 Installing Chocolatey... (3/idk)
@@ -178,6 +189,7 @@ timeout /t 1 >nul /nobreak
 echo ...leave then D:
 timeout /t 1 >nul /nobreak
 exit
+
 
 
 
