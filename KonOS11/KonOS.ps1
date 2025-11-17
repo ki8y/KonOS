@@ -99,6 +99,7 @@ Show-AWESOME-THROBBER -Message "Initializing...                  " {
 $Admin = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
 
 if (-not $Admin) {
+$Host.UI.RawUI.WindowTitle = "Kon OS | Superuser not detected!"
 $host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(100,19)
 $host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(100,19)
 Clear-Host    
@@ -197,17 +198,13 @@ $accent╭───────────────────────�
 │  💽 Downloading Kon OS Scripts  │
 ╰─────────────────────────────────╯
 "@
-    
-    # Installs Winget
-    $name = "Winget"
+    # Installs Chocolatey
+    $name = "Chocolatey"
     Show-AWESOME-THROBBER -Message "Installing $name..." {
-
-        New-Item -Path "$env:SystemDrive\Kon OS\Setup\Winget" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-            $cdn = 'https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx'
-            $file = 'Microsoft.VCLibs.x64.14.00.Desktop.appx'
-            $dir = "$env:SystemDrive\Kon OS\Setup\Winget"
-            Invoke-WebRequest $cdn -OutFile "$dir\$file" | Out-Null
-        }
+        Set-ExecutionPolicy Bypass -Scope Process -Force | Out-Null
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072 | Out-Null
+        Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) | Out-Null
+    }
     Write-Host "`r$ok Installing $name..." -ForegroundColor White
 
     # Installs Defender Control
@@ -289,3 +286,45 @@ switch ($LASTEXITCODE) {
     1 { Setup }
     2 { exitKonOS }
 }
+
+    <#
+
+    UNUSED BECAUSE ITS BROKEN AND IDC ABOUT WINGET ANYMORE
+
+    # Installs Winget
+    $name = "Winget Dependencies"
+    Show-AWESOME-THROBBER -Message "Downloading $name... (1/4)" {
+
+        New-Item -Path "$env:SystemDrive\Kon OS\Setup\Winget\Dependencies" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+            $cdn = 'https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx'
+            $file = 'Microsoft.VCLibs.x64.14.00.Desktop.appx'
+            $dir = "$env:SystemDrive\Kon OS\Setup\Winget\Dependencies"
+            Invoke-WebRequest $cdn -OutFile "$dir\$file" | Out-Null
+        }
+    Write-Host "`r$ok Downloading $name..." -ForegroundColor White
+
+    $name = "Winget Dependencies"
+    Show-AWESOME-THROBBER -Message "Installing $name... (2/4)" {
+            Add-AppxPackage "$env:SystemDrive\Kon OS\Setup\Winget\Dependencies\Microsoft.VCLibs.x64.14.00.Desktop.appx"
+        }
+    Write-Host "`r$ok Installing $name..." -ForegroundColor White
+
+    $name = "Winget Bundle"
+    Show-AWESOME-THROBBER -Message "Downloading $name... (3/4)" {
+        New-Item -Path "$env:SystemDrive\Kon OS\Setup\Winget\Bin" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+        $cdn = 'https://github.com/microsoft/winget-cli/releases/download/v1.12.350/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle'
+        $file = 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle'
+        $cdnl = 'https://github.com/microsoft/winget-cli/releases/download/v1.12.350/e53e159d00e04f729cc2180cffd1c02e_License1.xml'
+        $filel = 'e53e159d00e04f729cc2180cffd1c02e_License1.xml'
+        $dir = "$env:systemDrive\Kon OS\Setup\Winget\Bin"
+        Invoke-WebRequest $cdn -OutFile "$dir\$file" | Out-Null
+        Invoke-WebRequest $cdnl -OutFile "$dir\$filel" | Out-Null
+        }
+    Write-Host "`r$ok Downloading $name..." -ForegroundColor White
+
+    $name = "Winget Bundle"
+    Show-AWESOME-THROBBER -Message "Installing $name... (4/4)" {
+        Add-AppxPackage -Path "$env:systemDrive\Kon OS\Winget\Bin\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -LicensePath "$env:systemDrive\Kon OS\Winget\Bin\License1.xml"
+        }
+    Write-Host "`r$ok Downloading $name..." -ForegroundColor White
+#>
