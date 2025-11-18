@@ -13,6 +13,7 @@ function Install-Dependencies {
         cmd /c 'msiexec /i "%systemDrive%\Kon OS\Setup\pwsh\PowerShell-7.5.4.msi" /q USE_MU=0 ENABLE_MU=0 ALLUSERS=1 /norestart' | Out-Null
         reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v "POWERSHELL_TELEMETRY_OPTOUT" /t REG_SZ /d "1" /f | Out-Null
         reg.exe add "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run" /v "MUIVerb" /t REG_SZ /d "Run With Powershell 7" /f | Out-Null
+		reg.exe add "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command" | Out-Null
         New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command' -Name '(Default)' -Value '"C:\Program Files\PowerShell\7\pwsh.exe" -NoExit -NoProfile -ExecutionPolicy Bypass -Command "$host.UI.RawUI.WindowTitle = ''PowerShell 7 (x64)''; & ''%1''"' -Force | Out-Null
         Write-Host "`r$KonOS Powershell 7 installed successfully.`nPress any key to continue..."
     cmd /c "pause >nul"
@@ -21,7 +22,11 @@ function Install-Dependencies {
     Write-Host "$KonOS Successfully installed dependencies!" -ForegroundColor Green
     Write-Host "`nPress any key to launch Kon OS..."
     cmd /c "pause >nul"
-    Start-Process -FilePath "pwsh.exe" -ExecutionPolicy Bypass -File "C:\Kon OS\KonOS.ps1"
+    Start-Process -FilePath "pwsh.exe" -ArgumentList @(
+    "-NoProfile"
+    "-File"
+    "`"C:\Kon OS\KonOS.ps1`""
+)
 } }
 
 function SelectedNo {
@@ -38,3 +43,4 @@ switch ($LASTEXITCODE) {
     1 { Install-Dependencies }
     2 { SelectedNo }
 }
+
