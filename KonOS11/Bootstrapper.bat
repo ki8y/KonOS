@@ -1,16 +1,16 @@
 @echo off
-:: Download code here
-:: Change this to C:\Kon OS\Initialization later on.
+mkdir "%systemDrive%\Kon OS\Setup"
 
-if exist "%systemdrive\Kon OS\Setup\Dependencies" (
+if exist "%systemdrive\Kon OS\Dependencies" (
   goto startscript
   pause
 ) else (
-  curl %putdependenciesfilehere%
-  call "%~dp0Install Dependencies.bat"
+  curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/CheckForDependencies.bat" -o "%systemDrive%\Kon OS\Setup\CheckForDependencies.bat"
+  call "%systemDrive%\Kon OS\Setup\CheckForDependencies.bat"
 )
 
 :startscript
-pwsh -Command "Unblock-File -Path '%~dp0KonOS.ps1'; Unblock-File -Path '%~f0'"
-pwsh -ExecutionPolicy Unrestricted -NoProfile -File "%~dp0KonOS.ps1"
-rmdir /s /q "%systemDrive%\Kon OS\KonOS.ps1"
+curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/KonOS.ps1" -o "%systemDrive%\Kon OS\Setup\KonOS.ps1"
+pwsh -Command "Unblock-File -Path '%systemDrive\Kon OS\Setup\KonOS.ps1'; Unblock-File -Path '%~f0'"
+pwsh -ExecutionPolicy Unrestricted -NoProfile -File "%systemDrive\Kon OS\Setup\KonOS.ps1"
+rmdir /s /q "%systemDrive%\Kon OS\temp"
