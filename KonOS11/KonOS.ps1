@@ -14,7 +14,6 @@ function Show-AWESOME-THROBBER {
     )
 
     $spinnything = @('\','|','/','|')
-    # $spinnything = @('⢿','⣻','⣽','⣾','⣷','⣯','⣟','⡿')
     $i = 0
 
     $run = Start-Job -ScriptBlock $Action
@@ -24,9 +23,6 @@ function Show-AWESOME-THROBBER {
         Start-Sleep -Milliseconds 100
         $i = ($i + 1) % $spinnything.Length
     }
-
-    # Receive-Job $job | Out-Null
-    # Remove-Job $job
 }
 
 <# Check For Wifi #>
@@ -57,26 +53,7 @@ try {
         exit
     }
 
-function exitKonOS {
-    $host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(80,10)
-    $host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(80,10)
-
-    $Host.UI.RawUI.ForegroundColor = 'White'
-    Clear-Host
-    $sound = New-Object System.Media.SoundPlayer
-    $sound.SoundLocation = "$env:systemDrive\Kon OS\snd\shutdown.wav"
-    Show-AWESOME-THROBBER -Message "Exiting Kon OS..." {
-        Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinu
-        Start-Sleep -Milliseconds 100
-    }
-    Write-Host "`r[[92mOK[0m] Exiting Kon OS..."
-    Write-Host "See you later!" -ForegroundColor Cyan
-    $sound.PlaySync()
-    exit
-}
-
 New-Item -Path "$env:SystemDrive\Kon OS\snd" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-# $setup    = "$env:SystemDrive\Kon OS\snd"
 $snds = "$($env:SystemDrive)\Kon OS\snd"
 $ver = "$($env:SystemDrive)\Kon OS"
 
@@ -93,6 +70,25 @@ Show-AWESOME-THROBBER -Message "Initializing...                  " {
     Invoke-WebRequest `
         "https://raw.githubusercontent.com/ki8y/KonOS/refs/heads/main/KonOS11/versionCheck.txt" `
         -OutFile "$($using:ver)\ver.txt"
+}
+
+# Exits Kon OS... duh?
+function exitKonOS {
+    $host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(80,10)
+    $host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(80,10)
+
+    $Host.UI.RawUI.ForegroundColor = 'White'
+    Clear-Host
+    $sound = New-Object System.Media.SoundPlayer
+    $sound.SoundLocation = "$env:systemDrive\Kon OS\snd\shutdown.wav"
+    Show-AWESOME-THROBBER -Message "Exiting Kon OS..." {
+        Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinu
+        Start-Sleep -Milliseconds 100
+    }
+    Write-Host "`r[[92mOK[0m] Exiting Kon OS..."
+    Write-Host "See you later!" -ForegroundColor Cyan
+    $sound.PlaySync()
+    exit
 }
 
 <# Administrator Check #>
@@ -135,8 +131,14 @@ try {
 
 function noAdmin {
     Clear-Host
-    Write-Host "Without admin privileges, the setup cannot continue.`n" -ForegroundColor Red
-    Write-Host "Press any key to exit..."
+    Write-Host @"
+`e[91mSetup Cannot Continue:
+
+`e[93mKon OS cannot be installed without administrator privileges.`nPlease run Kon OS with admin and try again.
+
+`e[91m(NO PERMISSION)
+`e[97mPress any key to exit setup...
+"@
     cmd.exe /c "pause >nul"
     exitKonOS
 }
@@ -146,8 +148,6 @@ switch ($LASTEXITCODE) {
     1 { runAdmin }
     2 { noAdmin }
 }
-
-
 exit
 }
 
@@ -160,36 +160,6 @@ Clear-Host
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "c:\Kon OS\snd\startup.wav"
 $sound.Play()
-
-$Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper | Powershell Prototype 3"
-Write-Host @"
-$accent
-[?25l
-
-
-
-
-
-
-
- 
-                                    ██╗  ██╗ ██████╗ ███╗   ██╗     ██████╗ ███████╗
-                                    ██║ ██╔╝██╔═══██╗████╗  ██║    ██╔═══██╗██╔════╝
-                                    █████╔╝ ██║   ██║██╔██╗ ██║    ██║   ██║███████╗
-                                    ██╔═██╗ ██║   ██║██║╚██╗██║    ██║   ██║╚════██║
-                                    ██║  ██╗╚██████╔╝██║ ╚████║    ╚██████╔╝███████║
-                                    ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
-
-                             ╔════════════════════════════════════════════════════════════╗
-                             ║                        [97mBegin Setup?$accent                        ║
-                             ╚════════════════════════════════════════════════════════════╝
-
-[32m                                         ╭────────────╮[31m          ╭────────────╮
-[32m                                         │   ✅ [Y]   │[31m          │   ❎ [N]   │
-[32m                                         ╰────────────╯[31m          ╰────────────╯
-$accent 
-"@
-Write-Host $(Get-Content "$env:systemDrive\Kon OS\ver.txt"| Out-String) "[32m" -NoNewLine
 
 function Setup {
     Clear-Host
@@ -231,100 +201,38 @@ $accent╭───────────────────────�
 
 }
 
-function Unsetup {
-    Clear-Host
-    Write-Host "Bye then :P"
-    $sound = New-Object System.Media.SoundPlayer
-    $sound.SoundLocation = "c:\Kon OS\snd\shutdown.wav"
-    $sound.PlaySync()
-    pause
-    exit
-}
+$Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper | Powershell Prototype 4"
+Write-Host @"
+$accent
+[?25l
 
-function WOAH {
-    Clear-Host
-    $sound = New-Object System.Media.SoundPlayer
-    $sound.SoundLocation = "c:\Kon OS\snd\WOAH.wav"
-    $sound.Play()
-    start-sleep -milliseconds 200
-    Write-Host "*CRASH* *BANG*"
-    start-sleep -milliseconds 400
-    Write-Host "Looks like you've been in a crash."
-    start-sleep -milliseconds 1130
-    Write-Host "iPhone will trigger Emergency S.O.S if you don't--"
-    start-sleep -milliseconds 2100
-    Write-Host "🗣️ WHAAAAAAAAAAAT?"
-    start-sleep -milliseconds 1200
-    Write-Host "🚨🚨🚨"
-    start-sleep -milliseconds 1000
-    Write-Host "WOAHHHHHHHHHHHHHHHHH"
-    start-sleep -milliseconds 1010
-    Write-Host "🚨🚨🚨"
-    start-sleep -milliseconds 390
-    Write-Host "WOAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH"
-    start-sleep -milliseconds 1900
-    Write-Host "OHH MY GODDDD"
-    start-sleep -milliseconds 1040
-    Write-Host "🚨🚨🚨"
-    start-sleep -milliseconds 458
-    Write-Host "WOAH..."
-    start-sleep -milliseconds 490
-    Write-Host "🚨🚨🚨🚨🚨🚨🚨"
-    start-sleep -milliseconds 530
-    Write-Host "⚠️⚠️⚠️🚨🚨🚨🚨🚨🚑🚑🚑🚑"
-    start-sleep -milliseconds 190    
-    Write-Host "(AHHHHHHHHHHHHHHHHH)"
-    start-sleep -milliseconds 650
-    Write-Host "WOAHHH..."
 
-    cmd.exe /c "pause >nul"
-    exit
-}
+
+
+
+
+
+ 
+                                    ██╗  ██╗ ██████╗ ███╗   ██╗     ██████╗ ███████╗
+                                    ██║ ██╔╝██╔═══██╗████╗  ██║    ██╔═══██╗██╔════╝
+                                    █████╔╝ ██║   ██║██╔██╗ ██║    ██║   ██║███████╗
+                                    ██╔═██╗ ██║   ██║██║╚██╗██║    ██║   ██║╚════██║
+                                    ██║  ██╗╚██████╔╝██║ ╚████║    ╚██████╔╝███████║
+                                    ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
+
+                             ╔════════════════════════════════════════════════════════════╗
+                             ║                        [97mBegin Setup?$accent                        ║
+                             ╚════════════════════════════════════════════════════════════╝
+
+[32m                                         ╭────────────╮[31m          ╭────────────╮
+[32m                                         │   ✅ [Y]   │[31m          │   ❎ [N]   │
+[32m                                         ╰────────────╯[31m          ╰────────────╯
+$accent 
+"@
+Write-Host $(Get-Content "$env:systemDrive\Kon OS\ver.txt"| Out-String) "[32m" -NoNewLine
 
 choice /c YN /n | Out-Null
 switch ($LASTEXITCODE) {
     1 { Setup }
     2 { exitKonOS }
 }
-
-    <#
-
-    UNUSED BECAUSE ITS BROKEN AND IDC ABOUT WINGET ANYMORE
-
-    # Installs Winget
-    $name = "Winget Dependencies"
-    Show-AWESOME-THROBBER -Message "Downloading $name... (1/4)" {
-
-        New-Item -Path "$env:SystemDrive\Kon OS\Setup\Winget\Dependencies" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-            $cdn = 'https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx'
-            $file = 'Microsoft.VCLibs.x64.14.00.Desktop.appx'
-            $dir = "$env:SystemDrive\Kon OS\Setup\Winget\Dependencies"
-            Invoke-WebRequest $cdn -OutFile "$dir\$file" | Out-Null
-        }
-    Write-Host "`r$ok Downloading $name..." -ForegroundColor White
-
-    $name = "Winget Dependencies"
-    Show-AWESOME-THROBBER -Message "Installing $name... (2/4)" {
-            Add-AppxPackage "$env:SystemDrive\Kon OS\Setup\Winget\Dependencies\Microsoft.VCLibs.x64.14.00.Desktop.appx"
-        }
-    Write-Host "`r$ok Installing $name..." -ForegroundColor White
-
-    $name = "Winget Bundle"
-    Show-AWESOME-THROBBER -Message "Downloading $name... (3/4)" {
-        New-Item -Path "$env:SystemDrive\Kon OS\Setup\Winget\Bin" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-        $cdn = 'https://github.com/microsoft/winget-cli/releases/download/v1.12.350/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle'
-        $file = 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle'
-        $cdnl = 'https://github.com/microsoft/winget-cli/releases/download/v1.12.350/e53e159d00e04f729cc2180cffd1c02e_License1.xml'
-        $filel = 'e53e159d00e04f729cc2180cffd1c02e_License1.xml'
-        $dir = "$env:systemDrive\Kon OS\Setup\Winget\Bin"
-        Invoke-WebRequest $cdn -OutFile "$dir\$file" | Out-Null
-        Invoke-WebRequest $cdnl -OutFile "$dir\$filel" | Out-Null
-        }
-    Write-Host "`r$ok Downloading $name..." -ForegroundColor White
-
-    $name = "Winget Bundle"
-    Show-AWESOME-THROBBER -Message "Installing $name... (4/4)" {
-        Add-AppxPackage -Path "$env:systemDrive\Kon OS\Winget\Bin\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -LicensePath "$env:systemDrive\Kon OS\Winget\Bin\License1.xml"
-        }
-    Write-Host "`r$ok Downloading $name..." -ForegroundColor White
-#>
