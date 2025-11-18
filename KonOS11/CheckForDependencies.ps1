@@ -16,6 +16,12 @@ function Install-Dependencies {
         New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command' -Name '(Default)' -Value '"C:\Program Files\PowerShell\7\pwsh.exe" -NoExit -NoProfile -ExecutionPolicy Bypass -Command "$host.UI.RawUI.WindowTitle = ''PowerShell 7 (x64)''; & ''%1''"' -Force | Out-Null
         Write-Host "`r$KonOS Powershell 7 installed successfully.`nPress any key to continue..."
     cmd /c "pause >nul"
+
+    Clear-Host
+    Write-Host "$KonOS Successfully installed dependencies!" -ForegroundColor Green
+    Write-Host "`nPress any key to launch Kon OS..."
+    cmd /c "pause >nul"
+    Start-Process -FilePath "pwsh.exe" -ExecutionPolicy Bypass -File "C:\Kon OS\KonOS.ps1"
 } }
 
 function SelectedNo {
@@ -32,25 +38,3 @@ switch ($LASTEXITCODE) {
     1 { Install-Dependencies }
     2 { SelectedNo }
 }
-
-
-
-
-
-
-<#
-    Start-Process msiexec.exe -ArgumentList @(
-        '/i'
-        "$env:SystemDrive\Kon OS\Setup\pwsh\PowerShell-7.5.4.msi"
-        '/qn'
-        'USE_MU=0'
-        'ENABLE_MU=0'
-        'ALLUSERS=1'
-        '/norestart'
-    ) -Wait
-
-cmd /c @"
-reg add "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run" /v "MUIVerb" /t REG_SZ /d "Run With Powershell 7" /f
-reg add "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command""
-"@ 
-#>
