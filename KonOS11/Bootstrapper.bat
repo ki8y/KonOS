@@ -1,5 +1,5 @@
 @echo off
-mkdir "%systemDrive%\Kon OS\Setup" >nul 2&>1"
+mkdir "%systemDrive%\Kon OS\Setup" >nul 2&>1
 
 if exist "%systemDrive%\Kon OS\Dependencies" (
   goto startscript
@@ -14,6 +14,7 @@ curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/Ko
 pwsh -Command "Unblock-File -Path '%systemDrive%\Kon OS\Setup\KonOS.ps1'; Unblock-File -Path '%~f0'"
 pwsh -ExecutionPolicy Unrestricted -NoProfile -File "%systemDrive%\Kon OS\Setup\KonOS.ps1"
 rmdir /s /q "%systemDrive%\Kon OS\temp"
+
 
 
 
