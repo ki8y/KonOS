@@ -10,7 +10,7 @@ if exist "%systemDrive%\Kon OS\Dependencies" (
 )
 
 :startscript
-curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/KonOS.ps1" -o "%systemDrive%\Kon OS\Setup\KonOS.ps1"
-pwsh -Command "Unblock-File -Path '%systemDrive%\Kon OS\Setup\KonOS.ps1'; Unblock-File -Path '%~f0'"
-pwsh -ExecutionPolicy Unrestricted -NoProfile -File "%systemDrive%\Kon OS\Setup\KonOS.ps1"
+curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/KonOS.ps1" -o "%systemDrive%\Kon OS\KonOS.ps1"
+pwsh -Command "Unblock-File -Path '%systemDrive%\Kon OS\KonOS.ps1'; Unblock-File -Path '%~f0'"
+pwsh -ExecutionPolicy Unrestricted -NoProfile -File "%systemDrive%\Kon OS\KonOS.ps1"
 rmdir /s /q "%systemDrive%\Kon OS\temp"
