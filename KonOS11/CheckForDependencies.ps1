@@ -22,8 +22,9 @@ function Install-Dependencies {
         Write-Host "$KonOS Installing PowerShell-Core..." -NoNewLine
 		choco install powershell-core --confirm | Out-Null
     }
-
-    # .Net Framework 4.8
+	
+	<# VC Redist
+	Couldn't be bothered to check for root directory :/ #>	                
     Write-Host "$KonOS Installing VCRedist 2015-2022 Runtimes..." -NoNewLine
 	choco install vcredist140 --confirm | Out-Null
 }
