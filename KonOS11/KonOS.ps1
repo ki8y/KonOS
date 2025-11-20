@@ -168,17 +168,8 @@ $accent╭───────────────────────�
 │  💽 Downloading Kon OS Scripts  │
 ╰─────────────────────────────────╯
 "@
-    # Installs Chocolatey
-    $name = "Chocolatey"
-    Show-AWESOME-THROBBER -Message "Installing $name..." {
-        Set-ExecutionPolicy Bypass -Scope Process -Force | Out-Null
-        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072 | Out-Null
-        Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) | Out-Null
-    }
-    Write-Host "`r$ok Installing $name..." -ForegroundColor White
-
-    # Installs Defender Control
-    $name = "Defender Control"
+    # Installs Requirement Checker.......duh? (its not working rn so oops...)
+    $name = "Requirement Checker"
     Show-AWESOME-THROBBER -Message "Installing $name..." {
             $cdn = "https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/requirementCheck.bat"
             $file = 'Microsoft.VCLibs.x64.14.00.Desktop.appx'
