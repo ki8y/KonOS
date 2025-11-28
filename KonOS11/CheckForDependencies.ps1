@@ -1,5 +1,6 @@
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
+Clear-Host
 $KonOS='[97m[[38;5;99mKon OS[97m][97m'
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
@@ -153,5 +154,6 @@ Start-Process -FilePath "pwsh.exe" -ArgumentList @(
     "-File"
     "`"C:\Kon OS\KonOS.ps1`""
 )
+
 
 
