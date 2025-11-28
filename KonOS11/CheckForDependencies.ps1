@@ -5,6 +5,34 @@ $KonOS='[97m[[38;5;99mKon OS[97m][97m'
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
 
+function Install-Dependencies {
+    Clear-Host
+	
+    # Chocolatey
+    $filePath = "$env:systemDrive\ProgramData\chocolatey\bin\choco.exe"
+    if (Test-Path -Path $filePath -PathType Leaf) {
+        Write-Host "$KonOS Chocolatey is already installed. Skipping..."
+    } else {
+        Write-Host "$KonOS Installing Chocolatey..." -NoNewLine
+			Set-ExecutionPolicy Bypass -Scope Process -Force | Out-Null
+    		[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072 | Out-Null
+    		Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) | Out-Null
+	}
+
+    # Powershell 7
+	$filePath = "$env:systemDrive\Program Files\PowerShell\7\pwsh.exe"
+    if (Test-Path -Path $filePath -PathType Leaf) {
+        Write-Host "$KonOS PowerShell 7 is already installed. Skipping..."
+    } else {
+        Write-Host "$KonOS Installing PowerShell-Core..." -NoNewLine
+		choco install powershell-core --confirm | Out-Null
+    }
+
+    # .Net Framework 4.8
+    Write-Host "$KonOS Installing VCRedist 2015-2022 Runtimes..." -NoNewLine
+	choco install vcredist140 --confirm | Out-Null
+}
+
 function SelectedNo {
     Clear-Host
     Write-Host "[91mSetup Cannot Continue:`n`n[93mKon OS cannot be installed without the required dependencies.`nPlease install the dependencies and try again.`n`n[91m(MISSING DEPENDENCIES)"
@@ -118,34 +146,6 @@ Please install Windows 11 (24H2 or newer) and try again.
     cmd.exe /c "pause >nul"
     Remove-Item -Path "$env:systemDrive\Kon OS" -Recurse -Force -ErrorAction SilentlyContinue
     ExitSetup
-}
-
-function Install-Dependencies {
-    Clear-Host
-	
-    # Chocolatey
-    $filePath = "$env:systemDrive\ProgramData\chocolatey\bin\choco.exe"
-    if (Test-Path -Path $filePath -PathType Leaf) {
-        Write-Host "$KonOS Chocolatey is already installed. Skipping..."
-    } else {
-        Write-Host "$KonOS Installing Chocolatey..." -NoNewLine
-			Set-ExecutionPolicy Bypass -Scope Process -Force | Out-Null
-    		[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072 | Out-Null
-    		Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) | Out-Null
-	}
-
-    # Powershell 7
-	$filePath = "$env:systemDrive\Program Files\PowerShell\7\pwsh.exe"
-    if (Test-Path -Path $filePath -PathType Leaf) {
-        Write-Host "$KonOS PowerShell 7 is already installed. Skipping..."
-    } else {
-        Write-Host "$KonOS Installing PowerShell-Core..." -NoNewLine
-		choco install powershell-core --confirm | Out-Null
-    }
-
-    # .Net Framework 4.8
-    Write-Host "$KonOS Installing VCRedist 2015-2022 Runtimes..." -NoNewLine
-	choco install vcredist140 --confirm | Out-Null
 }
 
 Clear-Host
