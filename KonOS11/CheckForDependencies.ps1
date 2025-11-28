@@ -5,12 +5,29 @@ $KonOS='[97m[[38;5;99mKon OS[97m][97m'
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
 
+function SelectedNo {
+    Clear-Host
+    Write-Host "[91mSetup Cannot Continue:`n`n[93mKon OS cannot be installed without the required dependencies.`nPlease install the dependencies and try again.`n`n[91m(MISSING DEPENDENCIES)"
+    Write-Host "Press any key to exit setup..." -ForegroundColor White -NoNewLine
+    cmd.exe /c "pause >nul"
+    exit
+}
+
+function PromptForDependencies {
+    Clear-Host
+    Write-Host "$KonOS Your computer is missing the files/applications that Kon OS depends on to run.`n`nInstall them now?`n[92m[Y]es [91m[N]o" -NoNewLine
+    choice /c YN /n | Out-Null
+    switch ($LASTEXITCODE) {
+        1 { Install-Dependencies }
+        2 { SelectedNo }
+} }
+
 <# Checks your Windows build to avoid complications. #>
 Write-Host "Checking if you meet the operating system requirements..."
 $Build = [System.Environment]::OSVersion.Version.Build
 
 # Win11 25H2
-if ($build -ge 22600) {
+if ($build -le 22600) {
 
     Write-Host @"
 [33mWindows 11 25H2 Detected! ($Build)[97m
@@ -27,10 +44,10 @@ Press any key to continue...
 }
 
 # Win11 24H2
-if ($build -ge 26100) { PromptForDependencies }
+if ($build -le 26100) { PromptForDependencies }
 
 # Win11 23H2
-if ($build -ge 22631) {
+if ($build -le 22631) {
     Write-Host @"
 [31mWindows 11 22H2 Detected! ($Build)[97m
 
@@ -46,7 +63,7 @@ Continue the installation?
 }
 
 # Win11 22H2
-if ($build -ge 22621) {
+if ($build -le 22621) {
     Write-Host @"
 [31mWindows 11 22H2 Detected! ($Build)[97m
 
@@ -62,7 +79,7 @@ Continue the installation?
 }
 
 # Win11 21H2
-if ($build -ge 22000) {
+if ($build -le 22000) {
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Critical Stop.wav"
 
@@ -78,7 +95,8 @@ Please install a newer version of Windows 11 (ideally 24H2) and try again.
 "@
     $sound.Play()
     cmd.exe /c "pause >nul"
-    exit
+    Remove-Item -Path "$env:systemDrive\Kon OS" -Recurse -Force -ErrorAction SilentlyContinue
+    ExitSetup
 }
 
 # Windows 10 or lower...
@@ -98,7 +116,8 @@ Please install Windows 11 (24H2 or newer) and try again.
 "@
     $sound.Play()
     cmd.exe /c "pause >nul"
-    exit
+    Remove-Item -Path "$env:systemDrive\Kon OS" -Recurse -Force -ErrorAction SilentlyContinue
+    ExitSetup
 }
 
 function Install-Dependencies {
@@ -129,22 +148,6 @@ function Install-Dependencies {
 	choco install vcredist140 --confirm | Out-Null
 }
 
-function SelectedNo {
-    Clear-Host
-    Write-Host "[91mSetup Cannot Continue:`n`n[93mKon OS cannot be installed without the required dependencies.`nPlease install the dependencies and try again.`n`n[91m(MISSING DEPENDENCIES)"
-    Write-Host "Press any key to exit setup..." -ForegroundColor White -NoNewLine
-    cmd.exe /c "pause >nul"
-    exit
-}
-
-function PromptForDependencies {
-    Write-Host "$KonOS Your computer is missing the files/applications that Kon OS depends on to run.`n`nInstall them now?`n[92m[Y]es [91m[N]o" -NoNewLine
-    choice /c YN /n | Out-Null
-    switch ($LASTEXITCODE) {
-        1 { Install-Dependencies }
-        2 { SelectedNo }
-} }
-
 Clear-Host
 Write-Host "$KonOS Successfully installed dependencies!" -ForegroundColor Green
 Write-Host "`nPress any key to launch Kon OS..."
@@ -154,6 +157,5 @@ Start-Process -FilePath "pwsh.exe" -ArgumentList @(
     "-File"
     "`"C:\Kon OS\KonOS.ps1`""
 )
-
 
 
