@@ -21,7 +21,7 @@ Write-Host "Checking if you meet the operating system requirements..."
 $Build = [System.Environment]::OSVersion.Version.Build
 
 # Win11 25H2
-if ($build -ge 22600) {
+if ($build -le 22600) {
 
     Write-Host @"
 [33mWindows 11 25H2 Detected! ($Build)[97m
@@ -38,10 +38,10 @@ Press any key to continue...
 }
 
 # Win11 24H2
-if ($build -ge 26100) { PromptForDependencies }
+if ($build -le 26100) { PromptForDependencies }
 
 # Win11 23H2
-if ($build -ge 22631) {
+if ($build -le 22631) {
     Write-Host @"
 [31mWindows 11 22H2 Detected! ($Build)[97m
 
@@ -57,7 +57,7 @@ Continue the installation?
 }
 
 # Win11 22H2
-if ($build -ge 22621) {
+if ($build -le 22621) {
     Write-Host @"
 [31mWindows 11 22H2 Detected! ($Build)[97m
 
@@ -73,7 +73,7 @@ Continue the installation?
 }
 
 # Win11 21H2
-if ($build -ge 22000) {
+if ($build -le 22000) {
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Critical Stop.wav"
 
