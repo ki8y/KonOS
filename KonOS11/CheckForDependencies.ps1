@@ -1,6 +1,6 @@
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
-$KonOS='[97m[[38;5;99mKon OS[97m][0m'
+$KonOS='[97m[[38;5;99mKon OS[97m][97m'
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
 
@@ -12,7 +12,7 @@ $Build = [System.Environment]::OSVersion.Version.Build
 if ($build -ge 22600) {
 
     Write-Host @"
-[33mWindows 11 25H2 Detected! ($Build)[0m
+[33mWindows 11 25H2 Detected! ($Build)[97m
 
 Windows 11 25H2 is an untested version of Windows 11. It should be similar enough to 24H2 to
 run with minimal issues, but I haven't tested this myself. 
@@ -31,7 +31,7 @@ if ($build -ge 26100) { PromptForDependencies }
 # Win11 23H2
 if ($build -ge 22631) {
     Write-Host @"
-[31mWindows 11 22H2 Detected! ($Build)[0m
+[31mWindows 11 22H2 Detected! ($Build)[97m
 
 Kon OS was built for Windows 11 24H2. The version of Windows you're using is Windows 11 22H2.
 While Kon OS can be installed on 22H2, I am not responsible for any potential damage caused to your computer.
@@ -47,7 +47,7 @@ Continue the installation?
 # Win11 22H2
 if ($build -ge 22621) {
     Write-Host @"
-[31mWindows 11 22H2 Detected! ($Build)[0m
+[31mWindows 11 22H2 Detected! ($Build)[97m
 
 Kon OS was built for Windows 11 24H2. The version of Windows you're using is Windows 11 22H2.
 While Kon OS can be installed on 22H2, I am not responsible for any potential damage caused to your computer.
@@ -73,7 +73,7 @@ Please install a newer version of Windows 11 (ideally 24H2) and try again.
 
 [91m(OUTDATED_WINDOWS_VERSION)
 
-[0mPress any key to exit setup...
+[97mPress any key to exit setup...
 "@
     $sound.Play()
     cmd.exe /c "pause >nul"
@@ -93,7 +93,7 @@ Please install Windows 11 (24H2 or newer) and try again.
 
 [91m(OUTDATED_WINDOWS_VERSION)
 
-[0mPress any key to exit setup...
+[97mPress any key to exit setup...
 "@
     $sound.Play()
     cmd.exe /c "pause >nul"
@@ -153,4 +153,5 @@ Start-Process -FilePath "pwsh.exe" -ArgumentList @(
     "-File"
     "`"C:\Kon OS\KonOS.ps1`""
 )
+
 
