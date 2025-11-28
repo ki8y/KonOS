@@ -157,5 +157,3 @@ Start-Process -FilePath "pwsh.exe" -ArgumentList @(
     "-File"
     "`"C:\Kon OS\KonOS.ps1`""
 )
-
-
