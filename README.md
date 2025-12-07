@@ -3,7 +3,7 @@ If you somehow stumbled upon this repo by chance, PLEASE do not use Kon OS just 
 ...Like seriously, I'm not even done the readme.md file yet. I just put this here just in case.
 
 # Kon OS - An automated PC optimization tool
-Kon OS is a customizable, easy to use, open-source optimization tool for Windows 11. It optimizes your computer for high performance and privacy.
+Kon OS is a customizable, easy to use, open-source optimization tool for Windows 11. It prioritizes high performance, privacy, and customizability.
 
 ## Usage:
 ```ps1
