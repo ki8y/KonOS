@@ -7,6 +7,6 @@ Kon OS is a customizable, easy to use, open-source optimization tool for Windows
 
 ## Usage:
 ```ps1
-Invoke-WebRequest "https://raw.githubusercontent.com/ki8y/KonOS/refs/heads/experimental/KonOS11/irmtest.ps1" | Invoke-Expression
+# Invoke-WebRequest "https://raw.githubusercontent.com/ki8y/KonOS/refs/heads/experimental/KonOS11/irmtest.ps1" | Invoke-Expression
 ```
 <sub>Unfinished readme :P</sub>
