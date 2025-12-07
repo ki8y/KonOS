@@ -26,11 +26,17 @@ function Install-Dependencies {
     } else {
         Write-Host "$KonOS Installing PowerShell-Core..." -NoNewLine
 		choco install powershell-core --confirm | Out-Null
+		reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v "POWERSHELL_TELEMETRY_OPTOUT" /t REG_SZ /d "1" /f | Out-Null
+		reg.exe add "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run" /v "MUIVerb" /t REG_SZ /d "Run With Powershell 7" /f | Out-Null
+		reg.exe add "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command" | Out-Null
+		New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command' -Name '(Default)' -Value '"C:\Program Files\PowerShell\7\pwsh.exe" -NoExit -NoProfile -ExecutionPolicy Bypass -Command "$host.UI.RawUI.WindowTitle = ''PowerShell 7 (x64)''; & ''%1''"' -Force | Out-Null
+		Write-Host "`r$KonOS Successfully installed powershell-core."
     }
 
     # .Net Framework 4.8
     Write-Host "$KonOS Installing VCRedist 2015-2022 Runtimes..." -NoNewLine
 	choco install vcredist140 --confirm | Out-Null
+	Write-Host "`r$KonOS Successfully installed VCRedist 2015-2022 Runtimes."
 }
 
 function SelectedNo {
@@ -148,6 +154,8 @@ Please install Windows 11 (24H2 or newer) and try again.
     ExitSetup
 }
 
+
+
 Clear-Host
 Write-Host "$KonOS Successfully installed dependencies!" -ForegroundColor Green
 Write-Host "`nPress any key to launch Kon OS..."
@@ -157,3 +165,4 @@ Start-Process -FilePath "pwsh.exe" -ArgumentList @(
     "-File"
     "`"C:\Kon OS\KonOS.ps1`""
 )
+
