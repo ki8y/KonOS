@@ -3,9 +3,13 @@ If you need to contact me:
 Discord Server: https://discord.gg/MdXtURScqX
 Discord: @ki8y
 TikTok: https://www.tiktok.com/@konpakulol #>
+
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
 Clear-Host
+$sound = New-Object System.Media.SoundPlayer
+$sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
+$Host.UI.RawUI.WindowTitle = "Kon OS Prerequisites"
 Write-Host "Starting Kon OS..."
 New-Item -Path "$env:SystemDrive\Kon OS\Setup" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 
@@ -38,7 +42,7 @@ Press any key to continue...
 }
 
 # Win11 24H2
-if ($build -le 26100) { PromptForDependencies }
+if ($build -le 26100) { Clear-Host }
 
 # Win11 23H2
 if ($build -le 22631) {
@@ -115,26 +119,24 @@ Please install Windows 11 (24H2 or newer) and try again.
 }
 
 function Start-KonOS {
-    Unblock-File -Path "$env:systemDrive\Kon OS\KonOS.ps1"
+    Unblock-File -Path "$env:systemDrive\Kon OS\KonOS.ps1" 
     Start-Process -FilePath "pwsh.exe" -ArgumentList @(
     "-NoProfile"
+    "-ExecutionPolicy"
+    "Bypass"
     "-File"
     "`"$env:systemDrive\Kon OS\KonOS.ps1`""
     )
 }
 
-function Install-Dependencies {
-    PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"
-}
-
 # install stuff :P
-cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/CheckForDependencies.ps1" -o "$env:systemDrive\Kon OS\Setup\CheckForDependencies.ps1"'
-cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/KonOS.ps1" -o "$env:systemDrive\Kon OS\Setup\KonOS.ps1"'
+cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/CheckForDependencies.ps1" -o "%systemDrive%\Kon OS\Dependencies\CheckForDependencies.ps1"'
+cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/KonOS.ps1" -o "%systemDrive%\Kon OS\Setup\KonOS.ps1"'
 
 # Path
 $filePath = "$env:SystemDrive\Kon OS\Dependencies"
 if (Test-Path -Path $filePath -PathType Leaf) {
     Start-KonOS
 } else {
-    Install-Dependencies
+    PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"
 }
