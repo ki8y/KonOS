@@ -6,7 +6,7 @@ If you somehow stumbled upon this repo by chance, PLEASE do not use Kon OS just 
 Kon OS is a customizable, easy to use, open-source optimization tool for Windows 11. It prioritizes high performance, privacy, and customizability.
 
 ## Usage:
-- First, the PowerShell execution policy must be set to `Bypass`.
+- First, the PowerShell execution policy needs to be set to `Bypass`.
 ```ps1
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine
 ```
