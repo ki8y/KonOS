@@ -60,15 +60,15 @@ $ver = "$($env:SystemDrive)\Kon OS"
 
 Show-AWESOME-THROBBER -Message "Initializing...                  " {
     Invoke-WebRequest `
-        "https://github.com/ki8y/KonOS/raw/main/General/sounds/startup.wav" `
+        "https://github.com/ki8y/KonOS/raw/main/Components/Sounds/startup.wav" `
         -OutFile "$($using:snds)\startup.wav"
 
     Invoke-WebRequest `
-        "https://github.com/ki8y/KonOS/raw/main/General/sounds/shutdown.wav" `
+        "https://github.com/ki8y/KonOS/raw/main/Components/Sounds/shutdown.wav" `
         -OutFile "$($using:snds)\shutdown.wav"
         
     Invoke-WebRequest `
-        "https://raw.githubusercontent.com/ki8y/KonOS/main/General/versionCheck.txt" `
+        "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt" `
         -OutFile "$($using:ver)\ver.txt"
 }
 
