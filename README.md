@@ -12,6 +12,6 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine
 ```
 - Then, you can install Kon OS by running this one liner:
 ```ps1
-Invoke-WebRequest "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/irmtest.ps1" | Invoke-Expression
+irm "https://raw.githubusercontent.com/ki8y/KonOS/main/Bootstrapper.ps1" | iex
 ```
 <sub>Unfinished readme :P</sub>
