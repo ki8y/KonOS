@@ -1,0 +1,306 @@
+# --Task Scheduler---------
+
+Write-Host @"
+`e[38;5;99m╭──────────────────────────────────╮
+│  💻 Disabling automatic updates  │
+╰──────────────────────────────────╯
+
+"@
+# Yeah...
+Write-Host "🛈 Disabling Windows Update in Task Scheduler..." -ForegroundColor DarkYellow
+$tasks = @(
+    'ScanForUpdates',
+    'ScanForUpdatesAsUser',
+    'SmartRetry',
+    'WakeUpAndContinueUpdates',
+    'WakeUpAndScanForUpdates'
+)
+
+foreach ($task in $tasks) {
+    try {
+        # Write-Error "" -NoNewLine -ErrorAction Stop | Out-Null
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Disabling ' + $task + '... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $task + '... ──────────────────────────────────────')
+    }
+}
+# Disable-ScheduledTask -TaskPath "\Microsoft\Windows\InstallService\$task" -TaskName "ScanForUpdates"
+
+
+Write-Host @"
+`e[38;5;99m
+╭─────────────────────────────────────╮
+│  ⚙️ Disabling Unnecessary Services  │
+╰─────────────────────────────────────╯
+
+"@
+# Yeah...
+Write-Host "🛈 Disabling Xbox Services..." -ForegroundColor DarkYellow
+$services = @(
+    'XblAuthManager',
+    'BcastDVRUserService',
+    'XblGameSave',
+    'XboxGipSvc',
+    'XboxNetApiSvc',
+    'xbgm'
+)
+
+foreach ($svc in $services) {
+    try {
+        # Write-Error "" -NoNewLine -ErrorAction Stop | Out-Null
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Disabling ' + $svc + '... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $svc + '... ──────────────────────────────────────')
+    }
+}
+
+Write-Host "`n🛈 Disabling Unnecessary Intel Services..." -ForegroundColor DarkYellow
+$services = @(
+    'dptftcs',
+    'igccservice',
+    'IntelDisplayUMService',
+    'ipfsvc',
+    'WMIRegistrationService'
+)
+
+foreach ($svc in $services) {
+    try {
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Disabling ' + $svc + '... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $svc + '... ──────────────────────────────────────')
+    }
+}
+
+Write-Host "`n🛈 Disabling Unnecessary HP Services (if they exist)..." -ForegroundColor DarkYellow
+$services = @(
+    'HPNetworkCap',
+    'HPOmenCap',
+    'HPSysInfoCap',
+    'HpTouchpointAnalyticsService',
+    'HPAppHelperCap',
+    'HPAudioAnalytics',
+    'HPDiagsCap',
+    'HotKeyServiceUWP',
+    'LanWlanWwanSwitchingServiceUWP',
+    'hpsvcsscan',
+    'SFUService'
+)
+
+foreach ($svc in $services) {
+    try {
+        # Get-Service $svc -ErrorAction SkipHP
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Disabling ' + $svc + '... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $svc + '... ──────────────────────────────────────')
+    }
+}
+
+Write-Host "`n🛈 Disabling Windows Update Services..." -ForegroundColor DarkYellow
+$services = @(
+    'DoSvc',
+    'InstallService',
+    'UsoSvc',
+    'wuauserv',
+    'WaaSMedicSvc',
+    'BITS',
+    'upfc',
+    'uhssvc',
+    'ossrs'
+)
+
+foreach ($svc in $services) {
+    try {
+        # Get-Service $svc -ErrorAction SkipHP
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Disabling ' + $svc + '... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $svc + '... ──────────────────────────────────────')
+    }
+}
+
+Write-Host "`n🛈 Disabling General Unnecessary Services..." -ForegroundColor DarkYellow
+$services = @(
+    'PimIndexMaintenanceSvc',
+    'WinHttpAutoProxySvc',
+    'wlidsvc',
+    'wcncsvc',
+    'DisplayEnhancementService',
+    'DiagTrack',
+    'DusmSvc',
+    'TabletInputService',
+    'Fax',
+    'lfsvc'
+    'AJRouter',
+    'ALG',
+    'Netlogon',
+    'CertPropSvc',
+    'Themes',
+    'DPS',
+    'AssignedAccessManagerSvc',
+    'DialogBlockingService',
+    'NetTcpPortSharing',
+    'UevAgentService',
+    'WSearch',
+    'VSS',
+    'MapsBroker',
+    'shpamsvc',
+    'ssh-agent',
+    'tzautoupdate',
+    'MSDTC',
+    'SecurityHealthService',
+    'SysMain',
+    'WdiServiceHost',
+    'WinDefend',
+    'seclogon',
+    'wscsvc',
+    'wisvc',
+    'StorSvc',
+    'NcbService',
+    'WdiSystemHost',
+    'AppReadiness',
+    'PNRPAutoReg',
+    'SCardSvr',
+    'CscService',
+    'WalletService',
+    'icssvc',
+    'fhsvc',
+    'FrameServer',
+    'FrameServerMonitor',
+    'EntAppSvc',
+    'DmEnrollmentSvc',,
+    'AxInstSV',
+    'DeviceAssociationService',
+    'TieringEngineService',
+    'TextInputManagementService',
+    'CDPSvc',
+    'DevQueryBroker',
+    'EFS',
+    'FDResPub',
+    'HvHost',
+    'vmicguestinterface',
+    'vmicheartbeat',
+    'vmickvpexchange',
+    'vmicrdv',
+    'vmicshutdown',
+    'vmictimesync',
+    'vmicvmsession',
+    'vmicvss',
+    'IKEEXT',
+    'MixedRealityOpenXRSvc',
+    'MsKeyboardFilter',
+    'RasMan',
+    'SensorDataService',
+    'SensorService',
+    'SensrSvc',
+    'SessionEnv',
+    'SharedAccess',
+    'StiSvc',
+    'TokenBroker',
+    'W32Time',
+    'WebClient',
+    'Wecsvc',
+    'dmwappushservice',
+    'fdPHost',
+    'smphost',
+    'wercplsupport',
+    'DispBrokerDesktopSvc',
+    'FontCache',
+    'LanmanServer',
+    'ShellHWDetection',
+    'TermService',
+    'Wcmsvc',
+    'cbdhsvc',
+    'WpcMonSvc',
+    'MicrosoftEdgeElevationService',
+    'edgeupdate',
+    'edgeupdatem',
+    'autotimesvc',
+    'diagnosticshub.standardcollector.service',
+    'PhoneSvc',
+    'TapiSrv',
+    'WbioSrvc',
+    'SEMgrSvc',
+    'iphlpsvc',
+    'BthAvctpSvc',
+    'BDESVC',
+    'CDPUserSvc',
+    'DevicesFlowUserSvc',
+    'TrkWks',
+    'dLauncherLoopback',
+    'NPSMSvc',
+    'WPDBusEnum',
+    'PcaSvc',
+    'RetailDemo',
+    'SSDPSRV',
+    'OneSyncSvc',
+    'UserDataSvc',
+    'UnistoreSvc',
+    'DsSvc',
+    'AppVClient',
+    'SstpSvc',
+    'WMPNetworkSvc',
+    'WerSvc',
+    'DsmSvc',
+    'ClipSVC'
+)
+
+foreach ($svc in $services) {
+    try {
+        # Get-Service $svc -ErrorAction SkipHP
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Disabling ' + $svc + '... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $svc + '... ──────────────────────────────────────')
+    }
+}
+
+# sora is a BUM ASS CUCK LOSER
+
+
+# FUCKASS user service strings i hate them jesus christ
+#<Wow, they didnt even work anyway -_->#
+Write-Host "`n🛈 Finding and disabling user-specific services..." -ForegroundColor DarkYellow
+$services = @(
+    'PimIndexMaintenanceSvc',
+    'WpnUserService',
+    'MessagingService',
+    'cbdhsvc',
+    'CDPUserSvc',
+    'BluetoothUserService',
+    'CaptureService',
+    'ConsentUxUserSvc',
+    'CredentialEnrollmentManagerUserSvc',
+    'DeviceAssociationBrokerSvc',
+    'DevicePickerUserSvc',
+    'P9RdrService',
+    'PenService',
+    'PrintWorkflowUserSvc',
+    'UdkUserSvc',
+    'webthreatdefusersvc',
+    'UnistoreSvc',
+    'UserDataSvc',
+    'NPSMSvc',
+    'DevicesFlowUserSvc',
+    'OneSyncSvc'
+)
+
+foreach ($svc in $services) {
+    try {
+        # Set-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Services\$svc" -Name 'Start' -Value '4' -Force | Out-Null
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Disabling ' + $svc + '... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $svc + ' Service... ──────────────────────────────────────')
+    }
+}
