@@ -20,6 +20,14 @@ function ExitSetup {
     exit
 }
 
+Write-Host @"
+WARNING: THIS IS A VERY EARLY ALPHA VERSION OF KON OS
+
+If you somehow accidentally stumbled upon this tool, don't use it for personal use yet.
+It's extremely unstable and unfinished. This is on github purely for testing.
+"@ -ForegroundColor Red
+Pause
+
 # Checks your Windows build to avoid complications.
 Write-Host "Checking if you meet the operating system requirements..."
 $Build = [System.Environment]::OSVersion.Version.Build
@@ -130,8 +138,8 @@ function Start-KonOS {
 }
 
 # install stuff :P
-cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/CheckForDependencies.ps1" -o "%systemDrive%\Kon OS\Dependencies\CheckForDependencies.ps1"'
-cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/experimental/KonOS11/KonOS.ps1" -o "%systemDrive%\Kon OS\Setup\KonOS.ps1"'
+cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Scripts/getDependencies.ps1" -o "%systemDrive%\Kon OS\Dependencies\CheckForDependencies.ps1"'
+cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/KonOS.ps1" -o "%systemDrive%\Kon OS\Setup\KonOS.ps1"'
 
 # Path
 $filePath = "$env:SystemDrive\Kon OS\Dependencies"
