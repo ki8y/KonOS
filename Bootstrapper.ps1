@@ -138,7 +138,6 @@ function Start-KonOS {
 }
 
 # install stuff :P
-cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Scripts/getDependencies.ps1" -o "%systemDrive%\Kon OS\Dependencies\CheckForDependencies.ps1"'
 cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/KonOS.ps1" -o "%systemDrive%\Kon OS\Setup\KonOS.ps1"'
 
 # Path
@@ -146,5 +145,6 @@ $filePath = "$env:SystemDrive\Kon OS\Dependencies"
 if (Test-Path -Path $filePath -PathType Container) {
     Start-KonOS
 } else {
+    Invoke-WebRequest "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Scripts/getDependencies.ps1" -OutFile "$env:systemDrive\Kon OS\Dependencies\checkForDependencies.ps1" -UseBasicParsing
     PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"
 }
