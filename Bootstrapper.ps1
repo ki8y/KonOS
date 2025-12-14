@@ -4,6 +4,7 @@ Discord Server: https://discord.gg/MdXtURScqX
 Discord: @ki8y
 TikTok: https://www.tiktok.com/@konpakulol #>
 
+$KonOS='[97m[[38;5;99mKon OS[97m][97m'
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
 Clear-Host
@@ -137,15 +138,47 @@ function Start-KonOS {
     )
 }
 
+# Restore Point Stuff...
+$host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(120,30)
+$host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(120,30)
+Write-Host @"
+
+
+
+
+
+
+
+
+
+                                             ╭────────────────────────────╮
+                                             │ 💾 Create A Restore Point  │
+                                             ╰────────────────────────────╯
+
+                  Creating a Restore Point will backup the current state of your Windows installation.
+                               This can save you from a huge headache if things go wrong.
+
+                                                Create a restore point?
+
+[32m                                         ╭────────────╮[31m          ╭────────────╮
+[32m                                         │   ✅ [Y]   │[31m          │   ❎ [N]   │
+[32m                                         ╰────────────╯[31m          ╰────────────╯
+
+
+
+P.S: this is not functional rn lmfao im so tired ill finish ts tomorrow
+"@
+cmd /c "pause >nul"
+
 # install stuff :P
-cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/KonOS.ps1" -o "%systemDrive%\Kon OS\Setup\KonOS.ps1"'
+cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/KonOS.ps1" -o "%systemDrive%\Kon OS\KonOS.ps1"'
 
 # Path
 $filePath = "$env:SystemDrive\Kon OS\Dependencies"
 if (Test-Path -Path $filePath -PathType Container) {
     Start-KonOS
 } else {
-    New-Item -ItemType Directory "C:\Kon OS\Dependencies"
-    Invoke-WebRequest "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Scripts/getDependencies.ps1" -OutFile "$env:systemDrive\Kon OS\Dependencies\checkForDependencies.ps1" -UseBasicParsing
+    New-Item -ItemType Directory "C:\Kon OS\Dependencies" | Out-Null
+    Invoke-WebRequest "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Scripts/getDependencies.ps1" -OutFile "$env:systemDrive\Kon OS\Dependencies\checkForDependencies.ps1" -UseBasicParsing | Out-Null
     PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"
 }
