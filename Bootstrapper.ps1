@@ -11,6 +11,23 @@ Clear-Host
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
 $Host.UI.RawUI.WindowTitle = "Kon OS Prerequisites"
+
+# Checks for admin
+$Admin = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
+if (-not $Admin) {
+    Clear-Host
+    Write-Host @"
+[91mSetup Cannot Continue:
+
+[93mKon OS cannot be installed without administrator privileges.`nPlease run Kon OS with admin and try again.
+
+[91m(NO PERMISSION)
+[97mPress any key to exit setup...
+"@
+    cmd /c 'pause >nul'
+    exit
+}
+
 Write-Host "Starting Kon OS..."
 New-Item -Path "$env:SystemDrive\Kon OS\Setup" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 
@@ -139,8 +156,8 @@ function Start-KonOS {
 }
 
 # Restore Point Stuff...
-$host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(120,30)
 $host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(120,30)
+$host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(120,30)
 Write-Host @"
 
 
@@ -163,12 +180,28 @@ Write-Host @"
 [32m                                         ╭────────────╮[31m          ╭────────────╮
 [32m                                         │   ✅ [Y]   │[31m          │   ❎ [N]   │
 [32m                                         ╰────────────╯[31m          ╰────────────╯
-
-
-
-P.S: this is not functional rn lmfao im so tired ill finish ts tomorrow
+UNFINISHED!!!
 "@
-cmd /c "pause >nul"
+pause
+function Confirm-RestorePoint {
+    New-ItemProperty `
+        -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore' `
+        -Name 'SystemRestorePointCreationFrequency' `
+        -PropertyType DWord `
+        -Value 0 `
+        -Force
+    
+}
+
+function Deny-RestorePoint {
+
+}
+
+choice /c YN /n | Out-Null
+switch ($LASTEXITCODE) {
+    1 {  }
+    2 { noAdmin }
+}
 
 # install stuff :P
 cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/KonOS.ps1" -o "%systemDrive%\Kon OS\KonOS.ps1"'
