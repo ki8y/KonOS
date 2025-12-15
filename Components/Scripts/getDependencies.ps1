@@ -28,7 +28,7 @@ function Install-Dependencies {
 	}
 
     # Nanazip (7-zip fork)
-     $filepath = "$env:systemDrive\Users\$env:Username\AppData\Local\Microsoft\WindowsApps\NanaZip.exe"
+    $filepath = "$env:systemDrive\Users\$env:Username\AppData\Local\Microsoft\WindowsApps\NanaZip.exe"
     if (Test-Path -Path $filePath -PathType Leaf) {
         Write-Host "$KonOS NanaZip is already installed. Skipping..."
     } else {
