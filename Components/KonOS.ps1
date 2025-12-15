@@ -55,7 +55,7 @@ try {
 
 New-Item -Path "$env:SystemDrive\Kon OS\snd" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 $snds = "$($env:SystemDrive)\Kon OS\snd"
-$ver = "$($env:SystemDrive)\Kon OS"
+#$ver = "$($env:SystemDrive)\Kon OS"
 
 
 Show-AWESOME-THROBBER -Message "Initializing...                  " {
@@ -67,9 +67,22 @@ Show-AWESOME-THROBBER -Message "Initializing...                  " {
         "https://github.com/ki8y/KonOS/raw/main/Components/Sounds/shutdown.wav" `
         -OutFile "$($using:snds)\shutdown.wav"
         
-    Invoke-WebRequest `
+    <#Invoke-WebRequest `
         "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt" `
-        -OutFile "$($using:ver)\ver.txt"
+        -OutFile "$($using:ver)\ver.txt"#>
+    
+    New-Item -ItemType File "$env:systemDrive\Kon OS\ver.txt" -ErrorAction SilentlyContinue
+    $commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/main"
+    $version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt"
+    $content = "   │  ⚙️ [97m$($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))  [38;5;99m│"
+    Set-Content "$env:systemDrive\Kon OS\ver.txt" `
+@"
+[38;5;99m   ╭─────────────────────────────╮
+$content
+[38;5;99m   ╰─────────────────────────────╯
+"@ -NoNewLine
+
+
 }
 
 # Exits Kon OS... duh?
@@ -158,7 +171,7 @@ $Host.UI.RawUI.ForegroundColor = 'White'
 Clear-Host
 
 $sound = New-Object System.Media.SoundPlayer
-$sound.SoundLocation = "c:\Kon OS\snd\startup.wav"
+$sound.SoundLocation = "$env:systemDrive\Kon OS\snd\startup.wav"
 $sound.Play()
 
 function Setup {
@@ -191,7 +204,6 @@ $accent╭───────────────────────�
     exit
 
 }
-
 $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper | Powershell Prototype 4"
 Write-Host @"
 $accent
@@ -218,12 +230,14 @@ $accent
 [32m                                         ╭────────────╮[31m          ╭────────────╮
 [32m                                         │   ✅ [Y]   │[31m          │   ❎ [N]   │
 [32m                                         ╰────────────╯[31m          ╰────────────╯
-$accent 
+$accent
+
 "@
-Write-Host $(Get-Content "$env:systemDrive\Kon OS\ver.txt"| Out-String) "[32m" -NoNewLine
+Write-Host $(Get-Content "$env:systemDrive\Kon OS\ver.txt" | Out-String) -NoNewLine "[37m"
 
 choice /c YN /n | Out-Null
 switch ($LASTEXITCODE) {
     1 { Setup }
     2 { exitKonOS }
 }
+
