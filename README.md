@@ -8,10 +8,10 @@ Kon OS is a customizable, easy to use, open-source optimization tool for Windows
 ## Usage:
 - First, the PowerShell execution policy needs to be set to `Bypass`.
 ```ps1
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine
+# Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine
 ```
 - Then, you can install Kon OS by running this one liner:
 ```ps1
-irm "https://raw.githubusercontent.com/ki8y/KonOS/main/Bootstrapper.ps1" | iex
+# irm "https://raw.githubusercontent.com/ki8y/KonOS/main/Bootstrapper.ps1" | iex
 ```
 <sub>Unfinished readme :P</sub>
