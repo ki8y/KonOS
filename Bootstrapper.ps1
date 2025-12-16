@@ -4,6 +4,7 @@ Discord Server: https://discord.gg/MdXtURScqX
 Discord: @ki8y
 TikTok: https://www.tiktok.com/@konpakulol #>
 
+$accent = '[38;5;99m'
 $KonOS='[97m[[38;5;99mKon OS[97m][97m'
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
@@ -11,6 +12,10 @@ Clear-Host
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
 $Host.UI.RawUI.WindowTitle = "Kon OS Prerequisites"
+
+# Version indicator
+$commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/main"
+$version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt"
 
 # Checks for admin
 $Admin = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
@@ -22,17 +27,18 @@ if (-not $Admin) {
 [93mKon OS cannot be installed without administrator privileges.`nPlease run Kon OS with admin and try again.
 
 [91m(NO PERMISSION)
-[97mPress any key to exit setup...
+[97mPress any key to exit setup...[?25l
 "@
     cmd /c 'pause >nul'
     exit
 }
 
-Write-Host "Starting Kon OS..."
+Write-Host "Welcome to $($accent)Kon OS![97m"
+Write-Host "$($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))`n"
 New-Item -Path "$env:SystemDrive\Kon OS\Setup" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 
 function ExitSetup {
-    Write-Host "Exiting Kon OS..." -NoNewLine
+    Write-Host "Exiting Kon OS setup..." -NoNewLine
     Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinue
     Start-Sleep -Milliseconds 500
     exit
@@ -41,8 +47,8 @@ function ExitSetup {
 Write-Host @"
 WARNING: THIS IS A VERY EARLY ALPHA VERSION OF KON OS
 
-If you somehow accidentally stumbled upon this tool, don't use it for personal use yet.
-It's extremely unstable and unfinished. This is on github purely for testing.
+If you somehow accidentally stumbled upon this tool, don't use it yet. Like... at all...
+It's extremely unstable and unfinished. This is on github purely for testing.[?25l
 "@ -ForegroundColor Red
 Pause
 
@@ -158,39 +164,26 @@ function Start-KonOS {
 # Restore Point Stuff...
 $host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(120,30)
 $host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(120,30)
-Write-Host @"
+Write-Host "$KonOS Create A Restore Point"
+Write-Host "`nCreating a Restore Point will backup the current state of your Windows installation." 
+Write-Host "This can save you from a huge headache if things go wrong."                 
+Write-Host "`nCreate a restore point?"
+Write-Host "`n[92m[Y] Yes [91m[N] No[37m[?25h" -NoNewLine
 
-
-
-
-
-
-
-
-
-                                             ╭────────────────────────────╮
-                                             │ 💾 Create A Restore Point  │
-                                             ╰────────────────────────────╯
-
-                  Creating a Restore Point will backup the current state of your Windows installation.
-                               This can save you from a huge headache if things go wrong.
-
-                                                Create a restore point?
-
-[32m                                         ╭────────────╮[31m          ╭────────────╮
-[32m                                         │   ✅ [Y]   │[31m          │   ❎ [N]   │
-[32m                                         ╰────────────╯[31m          ╰────────────╯
-UNFINISHED!!!
-"@
-pause
 function Confirm-RestorePoint {
+    Clear-Host
+    Write-Host $KonOS
     New-ItemProperty `
         -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore' `
         -Name 'SystemRestorePointCreationFrequency' `
         -PropertyType DWord `
         -Value 0 `
         -Force
-    
+    Try {
+        Enable-ComputerRestore -Drive "$env:systemDrive" -ErrorAction Stop
+    } catch {
+        Write-Host ""
+    }
 }
 
 function Deny-RestorePoint {

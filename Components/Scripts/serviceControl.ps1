@@ -1,9 +1,10 @@
 # --Task Scheduler---------
 
 Write-Host @"
-`e[38;5;99m╭──────────────────────────────────╮
-│  💻 Disabling automatic updates  │
-╰──────────────────────────────────╯
+`e[38;5;99m
+                                          ╭──────────────────────────────────╮
+                                          │  💻 Disabling automatic updates  │
+                                          ╰──────────────────────────────────╯
 
 "@
 # Yeah...
@@ -15,7 +16,6 @@ $tasks = @(
     'WakeUpAndContinueUpdates',
     'WakeUpAndScanForUpdates'
 )
-
 foreach ($task in $tasks) {
     try {
         # Write-Error "" -NoNewLine -ErrorAction Stop | Out-Null
@@ -31,9 +31,9 @@ foreach ($task in $tasks) {
 
 Write-Host @"
 `e[38;5;99m
-╭─────────────────────────────────────╮
-│  ⚙️ Disabling Unnecessary Services  │
-╰─────────────────────────────────────╯
+                                        ╭─────────────────────────────────────╮
+                                        │  ⚙️ Disabling Unnecessary Services  │
+                                        ╰─────────────────────────────────────╯
 
 "@
 # Yeah...
@@ -46,7 +46,6 @@ $services = @(
     'XboxNetApiSvc',
     'xbgm'
 )
-
 foreach ($svc in $services) {
     try {
         # Write-Error "" -NoNewLine -ErrorAction Stop | Out-Null
@@ -66,7 +65,6 @@ $services = @(
     'ipfsvc',
     'WMIRegistrationService'
 )
-
 foreach ($svc in $services) {
     try {
         Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
@@ -91,7 +89,6 @@ $services = @(
     'hpsvcsscan',
     'SFUService'
 )
-
 foreach ($svc in $services) {
     try {
         # Get-Service $svc -ErrorAction SkipHP
@@ -115,7 +112,22 @@ $services = @(
     'uhssvc',
     'ossrs'
 )
+foreach ($svc in $services) {
+    try {
+        # Get-Service $svc -ErrorAction SkipHP
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Disabling ' + $svc + '... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $svc + '... ──────────────────────────────────────')
+    }
+}
 
+Write-Host "`n🛈 Disabling bluetooth services..." -ForegroundColor DarkYellow
+$tasks = @(
+    'BTAGService',
+    'bthserv'
+)
 foreach ($svc in $services) {
     try {
         # Get-Service $svc -ErrorAction SkipHP
@@ -252,7 +264,6 @@ $services = @(
     'DsmSvc',
     'ClipSVC'
 )
-
 foreach ($svc in $services) {
     try {
         # Get-Service $svc -ErrorAction SkipHP
@@ -264,12 +275,10 @@ foreach ($svc in $services) {
     }
 }
 
-# sora is a BUM ASS CUCK LOSER
-
 
 # FUCKASS user service strings i hate them jesus christ
 #<Wow, they didnt even work anyway -_->#
-Write-Host "`n🛈 Finding and disabling user-specific services..." -ForegroundColor DarkYellow
+Write-Host "`n🛈 Disabling user-specific services..." -ForegroundColor DarkYellow
 $services = @(
     'PimIndexMaintenanceSvc',
     'WpnUserService',
@@ -293,7 +302,6 @@ $services = @(
     'DevicesFlowUserSvc',
     'OneSyncSvc'
 )
-
 foreach ($svc in $services) {
     try {
         # Set-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Services\$svc" -Name 'Start' -Value '4' -Force | Out-Null
@@ -301,6 +309,282 @@ foreach ($svc in $services) {
         Write-Host ("`r" + '[92m*[97m Disabling ' + $svc + '... ─────────────────────────')
     } catch {
         Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
-        Write-Host ("`r" + '[91m*[97m Disabling ' + $svc + ' Service... ──────────────────────────────────────')
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $svc + '... ──────────────────────────────────────')
+    }
+}
+
+
+# Setting some services to manual...
+Write-Host "`n🛈 Setting low priority services to manual..." -ForegroundColor DarkYellow
+$services = @(    
+    'BFE',
+    'PushToInstall',
+    'AppIDSvc',
+    'AppMgmt',
+    'AppXSvc',
+    'Appinfo',
+    'Browser',
+    'COMSysApp',
+    'DcpSvc',
+    'DeviceInstall',
+    'EapHost',
+    'GraphicsPerfSvc',
+    'HomeGroupListener',
+    'HomeGroupProvider',
+    'IEEtwCollectorService',
+    'InventorySvc',
+    'IpxlatCfgSvc',
+    'KtmRm',
+    'LanmanWorkstation',
+    'LicenseManager',
+    'LxpSvc',
+    'McpManagementService',
+    'MSiSCSI',
+    'NaturalAuthentication',
+    'NcaSvc',
+    'NcdAutoSetup',
+    'NetSetupSvc',
+    'Netman',
+    'NgcCtnrSvc',
+    'NgcSvc',
+    'NlaSvc',
+    'PNRPsvc',
+    'PeerDistSvc',
+    'PerfHost',
+    'PlugPlay',
+    'PolicyAgent',
+    'QWAVE',
+    'RasAuto',
+    'RpcLocator',
+    'SCPolicySvc',
+    'SDRSVC',
+    'Sense',
+    'SharedRealitySvc',
+    'SmsRouter',
+    'StateRepository',
+    'TimeBroker',
+    'TimeBrokerSvc',
+    'TroubleshootingSvc',
+    'TrustedInstaller',
+    'UI0Detect',
+    'UdkUserSvc',
+    'webthreatdefusersvc',
+    'UmRdpService',
+    'VacSvc',
+    'WEPHOSTSVC',
+    'WFDSConMgrSvc',
+    'WManSvc',
+    'WSService',
+    'WaaSMedicSvc',
+    'WarpJITSvc',
+    'WcsPlugInService',
+    'WdNisSvc',
+    'WiaRpc',
+    'WpnService',
+    'camsvc',
+    'cloudidsvc',
+    'dcsvc',
+    'defragsvc',
+    'dot3svc',
+    'embeddedmode',
+    'hidserv',
+    'lltdsvc',
+    'msiserver',
+    'netprofm',
+    'p2pimsvc',
+    'p2psvc',
+    'perceptionsimulation',
+    'pla',
+    'spectrum',
+    'svsvc',
+    'swprv',
+    'upnphost',
+    'vds',
+    'vm3dservice',
+    'vmvss',
+    'wbengine',
+    'webthreatdefsvc',
+    'wlpasvc',
+    'wmiApSrv',
+    'workfolderssvc',
+    'wudfsvc'
+)
+
+foreach ($svc in $services) {
+    try {
+        # Set-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Services\$svc" -Name 'Start' -Value '4' -Force | Out-Null
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Setting ' + $svc + ' to manual... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Setting ' + $svc + ' to manual...  ──────────────────────────────────────')
+    }
+}
+
+# Setting some services to manual...
+Write-Host "`n🛈 Setting low priority services to manual..." -ForegroundColor DarkYellow
+$services = @(    
+    'BFE',
+    'PushToInstall',
+    'AppIDSvc',
+    'AppMgmt',
+    'AppXSvc',
+    'Appinfo',
+    'Browser',
+    'COMSysApp',
+    'DcpSvc',
+    'DeviceInstall',
+    'EapHost',
+    'GraphicsPerfSvc',
+    'HomeGroupListener',
+    'HomeGroupProvider',
+    'IEEtwCollectorService',
+    'InventorySvc',
+    'IpxlatCfgSvc',
+    'KtmRm',
+    'LanmanWorkstation',
+    'LicenseManager',
+    'LxpSvc',
+    'McpManagementService',
+    'MSiSCSI',
+    'NaturalAuthentication',
+    'NcaSvc',
+    'NcdAutoSetup',
+    'NetSetupSvc',
+    'Netman',
+    'NgcCtnrSvc',
+    'NgcSvc',
+    'NlaSvc',
+    'PNRPsvc',
+    'PeerDistSvc',
+    'PerfHost',
+    'PlugPlay',
+    'PolicyAgent',
+    'QWAVE',
+    'RasAuto',
+    'RpcLocator',
+    'SCPolicySvc',
+    'SDRSVC',
+    'Sense',
+    'SharedRealitySvc',
+    'SmsRouter',
+    'StateRepository',
+    'TimeBroker',
+    'TimeBrokerSvc',
+    'TroubleshootingSvc',
+    'TrustedInstaller',
+    'UI0Detect',
+    'UdkUserSvc',
+    'webthreatdefusersvc',
+    'UmRdpService',
+    'VacSvc',
+    'WEPHOSTSVC',
+    'WFDSConMgrSvc',
+    'WManSvc',
+    'WSService',
+    'WaaSMedicSvc',
+    'WarpJITSvc',
+    'WcsPlugInService',
+    'WdNisSvc',
+    'WiaRpc',
+    'WpnService',
+    'camsvc',
+    'cloudidsvc',
+    'dcsvc',
+    'defragsvc',
+    'dot3svc',
+    'embeddedmode',
+    'hidserv',
+    'lltdsvc',
+    'msiserver',
+    'netprofm',
+    'p2pimsvc',
+    'p2psvc',
+    'perceptionsimulation',
+    'pla',
+    'spectrum',
+    'svsvc',
+    'swprv',
+    'upnphost',
+    'vds',
+    'vm3dservice',
+    'vmvss',
+    'wbengine',
+    'webthreatdefsvc',
+    'wlpasvc',
+    'wmiApSrv',
+    'workfolderssvc',
+    'wudfsvc'
+)
+foreach ($svc in $services) {
+    try {
+        # Set-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Services\$svc" -Name 'Start' -Value '4' -Force | Out-Null
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Setting ' + $svc + ' to manual... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Setting ' + $svc + ' to manual...  ──────────────────────────────────────')
+    }
+}
+
+# High priority services
+Write-Host "`n🛈 Setting high priority services to automatic (delayed)..." -ForegroundColor DarkYellow
+$services = @(
+    'DoSvc',
+    'sppsvc'
+)
+foreach ($svc in $services) {
+    try {
+        # Set-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Services\$svc" -Name 'Start' -Value '4' -Force | Out-Null
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Setting ' + $svc + ' to automatic (delayed)... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Setting ' + $svc + ' to automatic (delayed)...  ──────────────────────────────────────')
+    }
+}
+
+# High priority services
+Write-Host "`n🛈 Setting highest priority services to automatic..." -ForegroundColor DarkYellow
+$services = @(
+    'AudioEndpointBuilder',
+    'AudioSrv',
+    'Audiosrv',
+    'BrokerInfrastructure',
+    'CoreMessagingRegistrar',
+    'CryptSvc',
+    'DcomLaunch',
+    'Dhcp',
+    'Dnscache'
+    'EventLog',
+    'EventSystem',
+    'gpsvc',
+    'KeyIso',
+    'LSM',
+    'MpsSvc',
+    'Power',
+    'ProfSvc',
+    'RpcEptMapper',
+    'RpcSs',
+    'SamSs',
+    'Schedule',
+    'SENS',
+    'SgrmBroker',
+    'SystemEventsBroker',
+    'UserManager',
+    'VGAuthService',
+    'VMTools',
+    'VaultSvc',
+    'tiledatamodelsvc',
+    'Winmgmt'
+)
+foreach ($svc in $services) {
+    try {
+        # Set-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Services\$svc" -Name 'Start' -Value '4' -Force | Out-Null
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Setting ' + $svc + ' to automatic... ─────────────────────────')
+    } catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+        Write-Host ("`r" + '[92m*[97m Setting ' + $svc + ' to automatic...  ──────────────────────────────────────')
     }
 }
