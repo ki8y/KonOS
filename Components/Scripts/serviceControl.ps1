@@ -304,7 +304,11 @@ $services = @(
 )
 foreach ($svc in $services) {
     try {
-        # Set-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Services\$svc" -Name 'Start' -Value '4' -Force | Out-Null
+        #Set-ItemProperty `
+        #-Path "Registry::HKLM\SYSTEM\CurrentControlSet\Services\$svc" `
+        #-Name 'Start' `
+        #-Value '4' `
+        #-Force | Out-Null
         Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
         Write-Host ("`r" + '[92m*[97m Disabling ' + $svc + '... ─────────────────────────')
     } catch {
