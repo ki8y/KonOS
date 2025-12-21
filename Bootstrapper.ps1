@@ -196,8 +196,10 @@ switch ($LASTEXITCODE) {
     2 { noAdmin }
 }
 
-# install stuff :P
-cmd /c 'curl -s -L "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/KonOS.ps1" -o "%systemDrive%\Kon OS\KonOS.ps1"'
+Invoke-WebRequest `
+    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/KonOS.ps1" `
+    -OutFile "$env:systemDrive\Kon OS\KonOS.ps1" `
+    -UseBasicParsing | Out-Null
 
 # Path
 $filePath = "$env:SystemDrive\Kon OS\Dependencies"
@@ -205,6 +207,9 @@ if (Test-Path -Path $filePath -PathType Container) {
     Start-KonOS
 } else {
     New-Item -ItemType Directory "C:\Kon OS\Dependencies" | Out-Null
-    Invoke-WebRequest "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Scripts/getDependencies.ps1" -OutFile "$env:systemDrive\Kon OS\Dependencies\checkForDependencies.ps1" -UseBasicParsing | Out-Null
+    Invoke-WebRequest `
+        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Scripts/getDependencies.ps1" `
+        -OutFile "$env:systemDrive\Kon OS\Dependencies\checkForDependencies.ps1" `
+        -UseBasicParsing | Out-Null
     PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"
 }
