@@ -224,7 +224,6 @@ $services = @(
     'fdPHost',
     'smphost',
     'wercplsupport',
-    'DispBrokerDesktopSvc',
     'FontCache',
     'LanmanServer',
     'ShellHWDetection',
@@ -579,6 +578,7 @@ $services = @(
     'VGAuthService',
     'VMTools',
     'VaultSvc',
+    'DispBrokerDesktopSvc',
     'tiledatamodelsvc',
     'Winmgmt'
 )
@@ -592,3 +592,4 @@ foreach ($svc in $services) {
         Write-Host ("`r" + '[92m*[97m Setting ' + $svc + ' to automatic...  ──────────────────────────────────────')
     }
 }
+pause
