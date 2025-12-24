@@ -7,7 +7,7 @@ $host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(8
 
 # SUPER KICKASS LOADING LABEL THING.
 $Host.UI.RawUI.WindowTitle = "Kon OS | Loading..."
-function Show-AWESOME-THROBBER {
+function Show-Throbber {
     param(
         [string]$Message,
         [scriptblock]$Action
@@ -58,7 +58,7 @@ $snds = "$($env:SystemDrive)\Kon OS\snd"
 #$ver = "$($env:SystemDrive)\Kon OS"
 
 
-Show-AWESOME-THROBBER -Message "Initializing...                  " {
+Show-Throbber -Message "Initializing...                  " {
     Invoke-WebRequest `
         "https://github.com/ki8y/KonOS/raw/main/Components/Sounds/startup.wav" `
         -OutFile "$($using:snds)\startup.wav"
@@ -94,7 +94,7 @@ function exitKonOS {
     Clear-Host
     $sound = New-Object System.Media.SoundPlayer
     $sound.SoundLocation = "$env:systemDrive\Kon OS\snd\shutdown.wav"
-    Show-AWESOME-THROBBER -Message "Exiting Kon OS..." {
+    Show-Throbber -Message "Exiting Kon OS..." {
         Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinu
         Start-Sleep -Milliseconds 100
     }
@@ -183,7 +183,7 @@ $accent╭───────────────────────�
 "@
     # Installs Requirement Checker.......duh? (its not working rn so oops...)
     $name = "Requirement Checker"
-    Show-AWESOME-THROBBER -Message "Installing $name..." {
+    Show-Throbber -Message "Installing $name..." {
             $cdn = "https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/requirementCheck.bat"
             $file = 'Microsoft.VCLibs.x64.14.00.Desktop.appx'
             $dir = "$env:SystemDrive\Kon OS\Setup\Winget"
@@ -192,7 +192,7 @@ $accent╭───────────────────────�
     Write-Host "`r$ok Installing $name..." -ForegroundColor White
 
         $name = "Other Example Stuff"
-    Show-AWESOME-THROBBER -Message "Installing $name..." {
+    Show-Throbber -Message "Installing $name..." {
             $cdn = "https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/requirementCheck.bat"
             $file = 'Microsoft.VCLibs.x64.14.00.Desktop.appx'
             $dir = "$env:SystemDrive\Kon OS\Setup\Winget"
