@@ -1,3 +1,4 @@
+Import-Module "$env:systemDrive\Kon OS\Modules"
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
 Clear-Host
@@ -13,59 +14,60 @@ function Install-Dependencies {
     if (Test-Path -Path $filePath -PathType Leaf) {
         Write-Host "$KonOS Chocolatey is already installed. Skipping..."
     } else {
-        Write-Host "$KonOS Installing Chocolatey..." -NoNewLine
+        Show-Throbber -Message "Installing Chocolatey..." {
     	[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072 | Out-Null
     	Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) | Out-Null
-	}
+	} }
+
 
     # Scoop
     $filepath = "$env:systemDrive\users\$env:Username\scoop"
     if (Test-Path -Path $filePath -PathType Container) {
         Write-Host "$KonOS Scoop is already installed. Skipping..."
     } else {
-        Write-Host "$KonOS Installing Scoop..." -NoNewLine
+        Show-Throbber -Message "Installing Scoop..." {
         Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression | Out-Null
-	}
+	} }
 
     # Nanazip (7-zip fork)
     $filepath = "$env:systemDrive\Users\$env:Username\AppData\Local\Microsoft\WindowsApps\NanaZip.exe"
     if (Test-Path -Path $filePath -PathType Leaf) {
         Write-Host "$KonOS NanaZip is already installed. Skipping..."
     } else {
-        Write-Host "$KonOS Installing Nanazip..." -NoNewLine
+        Show-Throbber -Message "Installing NanaZip (nanazip)..." {
         choco install nanazip --confirm | Out-Null 
-    }
+    } }
 
     # Powershell 7
 	$filePath = "$env:systemDrive\Program Files\PowerShell\7\pwsh.exe"
     if (Test-Path -Path $filePath -PathType Leaf) {
         Write-Host "$KonOS PowerShell 7 is already installed. Skipping..."
     } else {
-        Write-Host "$KonOS Installing PowerShell-Core..." -NoNewLine
+        Show-Throbber -Message "Installing Powershell 7 (powershell-core)..." {
 		choco install powershell-core --confirm | Out-Null
-        reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v "POWERSHELL_TELEMETRY_OPTOUT" /t REG_SZ /d "1" /f | Out-Null
-        reg.exe add "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run" /v "MUIVerb" /t REG_SZ /d "Run With Powershell 7" /f | Out-Null
-        reg.exe add "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command" | Out-Null
+        New-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v "POWERSHELL_TELEMETRY_OPTOUT" /t REG_SZ /d "1" /f | Out-Null
+        New-ItemProperty -Path "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run" /v "MUIVerb" /t REG_SZ /d "Run With Powershell 7" /f | Out-Null
+        New-ItemProperty -Path "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command" | Out-Null
         New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command' -Name '(Default)' -Value '"C:\Program Files\PowerShell\7\pwsh.exe" -NoExit -NoProfile -ExecutionPolicy Bypass -Command "$host.UI.RawUI.WindowTitle = ''PowerShell 7 (x64)''; & ''%1''"' -Force | Out-Null
         Write-Host "$KonOS Powershell-Core installed successfully."
-    }
+    } }
 
     # PowerRun
     $filePath = "$env:systemDrive\Kon OS\PowerRun"
     if (Test-Path -Path $filePath -PathType Container) {
         Write-Host "$KonOS PowerRun is already installed. Skipping..."
     } else {
-        Write-Host "$KonOS Installing PowerRun..." -NoNewLine
+        Show-Throbber -Message "Installing PowerRun..." {
         Invoke-WebRequest "https://www.sordum.org/files/downloads.php?power-run" -OutFile "$env:systemDrive\Kon OS\PowerRun.zip" -UseBasicParsing | Out-Null
         nanazipc x "$env:systemDrive\Kon OS\PowerRun.zip" -o"$env:systemDrive\Kon OS\" -y | Out-Null
         Remove-Item -Path "$env:systemDrive\Kon OS\PowerRun.zip" -Force | Out-Null
-    }
+    } }
 
-    # VCRedist Runtimes... 
-    Write-Host "$KonOS Installing VCRedist 2015-2022 Runtimes..." -NoNewLine
+    # VCRedist Runtimes...
+    Show-Throbber -Message "Installing VCRedist 2015-2022 Runtimes..." {
 	choco install vcredist140 --confirm | Out-Null
     Write-Host "`r$KonOS VCRedist 2015-2022 Runtimes installed successfully." -NoNewLine
-}
+} }
 
 function SelectedNo {
     Clear-Host

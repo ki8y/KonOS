@@ -14,8 +14,8 @@ $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
 $Host.UI.RawUI.WindowTitle = "Kon OS Prerequisites"
 
 # Version indicator
-$commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/main"
-$version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt"
+$commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/main" -UseBasicParsing
+$version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt" -UseBasicParsing
 
 # Checks for admin
 $Admin = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
@@ -199,6 +199,11 @@ switch ($LASTEXITCODE) {
 Invoke-WebRequest `
     -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/KonOS.ps1" `
     -OutFile "$env:systemDrive\Kon OS\KonOS.ps1" `
+    -UseBasicParsing | Out-Null
+
+Invoke-WebRequest `
+    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Modules/Throbber.psm1" `
+    -OutFile "$env:systemDrive\Kon OS\Modules\Throbber.psm1" `
     -UseBasicParsing | Out-Null
 
 # Path
