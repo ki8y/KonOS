@@ -1,3 +1,5 @@
+Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
+
 $accent = '[38;5;99m'
 $global:ok = "[[92mOK[0m]"
 $global:fail = "[[91mFAIL[0m]"
@@ -5,103 +7,85 @@ $global:fail = "[[91mFAIL[0m]"
 $host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(80,10)
 $host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(80,10)
 
-# SUPER KICKASS LOADING LABEL THING.
 $Host.UI.RawUI.WindowTitle = "Kon OS | Loading..."
-function Show-Throbber {
-    param(
-        [string]$Message,
-        [scriptblock]$Action
-    )
 
-    $spinnything = @('\','|','/','|')
-    $i = 0
+# Error code thing
+function Stop-Code-NoInternet {
+    Write-Host @"
+`e[91mSetup Cannot Continue:
 
-    $run = Start-Job -ScriptBlock $Action
+`e[93mYou can't install Kon OS without an internet connection.
+Please connect to the internet and try again.
 
-    while ($run.State -eq 'Running') {
-        Write-Host -NoNewline "`r[$($spinnything[$i])] $Message[?25l"
-        Start-Sleep -Milliseconds 100
-        $i = ($i + 1) % $spinnything.Length
-    }
+`e[91m($StopCode)
+
+`e[97mPress any key to exit setup...
+"@ -NoNewLine
+    cmd.exe /c "pause >nul"
+    [System.Environment]::Exit(0)
 }
 
-<# Check For Wifi #>
+# Checks for internet (if not detected, shows dat error code thing from earlier)
 try {
     Write-Host "Checking internet availability..."
     $global:ping = Test-Connection -TargetName 1.1.1.1 -Count 1 -ErrorAction Stop
     Clear-Host
-        } catch {
-            Write-Host "`e[91mSetup Cannot Continue:`n`n`e[93mYou can't install Kon OS without an internet connection.`nPlease connect to the internet and try again.`n`n`e[91m(PING FAILED)"
-            Write-Host "`Press any key to exit setup..." -ForegroundColor White -NoNewLine
-            cmd.exe /c "pause >nul"
-            exit
-    }
-    if ($ping.Status -eq 'TimedOut') {
-        Write-Host "`e[91mSetup Cannot Continue:`n`n`e[93mYou can't install Kon OS without an internet connection.`nPlease connect to the internet and try again.`n`n`e[91m(TIMED OUT)"
-        Write-Host "`nPress any key to exit setup..." -ForegroundColor White -NoNewLine
-        cmd.exe /c "pause >nul"
-        exit
-    } if ($ping.Status -eq 'DestinationHostUnreachable') {
-        Write-Host "`e[91mSetup Cannot Continue:`n`n`e[93mYou can't install Kon OS without an internet connection.`nPlease connect to the internet and try again.`n`n`e[91m(HOST UNREACHABLE)"
-        Write-Host "`nPress any key to exit setup..." -ForegroundColor White -NoNewLine
-        cmd.exe /c "pause >nul"
-        exit
-    } if ($ping.Status -eq '11050') {
-        Write-Host "`e[91mSetup Cannot Continue:`n`n`e[93mYou can't install Kon OS without an internet connection.`nPlease connect to the internet and try again.`n`n`e[91m(GENERAL FAILURE: 11050)"
-        Write-Host "`nPress any key to exit setup..." -ForegroundColor White -NoNewLine
-        cmd.exe /c "pause >nul"
-        exit
-    }
+} catch {
+    $StopCode = "Ping Failed"
+    Stop-Code-NoInternet
+}
+if ($ping.Status -eq 'TimedOut') {
+    $StopCode = "Timed Out"
+    Stop-Code-NoInternet
+} if ($ping.Status -eq 'DestinationHostUnreachable') {
+    $StopCode = "Host Unreachable"
+} if ($ping.Status -eq '11050') {
+    $StopCode = "GENERAL FAILURE: 11050"
+    Stop-Code-NoInternet
+}
 
 New-Item -Path "$env:SystemDrive\Kon OS\snd" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-$snds = "$($env:SystemDrive)\Kon OS\snd"
 #$ver = "$($env:SystemDrive)\Kon OS"
 
-
-Show-Throbber -Message "Initializing...                  " {
+Write-Host "Initializing..."
+$filePath = "$env:systemDrive\Kon OS\snd"
+if (Test-Path -Path $filePath -PathType Container) {
+    Write-Host ("Welcome To" + $accent + " Kon OS`e[97m.") -ForegroundColor White
+} else {
+    Show-Throbber -Message "Downloading modules..." {
     Invoke-WebRequest `
         "https://github.com/ki8y/KonOS/raw/main/Components/Sounds/startup.wav" `
-        -OutFile "$($using:snds)\startup.wav"
+        -OutFile "$env:systemDrive\Kon OS\snd\startup.wav"
 
     Invoke-WebRequest `
         "https://github.com/ki8y/KonOS/raw/main/Components/Sounds/shutdown.wav" `
-        -OutFile "$($using:snds)\shutdown.wav"
-        
-    <#Invoke-WebRequest `
-        "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt" `
-        -OutFile "$($using:ver)\ver.txt"#>
+        -OutFile "$env:systemDrive\Kon OS\snd\shutdown.wav"
     
-    New-Item -ItemType File "$env:systemDrive\Kon OS\ver.txt" -ErrorAction SilentlyContinue
-    $commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/main"
-    $version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt"
-    $content = "   │  ⚙️ [97m$($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))  [38;5;99m│"
-    Set-Content "$env:systemDrive\Kon OS\ver.txt" `
-@"
-[38;5;99m   ╭─────────────────────────────╮
-$content
-[38;5;99m   ╰─────────────────────────────╯
-"@ -NoNewLine
+    <#Invoke-WebRequest `
+    "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt" `
+    -OutFile "$($using:ver)\ver.txt"#>
+    }
+}   
 
-
-}
-
-# Exits Kon OS... duh?
-function exitKonOS {
+#Exits Kon OS... duh???
+function Exit-KonOS {
     $host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(80,10)
     $host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(80,10)
-
     $Host.UI.RawUI.ForegroundColor = 'White'
     Clear-Host
+    
     $sound = New-Object System.Media.SoundPlayer
     $sound.SoundLocation = "$env:systemDrive\Kon OS\snd\shutdown.wav"
+    
     Show-Throbber -Message "Exiting Kon OS..." {
         Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinu
         Start-Sleep -Milliseconds 100
     }
+
     Write-Host "`r[[92mOK[0m] Exiting Kon OS..."
     Write-Host "See you later!" -ForegroundColor Cyan
     $sound.PlaySync()
-    exit
+    [System.Environment]::Exit(0)
 }
 
 <# Administrator Check #>
@@ -133,10 +117,11 @@ Write-Host @"
 function runAdmin {
 try {
     Start-Process -FilePath "pwsh.exe" `
-    -ArgumentList "-ExecutionPolicy Bypass -File `"$PSCommandPath`"" `
-    -Verb RunAs `
-    -ErrorAction Stop
-    exit
+        -ArgumentList "-ExecutionPolicy Bypass -File `"$PSCommandPath`"" `
+        -Verb RunAs `
+        -ErrorAction Stop
+    
+    [System.Environment]::Exit(0)
     } catch {
         noAdmin
     }
@@ -153,15 +138,15 @@ function noAdmin {
 `e[97mPress any key to exit setup...
 "@
     cmd.exe /c "pause >nul"
-    exitKonOS
+    Exit-KonOS
 }
 
 choice /c YN /n | Out-Null
-switch ($LASTEXITCODE) {
+switch ($lastExitCode) {
     1 { runAdmin }
     2 { noAdmin }
 }
-exit
+[System.Environment]::Exit(0)
 }
 
 $host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(120,30)
@@ -174,7 +159,7 @@ $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Kon OS\snd\startup.wav"
 $sound.Play()
 
-function Setup {
+function Start-Setup {
     Clear-Host
     Write-Host @"
 $accent╭─────────────────────────────────╮
@@ -201,7 +186,7 @@ $accent╭───────────────────────�
     Write-Host "`r$ok Installing $name..." -ForegroundColor White
     Write-Host "`nKon OS Demo Finished.`nStill a WIP ¯\_(ツ)_/¯"
     cmd.exe /c "pause >nul"
-    exit
+    [System.Environment]::Exit(0)
 
 }
 $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper | Powershell Prototype 4"
@@ -237,7 +222,7 @@ Write-Host $(Get-Content "$env:systemDrive\Kon OS\ver.txt" | Out-String) -NoNewL
 
 choice /c YN /n | Out-Null
 switch ($LASTEXITCODE) {
-    1 { Setup }
-    2 { exitKonOS }
+    1 { Start-Setup }
+    2 { Exit-KonOS }
 }
 
