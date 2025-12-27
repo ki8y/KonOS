@@ -1,3 +1,5 @@
+Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
+
 # --Task Scheduler---------
 
 Write-Host @"
@@ -25,7 +27,7 @@ foreach ($task in $tasks) {
         Write-Host "                                              ─────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
         Write-Host ("`r" + '[91m*[97m Disabling ' + $task + '... ──────────────────────────────────────')
     }
-}
+} 
 # Disable-ScheduledTask -TaskPath "\Microsoft\Windows\InstallService\$task" -TaskName "ScanForUpdates"
 
 
@@ -38,6 +40,7 @@ Write-Host @"
 "@
 # Yeah...
 Write-Host "🛈 Disabling Xbox Services..." -ForegroundColor DarkYellow
+
 $services = @(
     'XblAuthManager',
     'BcastDVRUserService',

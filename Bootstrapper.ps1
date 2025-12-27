@@ -4,14 +4,16 @@ Discord Server: https://discord.gg/MdXtURScqX
 Discord: @ki8y
 TikTok: https://www.tiktok.com/@konpakulol #>
 
-$accent = '[38;5;99m'
-$KonOS='[97m[[38;5;99mKon OS[97m][97m'
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
+$Host.UI.RawUI.WindowTitle = "Kon OS Prerequisites"
+
 Clear-Host
+$accent = '[38;5;99m'
+$KonOS='[97m[[38;5;99mKon OS[97m][97m'
+
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
-$Host.UI.RawUI.WindowTitle = "Kon OS Prerequisites"
 
 # Version indicator
 $commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/main" -UseBasicParsing
