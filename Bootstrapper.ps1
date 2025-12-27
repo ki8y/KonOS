@@ -32,18 +32,18 @@ if (-not $Admin) {
 [97mPress any key to exit setup...[?25l
 "@
     cmd /c 'pause >nul'
-    exit
+    [System.Environment]::Exit(0)
 }
 
 Write-Host "Welcome to $($accent)Kon OS![97m"
 Write-Host "$($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))`n"
 New-Item -Path "$env:SystemDrive\Kon OS\Setup" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 
-function ExitSetup {
+function Exit-Setup {
     Write-Host "Exiting Kon OS setup..." -NoNewLine
     Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinue
     Start-Sleep -Milliseconds 500
-    exit
+    [System.Environment]::Exit(0)
 }
 
 Write-Host @"
@@ -128,7 +128,7 @@ Please install a newer version of Windows 11 (ideally 24H2) and try again.
     $sound.Play()
     cmd.exe /c "pause >nul"
     Remove-Item -Path "$env:systemDrive\Kon OS" -Recurse -Force -ErrorAction SilentlyContinue
-    ExitSetup
+    Exit-Setup
 }
 
 # Windows 10 or lower...
@@ -149,7 +149,7 @@ Please install Windows 11 (24H2 or newer) and try again.
     $sound.Play()
     cmd.exe /c "pause >nul"
     Remove-Item -Path "$env:systemDrive\Kon OS" -Recurse -Force -ErrorAction SilentlyContinue
-    ExitSetup
+    Exit-Setup
 }
 
 function Start-KonOS {
@@ -174,28 +174,42 @@ Write-Host "`n[92m[Y] Yes [91m[N] No[37m[?25h" -NoNewLine
 
 function Confirm-RestorePoint {
     Clear-Host
-    Write-Host $KonOS
-    New-ItemProperty `
-        -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore' `
-        -Name 'SystemRestorePointCreationFrequency' `
-        -PropertyType DWord `
-        -Value 0 `
-        -Force
+    Write-Host $KonOS + "Creating Restore Point..."
     Try {
-        Enable-ComputerRestore -Drive "$env:systemDrive" -ErrorAction Stop
+        New-ItemProperty `
+            -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore' `
+            -Name 'SystemRestorePointCreationFrequency' `
+            -PropertyType DWord `
+            -Value 0 `
+            -Force -ErrorAction Stop
+        Enable-ComputerRestore -Drive "$env:systemDrive\" -ErrorAction Stop
+        Checkpoint-Computer -Description 'Pre-Kon OS Installation' -ErrorAction Stop
     } catch {
-        Write-Host ""
+        Write-Host "WARNING: Could not create a restore point." -ForegroundColor White -BackgroundColor DarkRed
+        Write-Host "`nTry creating a restore point manually (see github for tutorial)"
+        Write-Host "Or, you could proceed through the installation without a restore point."
+        Write-Host "`nContinue?"
+        Write-Host "[92m[Y] Yes [91m[N] No[37m[?25h" -NoNewLine
+        choice /c YN /n | Out-Null
+        switch ($LASTEXITCODE) {
+        1 { 
+            Write-Host "Proceeding without restore point..."
+            Start-Sleep -Seconds 1
+        }
+        2 { Exit-Setup }
+        }
     }
 }
 
 function Deny-RestorePoint {
-
+    Write-Host $KonOS + " Are you sure you want to proceed without a restore point?"
+    Write-Host "[92m[Y] Yes [91m[N] No[37m[?25h" -NoNewLine
 }
 
 choice /c YN /n | Out-Null
 switch ($LASTEXITCODE) {
-    1 {  }
-    2 { noAdmin }
+    1 { Confirm-RestorePoint }
+    2 { Deny-RestorePoint }
 }
 
 Invoke-WebRequest `
