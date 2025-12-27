@@ -76,7 +76,7 @@ function SelectedNo {
     Write-Host "[91mSetup Cannot Continue:`n`n[93mKon OS cannot be installed without the required dependencies.`nPlease install the dependencies and try again.`n`n[91m(MISSING DEPENDENCIES)"
     Write-Host "Press any key to exit setup..." -ForegroundColor White -NoNewLine
     cmd.exe /c "pause >nul"
-    exit
+    [System.Environment]::Exit(0)
 }
 
 function PromptForDependencies {
