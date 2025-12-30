@@ -67,12 +67,12 @@ Show-Throbber -Message "$Blue🛈 Enabling font smoothing..." {
 # New-ItemProperty -Path "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "FontSmoothing" -PropertyType DWord -Value 2 -Force | Out-Null
 # New-ItemProperty -Path "HKCU\Control Panel\Desktop" -Name "FontSmoothing" -PropertyType String -Value 2 -Force | Out-Null
 }
-Write-Host "`r[✓] Enabling font smoothing...        " -ForegroundColor Green
+Write-Host "`r[✓] Enabling font smoothing...              " -ForegroundColor Green
 
-Show-Throbber -Message "$Blue🛈 Disabling slide combo box animations" {
+Show-Throbber -Message "$Blue🛈 Disabling slide combo box animations..." {
 # New-ItemProperty -Path "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ComboBoxAnimation" -PropertyType DWord -Value 0 -Force | Out-Null
 }
-Write-Host "`r[✓] Enabling font smoothing...        " -ForegroundColor Green
+Write-Host "`r[✓] Disabling slide combo box animations...               " -ForegroundColor Green
 
 Show-Throbber -Message "$Blue🛈 Disabling desktop shadows..." {
 # New-ItemProperty -Path "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewShadow" -PropertyType DWord -Value 0 -Force | Out-Null
