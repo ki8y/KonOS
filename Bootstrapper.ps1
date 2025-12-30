@@ -222,6 +222,11 @@ Invoke-WebRequest `
     -OutFile "$env:systemDrive\Kon OS\Modules\Throbber.psm1" `
     -UseBasicParsing | Out-Null
 
+Invoke-WebRequest `
+    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Modules/ColourCodes.psd1" `
+    -OutFile "$env:systemDrive\Kon OS\Modules\ColourCodes.psd1" `
+    -UseBasicParsing | Out-Null
+
 # Path
 $filePath = "$env:SystemDrive\Kon OS\Dependencies"
 if (Test-Path -Path $filePath -PathType Container) {
