@@ -52,47 +52,49 @@ Show-Throbber -Message "$Blue🛈 Disabling menu animations..." {
 Write-Host "`r[✓] Disabling menu Animations...        " -ForegroundColor Green
 
 Write-Host "[\] 🛈 Disabling cursor shadows..." -ForegroundColor Blue -NoNewLine
-New-ItemProperty -Path 'HKCU:\Control Panel\Desktop' -Name 'UserPreferencesMask' -Type Binary -Value ([byte[]](144,18,3,128,16,0,0,0)) -Force | Out-Null
+    New-ItemProperty -Path 'HKCU:\Control Panel\Desktop' -Name 'UserPreferencesMask' -Type Binary -Value ([byte[]](144,18,3,128,16,0,0,0)) -Force | Out-Null
 Write-Host "`r[✓] Disabling menu Animations...        " -ForegroundColor Green
 
-Show-Throbber -Message "$Blue🛈 Disabling selection rectangle..." {
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewAlphaSelect" -PropertyType DWord -Value 0 -Force | Out-Null
-}
+Write-Host "[\] 🛈 Disabling selection rectangle..." -ForegroundColor Blue -NoNewLine
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewAlphaSelect" -PropertyType DWord -Value 0 -Force | Out-Null
 Write-Host "`r[✓] Disabling selection rectangle...          " -ForegroundColor Green
 
 Show-Throbber -Message "$Blue🛈 Enabling font smoothing..." {
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "FontSmoothing" -PropertyType DWord -Value 2 -Force | Out-Null
-New-ItemProperty -Path "Registry::HKCU\Control Panel\Desktop" -Name "FontSmoothing" -PropertyType String -Value 2 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "FontSmoothing" -PropertyType DWord -Value 2 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Desktop" -Name "FontSmoothing" -PropertyType String -Value 2 -Force | Out-Null
 }
 Write-Host "`r[✓] Enabling font smoothing...              " -ForegroundColor Green
 
 Show-Throbber -Message "$Blue🛈 Disabling slide combo box animations..." {
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ComboBoxAnimation" -PropertyType DWord -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ComboBoxAnimation" -PropertyType DWord -Value 0 -Force | Out-Null
 }
 Write-Host "`r[✓] Disabling slide combo box animations...               " -ForegroundColor Green
 
 Show-Throbber -Message "$Blue🛈 Disabling desktop shadows..." {
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewShadow" -PropertyType DWord -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewShadow" -PropertyType DWord -Value 0 -Force | Out-Null
 }
 Write-Host "`r[✓] Disabling desktop shadows...        " -ForegroundColor Green
 
 Show-Throbber -Message "$Blue🛈 Enabling Photo and video thumbnails..." {
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "IconsOnly" -PropertyType DWord -Value 0 -Force | Out-Null
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ThumbnailCacheSize" -PropertyType DWord -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "IconsOnly" -PropertyType DWord -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ThumbnailCacheSize" -PropertyType DWord -Value 0 -Force | Out-Null
 }
 Write-Host "`r[✓] Enabling Photo and video thumbnails...        " -ForegroundColor Green
 
 Show-Throbber -Message "$Blue🛈 Disabling thumbnail caching..." {
-New-ItemProperty -Path"Registry::HKCU\Software\Microsoft\Windows\DWM" -Name "AlwaysHibernateThumbnails" -PropertyType DWord -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\DWM" -Name "AlwaysHibernateThumbnails" -PropertyType DWord -Value 0 -Force | Out-Null
 }
 Write-Host "`r[✓] Disabling thumbnail caching...        " -ForegroundColor Green
 
+# ──Mouse Acceleration───────────────────────────────
 
+Show-Throbber -Message "$Blue🛈 Disabling Mouse Acceleration..." {
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Mouse" -Name MouseSpeed -PropertyType String -Value 0 -Force
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Mouse" -Name MouseThreshold1 -PropertyType String -Value 0 -Force
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Mouse" -Name MouseThreshold2 -PropertyType String -Value 0 -Force
+}
 
-
-reg add "HKCU\Control Panel\Mouse" /v MouseSpeed /t REG_SZ /d 0 /f
-reg add "HKCU\Control Panel\Mouse" /v MouseThreshold1 /t REG_SZ /d 0 /f
-reg add "HKCU\Control Panel\Mouse" /v MouseThreshold2 /t REG_SZ /d 0 /f
+# ──Bootloader Tweaks────────────────────────────────
 
 Write-Host "Applying bootloader tweaks...`n"
 
@@ -121,12 +123,18 @@ Write-Host '🛈 Disabling Legacy APIC Mode...'
 bcdedit /set uselegacyapicmode No | Out-Null
 
 Show-Throbber -Message "$Blue🛈 Applying shutdown tweaks..." {
-New-ItemProperty -Path "HKCU\Control Panel\Desktop" -Name "AutoEndTasks" -PropertyType String -Value "1" -Force | Out-Null
-New-ItemProperty -Path "HKCU\Control Panel\Desktop" -Name "HungAppTimeout" -PropertyType String -Value "1000" -Force | Out-Null
-New-ItemProperty -Path "HKCU\Control Panel\Desktop" -Name "WaitToKillAppTimeout" -PropertyType String -Value "1000" -Force | Out-Null
-New-ItemProperty -Path "HKCU\Control Panel\Desktop" -Name "LowLevelHooksTimeout" -PropertyType String -Value "1000" -Force | Out-Null
-New-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Control" -Name "WaitToKillServiceTimeout" -PropertyType String -Value "1000" -Force | Out-Null
-New-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" -Name HiberbootEnabled -PropertyType DWord -Value "0" -Force | Out-Null
-powercfg -h off
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Desktop" -Name "AutoEndTasks" -PropertyType String -Value "1" -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Desktop" -Name "HungAppTimeout" -PropertyType String -Value "1000" -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Desktop" -Name "WaitToKillAppTimeout" -PropertyType String -Value "1000" -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Desktop" -Name "LowLevelHooksTimeout" -PropertyType String -Value "1000" -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Control" -Name "WaitToKillServiceTimeout" -PropertyType String -Value "1000" -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Power" -Name HiberbootEnabled -PropertyType DWord -Value "0" -Force | Out-Null
+    powercfg -h off
 }
 Write-Host "`r[✓] Applying shutdown tweaks..." -ForegroundColor Green
+
+Show-Throbber -Message "$Blue🛈 Adding verbose logon screens and bluescreens..." {
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "VerboseStatus" -PropertyType Dword -Value '1' -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Control\CrashControl" -Name "DisplayParameters" -PropertyType Dword -Value '1' -Force | Out-Null
+}
+Write-Host "`r[✓] Adding verbose logon screens and bluescreens..." -ForegroundColor Green
