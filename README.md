@@ -15,3 +15,12 @@ Kon OS is a customizable, easy to use, open-source optimization tool for Windows
 # irm "https://raw.githubusercontent.com/ki8y/KonOS/main/Bootstrapper.ps1" | iex
 ```
 <sub>Unfinished readme :P</sub>
+
+Todo:
+- [ ] Finish general tweaks scrpt
+- [x] Finish service control script
+- [ ] Backport to Windows 10
+- [ ] Make Kon OS at least functional (LMFAO)
+- [ ] Create an easy post setup configuration wizard (CLI or GUI but I'll prob do CLI since thats easier and idk how to use c# yet...)
+- [x] Stop using batch
+- [ ] Finish documentation
