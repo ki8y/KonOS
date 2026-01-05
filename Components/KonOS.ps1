@@ -1,12 +1,8 @@
 Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
-
-$accent = '[38;5;99m'
-$global:ok = "[[92mOK[0m]"
-$global:fail = "[[91mFAIL[0m]"
+Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
 
 $host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(80,10)
 $host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(80,10)
-
 $Host.UI.RawUI.WindowTitle = "Kon OS | Loading..."
 
 # Error code thing
@@ -33,8 +29,7 @@ try {
 } catch {
     $StopCode = "Ping Failed"
     Stop-Code-NoInternet
-}
-if ($ping.Status -eq 'TimedOut') {
+} if ($ping.Status -eq 'TimedOut') {
     $StopCode = "Timed Out"
     Stop-Code-NoInternet
 } if ($ping.Status -eq 'DestinationHostUnreachable') {
@@ -44,8 +39,7 @@ if ($ping.Status -eq 'TimedOut') {
     Stop-Code-NoInternet
 }
 
-New-Item -Path "$env:SystemDrive\Kon OS\snd" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-#$ver = "$($env:SystemDrive)\Kon OS"
+New-Item -Path "$env:SystemDrive\Kon OS\Modules\snd" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 
 Write-Host "Initializing..."
 $filePath = "$env:systemDrive\Kon OS\snd"
@@ -55,17 +49,27 @@ if (Test-Path -Path $filePath -PathType Container) {
     Show-Throbber -Message "Downloading modules..." {
     Invoke-WebRequest `
         "https://github.com/ki8y/KonOS/raw/main/Components/Sounds/startup.wav" `
-        -OutFile "$env:systemDrive\Kon OS\snd\startup.wav"
+        -OutFile "$env:systemDrive\Kon OS\Modules\snd\startup.wav"
 
     Invoke-WebRequest `
         "https://github.com/ki8y/KonOS/raw/main/Components/Sounds/shutdown.wav" `
-        -OutFile "$env:systemDrive\Kon OS\snd\shutdown.wav"
+        -OutFile "$env:systemDrive\Kon OS\Modules\snd\shutdown.wav"
     
-    <#Invoke-WebRequest `
-    "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt" `
-    -OutFile "$($using:ver)\ver.txt"#>
     }
 }   
+
+# ──Version String───────────────────────────────────
+
+New-Item -ItemType File "$env:systemDrive\Kon OS\ver.txt" -ErrorAction SilentlyContinue
+$commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/main"
+$version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt"
+$content = "   │  ⚙️ [97m$($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))  [38;5;99m│"
+Set-Content "$env:systemDrive\Kon OS\ver.txt" `
+@"
+[38;5;99m   ╭─────────────────────────────╮
+$content
+[38;5;99m   ╰─────────────────────────────╯
+"@ -NoNewLine
 
 #Exits Kon OS... duh???
 function Exit-KonOS {
@@ -75,13 +79,12 @@ function Exit-KonOS {
     Clear-Host
     
     $sound = New-Object System.Media.SoundPlayer
-    $sound.SoundLocation = "$env:systemDrive\Kon OS\snd\shutdown.wav"
+    $sound.SoundLocation = "$env:systemDrive\Kon OS\Modules\snd\shutdown.wav"
     
-    Show-Throbber -Message "Exiting Kon OS..." {
-        Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinu
-        Start-Sleep -Milliseconds 100
+    Show-Throbber -Message "Exiting Kon OS setup..." {
+        Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path "$env:systemDrive\Kon OS\Scripts" -Recurse -Force -ErrorAction SilentlyContinue
     }
-
     Write-Host "`r[[92mOK[0m] Exiting Kon OS..."
     Write-Host "See you later!" -ForegroundColor Cyan
     $sound.PlaySync()
@@ -156,40 +159,38 @@ $Host.UI.RawUI.ForegroundColor = 'White'
 Clear-Host
 
 $sound = New-Object System.Media.SoundPlayer
-$sound.SoundLocation = "$env:systemDrive\Kon OS\snd\startup.wav"
+$sound.SoundLocation = "$env:systemDrive\Kon OS\Modules\snd\startup.wav"
 $sound.Play()
 
 function Start-Setup {
     Clear-Host
     Write-Host @"
-$accent╭─────────────────────────────────╮
-│  💽 Downloading Kon OS Scripts  │
-╰─────────────────────────────────╯
+$accent
+                                              ╭──────────────────────────╮
+                                              │  💽 Downloading Scripts  │
+                                              ╰──────────────────────────╯
 "@
-    # Installs Requirement Checker.......duh? (its not working rn so oops...)
-    $name = "Requirement Checker"
-    Show-Throbber -Message "Installing $name..." {
-            $cdn = "https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/requirementCheck.bat"
-            $file = 'Microsoft.VCLibs.x64.14.00.Desktop.appx'
-            $dir = "$env:SystemDrive\Kon OS\Setup\Winget"
-            Invoke-WebRequest $cdn -OutFile "$dir\$file"  | Out-Null
-        }
-    Write-Host "`r$ok Installing $name..." -ForegroundColor White
+    $name = "generalTweaks.ps1"
+    Show-Throbber -Message "Downloading $($Cyan)$name..." {
+        Invoke-WebRequest `
+        -Uri 'https://github.com/ki8y/KonOS/raw/main/Components/Scripts/generalTweaks.ps1' `
+        -OutFile "$env:systemDrive\Kon OS\Scripts\$name" | Out-Null
+    }
+    Write-Host "`r[✓] Installing $name...        " -ForegroundColor Green
 
-        $name = "Other Example Stuff"
-    Show-Throbber -Message "Installing $name..." {
-            $cdn = "https://raw.githubusercontent.com/ki8y/KonOS/main/KonOS11/Scripts/requirementCheck.bat"
-            $file = 'Microsoft.VCLibs.x64.14.00.Desktop.appx'
-            $dir = "$env:SystemDrive\Kon OS\Setup\Winget"
-            Invoke-WebRequest $cdn -OutFile "$dir\$file" | Out-Null
-        }
-    Write-Host "`r$ok Installing $name..." -ForegroundColor White
-    Write-Host "`nKon OS Demo Finished.`nStill a WIP ¯\_(ツ)_/¯"
+    $name = "serviceControl.ps1"
+    Show-Throbber -Message "Downloading $($Cyan)$name..." {
+        Invoke-WebRequest `
+        -Uri 'https://raw.githubusercontent.com/ki8y/KonOS/raw/main/Components/Scripts/serviceControl.ps1' `
+        -OutFile "$env:systemDrive\Kon OS\Scripts\$name" | Out-Null
+    }
+    Write-Host "`r[✓] Installing $name...        " -ForegroundColor Green
+    Write-Host "`nKon OS Demo Finished.`nSTILL after EVERYTHING, a WIP ¯\_(ツ)_/¯"
     cmd.exe /c "pause >nul"
     [System.Environment]::Exit(0)
 
 }
-$Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper | Powershell Prototype 4"
+$Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper | Alpha 0.5"
 Write-Host @"
 $accent
 [?25l
