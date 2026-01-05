@@ -1,5 +1,5 @@
 Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
-Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psd1"
+Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
 
 # ──Disable automatic driver updates─────────────────
 
@@ -142,64 +142,67 @@ Write-Host "`r[✓] Adding verbose logon screens and bluescreens..." -Foreground
 # ──Explorer Tweaks──────────────────────────────────
 
 Write-Host "🛈 Disabling wallpaper compression..." -NoNewline
-    New-ItemProperty -Path "Registry::HKCU\Control Panel\Desktop" -Name 'JPEGImportQuality' /t REG_DWORD /d 100 /f >nul 2>&1
-Write-Host "`r[✓] Disabling wallpaper compression..." -ForegroundColor Green
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Desktop" -Name 'JPEGImportQuality' -PropertyType Dword -Value 100 -Force | Out-Null
 
 Write-Host '🛈 Enabling "End Task" button in taskbar...' -NoNewLine
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings" -Name 'TaskbarEndTask' /t REG_DWORD /d 1 /f >nul 2>&1
-Write-Host ("`r" + '[✓] Enabling "End Task" button in TaskBar') -ForegroundColor Green
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings" -Name 'TaskbarEndTask' -PropertyType Dword -Value 1 -Force | Out-Null
 
 Write-Host "🛈 Enabling hidden files and showing file extensions..."
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name 'HideFileExt' /t REG_DWORD /d 0 /f >nul 2>&1 
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name 'UseCompactMode' /t REG_DWORD /d 1 /f >nul 2>&1 
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" -Name 'CheckedValue' /t REG_DWORD /d 1 /f >nul 2>&1
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name 'HideFileExt' -PropertyType Dword -Value 0 -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name 'UseCompactMode' -PropertyType Dword -Value 1 -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" -Name 'CheckedValue' -PropertyType Dword -Value 1 -Force | Out-Null
 
 Write-Host "🛈 Enabling legacy context menu..."
     New-Item -Path "Registry::HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" -Force
 
 Write-Host "🛈 Enabling dark mode..."
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name 'SystemUsesLightTheme' /t REG_DWORD /d 0 /f >nul 2>&1 
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name 'AppsUseLightTheme' /t REG_DWORD /d 0 /f >nul 2>&1 
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name 'SystemUsesLightTheme' -PropertyType Dword -Value 0 -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name 'AppsUseLightTheme' -PropertyType Dword -Value 0 -Force | Out-Null 
 
 Write-Host "🛈 Disabling copilot..."
-    New-ItemProperty -Path "Registry::HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" -Name 'TurnOffWindowsCopilot' /t REG_DWORD /d 1 /f >nul 2>&1 
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name 'ShowCopilotButton' /t REG_DWORD /d 0 /f >nul 2>&1 
+    New-ItemProperty -Path "Registry::HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" -Name 'TurnOffWindowsCopilot' -PropertyType Dword -Value 1 -Force | Out-Null 
+New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name 'ShowCopilotButton' -PropertyType Dword -Value 0 -Force | Out-Null 
 
 Write-Host "🛈 Disabling transparency..."
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name 'EnableTransparency' /t REG_DWORD /d 0 /f >nul 2>&1 
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name 'EnableTransparency' -PropertyType Dword -Value 0 -Force | Out-Null 
 
 Write-Host "🛈 Disabling sticky keys..."
-    New-ItemProperty -Path "Registry::HKCU\Control Panel\Accessibility\StickyKeys" -Name Flags /t REG_SZ /d 506 /f >nul 2>&1 
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Accessibility\StickyKeys" -Name Flags -PropertyType String -Value 506 -Force | Out-Null 
 
 Write-Host "🛈 Disabling Toast Notifications..."
-    New-ItemProperty -Path "Registry::HKCU\Software\Policies\Microsoft\Windows\Explorer" -Name 'DisableNotificationCenter' /t REG_DWORD /d 1 /f >nul 2>&1 
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications" -Name 'ToastEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
+    New-ItemProperty -Path "Registry::HKCU\Software\Policies\Microsoft\Windows\Explorer" -Name 'DisableNotificationCenter' -PropertyType Dword -Value 1 -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications" -Name 'ToastEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
 
 # ──Useless background processes─────────────────────
 
-echo 🛈 Disabling background processes...
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" -Name GlobalUserDisabled /t REG_DWORD /d 1 /f >nul 2>&1 
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Search" -Name BackgroundAppGlobalToggle /t REG_DWORD /d 0 /f >nul 2>&1 
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\AppPrivacy" -Name LetAppsRunInBackground /t REG_DWORD /d 2 /f >nul 2>&1 
+Write-Host "🛈 Disabling background processes..." -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" -Name GlobalUserDisabled -PropertyType Dword -Value 1 -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Search" -Name BackgroundAppGlobalToggle -PropertyType Dword -Value 0 -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\AppPrivacy" -Name LetAppsRunInBackground -PropertyType Dword -Value 2 -Force | Out-Null 
 
-echo 🛈 Disabling activity history...
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\System" -Name EnableActivityFeed /t REG_DWORD /d 0 /f >nul 2>&1 
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\System" -Name PublishUserActivities /t REG_DWORD /d 0 /f >nul 2>&1 
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\System" -Name UploadUserActivities /t REG_DWORD /d 0 /f >nul 2>&1 
+Write-Host "🛈 Disabling activity history..." -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\System" -Name EnableActivityFeed -PropertyType Dword -Value 0 -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\System" -Name PublishUserActivities -PropertyType Dword -Value 0 -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\System" -Name UploadUserActivities -PropertyType Dword -Value 0 -Force | Out-Null 
 
-echo 🛈 Disabling location services...
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location" -Name "Value" /t REG_SZ /d "deny" /f >nul 2>&1 
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Sensor\Overrides\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}" -Name "SensorPermissionState" /t REG_DWORD /d "0" /f >nul 2>&1 
-    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Services\lfsvc\Service\Configuration" -Name "Status" /t REG_DWORD /d "0" /f >nul 2>&1 
-    New-ItemProperty -Path "Registry::HKLM\SYSTEM\Maps" -Name "AutoUpdateEnabled" /t  REG_DWORD /d "0" /f >nul 2>&1 
+Write-Host "🛈 Disabling location services..." -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location" -Name "Value" -PropertyType String -Value "deny" -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Sensor\Overrides\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}" -Name "SensorPermissionState" -PropertyType Dword -Value "0" -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Services\lfsvc\Service\Configuration" -Name "Status" -PropertyType Dword -Value "0" -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKLM\SYSTEM\Maps" -Name "AutoUpdateEnabled" -PropertyType Dword -Value "0" -Force | Out-Null 
 
-echo 🛈 Disabling UAC
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name EnableLUA /t REG_DWORD /d 0 /f >nul 2>&1 
+Write-Host "🛈 Disabling UAC" -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name EnableLUA -PropertyType Dword -Value 0 -Force | Out-Null 
 
-echo 🛈 Disabling login blur
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\System" -Name DisableAcrylicBackgroundOnLogon /t REG_DWORD /d 1 /f >nul 2>&1
+Write-Host "🛈 Disabling login blur" -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\System" -Name DisableAcrylicBackgroundOnLogon -PropertyType Dword -Value 1 -Force | Out-Null
 
-echo 🛈 Disabling telemetry...
+Write-Host @"
+$accent
+                                              ╭──────────────────────────╮
+                                              │  🛡️ Disabling Telemetry  │
+                                              ╰──────────────────────────╯
+"@
     $tasks = @(
         'Microsoft Compatibility Appraiser',
         'ProgramDataUpdater',
@@ -247,112 +250,92 @@ echo 🛈 Disabling telemetry...
             Write-Host ("`r" + '[91m*[97m Disabling ' + $task + ' in task scheduler... ──────────────────────────────────────')
         }
     }
-    
-    $disableTasks = @(
-        Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Autochk\' -TaskName "Proxy" | Out-Null,
-        Disable-ScheduledTask -TaskPath 'Microsoft\Windows\DiskDiagnostic\' -TaskName 'Microsoft-Windows-DiskDiagnosticDataCollector' | Out-Null,
-        Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Windows Error Reporting\' -Taskname 'QueueReporting' | Out-Null,
-        Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Maps\' -TaskName 'MapsUpdateTask' | Out-Null
-    )
-    $tasks = @(
-        'Proxy',
-        'Microsoft-Windows-DiskDiagnosticDataCollector',
-        'QueueReporting',
-        'MapsUpdateTask'
-    )
-    foreach ($command in $disableTasks) {
-        try {
-            $command
-            Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [$($Green)ok$White]" -NoNewLine
-            Write-Host ("`r" + "$Green*$White Disabling " + $task + ' in task scheduler... ─────────────────────────')
-        } catch {
-            Write-Host "                                              ─────────────────────────────────────────────────────────────────── [$($Red)fail$White]" -NoNewLine
-            Write-Host ("`r" + '[91m*[97m Disabling ' + $task + ' in task scheduler... ──────────────────────────────────────')
-        }
-    }
-    
+    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Autochk\' -TaskName "Proxy" | Out-Null,
+    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\DiskDiagnostic\' -TaskName 'Microsoft-Windows-DiskDiagnosticDataCollector' | Out-Null,
+    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Maps\' -TaskName 'MapsUpdateTask' | Out-Null
+    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Windows Error Reporting\' -Taskname 'QueueReporting' | Out-Null,
 
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name 'AllowTelemetry' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name 'AllowTelemetry' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'ContentDeliveryAllowed' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'OemPreInstalledAppsEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'PreInstalledAppsEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'PreInstalledAppsEverEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SilentInstalledAppsEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SubscribedContent-338387Enabled' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SubscribedContent-338388Enabled' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SubscribedContent-338389Enabled' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SubscribedContent-353698Enabled' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SystemPaneSuggestionsEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name 'DisableWindowsConsumerFeatures' /t REG_DWORD /d 1 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Siuf\Rules" -Name 'NumberOfSIUFInPeriod' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name 'DoNotShowFeedbackNotifications' /t REG_DWORD /d 1 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name 'DisableTailoredExperiencesWithDiagnosticData' /t REG_DWORD /d 1 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo" -Name 'DisabledByGroupPolicy' /t REG_DWORD /d 1 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name 'Disabled' /t REG_DWORD /d 1 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config" -Name 'DODownloadMode' /t REG_DWORD /d 1 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" -Name 'fAllowToGetHelp' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager" -Name 'EnthusiastMode' /t REG_DWORD /d 1 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name 'PeopleBand' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name 'LaunchTo' /t REG_DWORD /d 1 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" -Name 'LongPathsEnabled' /t REG_DWORD /d 1 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" -Name 'SystemResponsiveness' /t REG_DWORD /d 0 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" -Name 'NetworkThrottlingIndex' /t REG_DWORD /d 4294967295 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name 'ClearPageFileAtShutdown' /t REG_DWORD /d 1 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SYSTEM\ControlSet001\Services\Ndu" -Name 'Start' /t REG_DWORD /d 2 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\Control Panel\Mouse" -Name 'MouseHoverTime' /t REG_SZ /d 400 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -Name 'IRPStackSize' /t REG_DWORD /d 30 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Feeds" -Name 'ShellFeedsTaskbarViewMode' /t REG_DWORD /d 2 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name 'HideSCAMeetNow' /t REG_DWORD /d 1 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name 'GPU Priority' /t REG_DWORD /d 8 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name 'Priority' /t REG_DWORD /d 6 /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name 'Scheduling Category' /t REG_SZ /d High /f >nul 2>&1
-    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" -Name 'ScoobeSystemSettingEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name 'AllowTelemetry' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name 'AllowTelemetry' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'ContentDeliveryAllowed' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'OemPreInstalledAppsEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'PreInstalledAppsEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'PreInstalledAppsEverEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SilentInstalledAppsEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SubscribedContent-338387Enabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SubscribedContent-338388Enabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SubscribedContent-338389Enabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SubscribedContent-353698Enabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name 'SystemPaneSuggestionsEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name 'DisableWindowsConsumerFeatures' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Siuf\Rules" -Name 'NumberOfSIUFInPeriod' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name 'DoNotShowFeedbackNotifications' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name 'DisableTailoredExperiencesWithDiagnosticData' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\AdvertisingInfo" -Name 'DisabledByGroupPolicy' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\Windows Error Reporting" -Name 'Disabled' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config" -Name 'DODownloadMode' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Remote Assistance" -Name 'fAllowToGetHelp' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager" -Name 'EnthusiastMode' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name 'PeopleBand' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name 'LaunchTo' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" -Name 'LongPathsEnabled' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" -Name 'SystemResponsiveness' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile" -Name 'NetworkThrottlingIndex' -PropertyType Dword -Value 4294967295 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" -Name 'ClearPageFileAtShutdown' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SYSTEM\ControlSet001\Services\Ndu" -Name 'Start' -PropertyType Dword -Value 2 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Mouse" -Name 'MouseHoverTime' -PropertyType String -Value 400 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -Name 'IRPStackSize' -PropertyType Dword -Value 30 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Feeds" -Name 'ShellFeedsTaskbarViewMode' -PropertyType Dword -Value 2 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name 'HideSCAMeetNow' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name 'GPU Priority' -PropertyType Dword -Value 8 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name 'Priority' -PropertyType Dword -Value 6 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name 'Scheduling Category' -PropertyType String -Value High -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" -Name 'ScoobeSystemSettingEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
 
-echo 🛈 Disabling IPv6
-    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" -Name "DisabledComponents" /t REG_DWORD /d "255" /f >nul 2>&1
-    Disable-NetAdapterBinding -Name '*' -ComponentID ms_tcpip6 >nul 2>&1
+Write-Host "🛈 Disabling IPv6..." -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" -Name "DisabledComponents" -PropertyType Dword -Value "255" -Force | Out-Null
+    Disable-NetAdapterBinding -Name '*' -ComponentID ms_tcpip6 | Out-Null
 
-echo 🛈 Disabling GameDVR...
-New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_Enabled' /t REG_DWORD /d 0 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR" -Name 'AllowGameDVR' /t REG_DWORD /d 0 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" -Name 'AppCaptureEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" -Name 'AudioCaptureEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" -Name 'HistoricalCaptureEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
+Write-Host "🛈 Disabling GameDVR..." -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_Enabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR" -Name 'AllowGameDVR' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" -Name 'AppCaptureEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" -Name 'AudioCaptureEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" -Name 'HistoricalCaptureEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
 
-echo 🛈 Disabling Bing Search in start menu...
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Search" -Name 'BingSearchEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
+Write-Host "🛈 Disabling Bing Search in start menu..." -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\Search" -Name 'BingSearchEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
 
-echo 🛈 Disabling Fullscreen Optimizations (FSO)
-New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_FSEBehavior' /t REG_DWORD /d 2 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_DSEBehavior' /t REG_DWORD /d 2 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_DXGIHonorFSEWindowsCompatible' /t REG_DWORD /d 1 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_HonorUserFSEBehaviorMode' /t REG_DWORD /d 1 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_EFSEFeatureFlags' /t REG_DWORD /d 0 /f >nul 2>&1
+Write-Host "🛈 Disabling Fullscreen Optimizations (FSO)" -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_FSEBehavior' -PropertyType Dword -Value 2 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_DSEBehavior' -PropertyType Dword -Value 2 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_DXGIHonorFSEWindowsCompatible' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_HonorUserFSEBehaviorMode' -PropertyType Dword -Value 1 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\System\GameConfigStore" -Name 'GameDVR_EFSEFeatureFlags' -PropertyType Dword -Value 0 -Force | Out-Null
 
-echo 🛈 Disabling Game bar...
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'ShowStartupPanel' /t REG_DWORD /d 0 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'GamePanelStartupTipIndex' /t REG_DWORD /d 3 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'UseNexusForGameBarEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'AllowAutoGameMode' /t REG_DWORD /d 0 /f >nul 2>&1
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'AutoGameModeEnabled' /t REG_DWORD /d 0 /f >nul 2>&1 
-New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'GameBarEnabled' /t REG_DWORD /d 0 /f >nul 2>&1
+Write-Host "🛈 Disabling Game bar..." -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'ShowStartupPanel' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'GamePanelStartupTipIndex' -PropertyType Dword -Value 3 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'UseNexusForGameBarEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'AllowAutoGameMode' -PropertyType Dword -Value 0 -Force | Out-Null
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'AutoGameModeEnabled' -PropertyType Dword -Value 0 -Force | Out-Null 
+    New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\GameBar" -Name 'GameBarEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
 
-echo 🛈 Disabling Core Isolation...
-New-ItemProperty -Path "Registry::HKLM\System\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity" -Name 'Enabled' /t REG_DWORD /d 0 /f >nul 2>&1
+Write-Host "🛈 Disabling Core Isolation..." -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKLM\System\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity" -Name 'Enabled' -PropertyType Dword -Value 0 -Force | Out-Null
 
-echo 🛈 Disabling Live Tiles...
-New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" -Name 'NoTileApplicationNotification' /t REG_DWORD /d 1 /f >nul 2>&1
+Write-Host "🛈 Disabling Live Tiles..." -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" -Name 'NoTileApplicationNotification' -PropertyType Dword -Value 1 -Force | Out-Null
 
-echo 🛈 Disabling smooth scrolling
-New-ItemProperty -Path "Registry::HKCU\Control Panel\Desktop" -Name 'SmoothScroll' /t REG_DWORD /d 0 /f >nul 2>&1
+Write-Host "🛈 Disabling smooth scrolling" -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKCU\Control Panel\Desktop" -Name 'SmoothScroll' -PropertyType Dword -Value 0 -Force | Out-Null
 
-echo 🛈 Flushing Windows Explorer...
-Remove-Item "Registry::HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags" -Force
-New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\AllFolders\Shell" -Name 'FolderType' /t REG_SZ /d "NotSpecified" /f >nul 2>&1
+Write-Host "🛈 Flushing Windows Explorer..." -ForegroundColor Blue
+    Remove-Item "Registry::HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags" -Force
+    New-ItemProperty -Path "Registry::HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\AllFolders\Shell" -Name 'FolderType' -PropertyType String -Value "NotSpecified" -Force | Out-Null
 
-echo 🛈 Disabling fast user switching...
-New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name 'HideFastUserSwitching' /t REG_DWORD /d 1 /f >nul 2>&1
+Write-Host "🛈 Disabling fast user switching..." -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name 'HideFastUserSwitching' -PropertyType Dword -Value 1 -Force | Out-Null
 
-echo 🛈 Disabling Windows Ink related features... >nul 2>&1
-New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace" -Name 'AllowWindowsInkWorkspace' /t REG_DWORD /d 0 /f >nul 2>&1
+Write-Host "🛈 Disabling Windows Ink related features..." -ForegroundColor Blue
+    New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace" -Name 'AllowWindowsInkWorkspace' -PropertyType Dword -Value 0 -Force | Out-Null
