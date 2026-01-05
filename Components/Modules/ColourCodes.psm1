@@ -21,3 +21,5 @@ $Cyan = '[96m'
 $White = '[97m'
 
 $Reset = '[39m' # Would rarely use this, can cause issues in powershell 5.1 with the default blue window.
+
+$accent = '[38;5;99m' # Kon OS purple :D
