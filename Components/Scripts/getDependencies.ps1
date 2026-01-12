@@ -1,10 +1,11 @@
 Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
+Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
 
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
 Clear-Host
 
-$KonOS='[97m[[38;5;99mKon OS[97m][97m'
+$KonOS="$($accent)Kon OS[97m"
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
 
@@ -14,7 +15,7 @@ function Install-Dependencies {
     # Chocolatey
     $filePath = "$env:systemDrive\ProgramData\chocolatey\bin\choco.exe"
     if (Test-Path -Path $filePath -PathType Leaf) {
-        Write-Host "$KonOS Chocolatey is already installed. Skipping..."
+        Write-Host "[$($KonOS)] Chocolatey is already installed. Skipping..."
     } else {
         Show-Throbber -Message "Installing Chocolatey..." {
     	[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072 | Out-Null
@@ -25,7 +26,7 @@ function Install-Dependencies {
     # Scoop
     $filepath = "$env:systemDrive\users\$env:Username\scoop"
     if (Test-Path -Path $filePath -PathType Container) {
-        Write-Host "$KonOS Scoop is already installed. Skipping..."
+        Write-Host "[$($KonOS)] Scoop is already installed. Skipping..."
     } else {
         Show-Throbber -Message "Installing Scoop..." {
         Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression | Out-Null
@@ -34,7 +35,7 @@ function Install-Dependencies {
     # Nanazip (7-zip fork)
     $filepath = "$env:systemDrive\Users\$env:Username\AppData\Local\Microsoft\WindowsApps\NanaZip.exe"
     if (Test-Path -Path $filePath -PathType Leaf) {
-        Write-Host "$KonOS NanaZip is already installed. Skipping..."
+        Write-Host "[$($KonOS)] NanaZip is already installed. Skipping..."
     } else {
         Show-Throbber -Message "Installing NanaZip (nanazip)..." {
         choco install nanazip --confirm | Out-Null 
@@ -43,7 +44,7 @@ function Install-Dependencies {
     # Powershell 7
 	$filePath = "$env:systemDrive\Program Files\PowerShell\7\pwsh.exe"
     if (Test-Path -Path $filePath -PathType Leaf) {
-        Write-Host "$KonOS PowerShell 7 is already installed. Skipping..."
+        Write-Host "[$($KonOS)] PowerShell 7 is already installed. Skipping..."
     } else {
         Show-Throbber -Message "Installing Powershell 7 (powershell-core)..." {
 		choco install powershell-core --confirm | Out-Null
@@ -51,13 +52,13 @@ function Install-Dependencies {
         New-ItemProperty -Path "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run" /v "MUIVerb" /t REG_SZ /d "Run With Powershell 7" /f | Out-Null
         New-ItemProperty -Path "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command" | Out-Null
         New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command' -Name '(Default)' -Value '"C:\Program Files\PowerShell\7\pwsh.exe" -NoExit -NoProfile -ExecutionPolicy Bypass -Command "$host.UI.RawUI.WindowTitle = ''PowerShell 7 (x64)''; & ''%1''"' -Force | Out-Null
-        Write-Host "$KonOS Powershell-Core installed successfully."
+        Write-Host "[$($KonOS)] Powershell-Core installed successfully."
     } }
 
     # PowerRun
     $filePath = "$env:systemDrive\Kon OS\PowerRun"
     if (Test-Path -Path $filePath -PathType Container) {
-        Write-Host "$KonOS PowerRun is already installed. Skipping..."
+        Write-Host "[$($KonOS)] PowerRun is already installed. Skipping..."
     } else {
         Show-Throbber -Message "Installing PowerRun..." {
         Invoke-WebRequest "https://www.sordum.org/files/downloads.php?power-run" -OutFile "$env:systemDrive\Kon OS\PowerRun.zip" -UseBasicParsing | Out-Null
@@ -68,7 +69,7 @@ function Install-Dependencies {
     # VCRedist Runtimes...
     Show-Throbber -Message "Installing VCRedist 2015-2022 Runtimes..." {
 	choco install vcredist140 --confirm | Out-Null
-    Write-Host "`r$KonOS VCRedist 2015-2022 Runtimes installed successfully." -NoNewLine
+    Write-Host "`r[$($KonOS)] VCRedist 2015-2022 Runtimes installed successfully." -NoNewLine
 } }
 
 function SelectedNo {
@@ -81,7 +82,7 @@ function SelectedNo {
 
 function PromptForDependencies {
     Clear-Host
-    Write-Host "$KonOS Your computer is missing the files/applications that Kon OS depends on to run.`n`nInstall them now?`n[92m[Y]es [91m[N]o" -NoNewLine
+    Write-Host "[$($KonOS)] Your computer is missing the files/applications that Kon OS depends on to run.`n`nInstall them now?`n[92m[Y]es [91m[N]o" -NoNewLine
     choice /c YN /n | Out-Null
     switch ($LASTEXITCODE) {
         1 { Install-Dependencies }
@@ -187,11 +188,19 @@ Please install Windows 11 (24H2 or newer) and try again.
 }
 
 Clear-Host
-Write-Host "$KonOS Successfully installed dependencies!" -ForegroundColor Green
+Write-Host "[$($KonOS)] Successfully installed dependencies!" -ForegroundColor Green
 Write-Host "`nPress any key to launch Kon OS..."
 cmd /c "pause >nul"
-Start-Process -FilePath "pwsh.exe" -ArgumentList @(
-    "-NoProfile"
-    "-File"
-    "`"C:\Kon OS\KonOS.ps1`""
-)
+
+try {
+    Start-Process -FilePath "pwsh.exe" -ArgumentList @(
+        "-NoProfile"
+        "-ExecutionPolicy Bypass"
+        "-Verb RunAs"
+        "-File `"C:\Kon OS\KonOS.ps1`""
+        "-ErrorAction Stop"
+    )
+} catch {
+    Write-Host "PowerShell 7 could not be opened. If you recieved this error, please contact me."
+    Write-host "`nDiscord: @ki8y"
+}
