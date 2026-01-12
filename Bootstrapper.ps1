@@ -6,22 +6,56 @@ TikTok: https://www.tiktok.com/@konpakulol #>
 
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
-$Host.UI.RawUI.WindowTitle = "Kon OS Prerequisites"
+$Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper"
 
 Clear-Host
 $accent = '[38;5;99m'
-$KonOS='[97m[[38;5;99mKon OS[97m][97m'
+$KonOS="$($accent)Kon OS[97m"
 
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
+
+# Error code thing
+function Stop-Code-NoInternet {
+    Write-Host @"
+`e[91mSetup Cannot Continue:
+
+`e[93mYou can't install Kon OS without an internet connection.
+Please connect to the internet and try again.
+
+`e[91m($StopCode)
+
+`e[97mPress any key to exit setup...
+"@ -NoNewLine
+    cmd.exe /c "pause >nul"
+    [System.Environment]::Exit(0)
+}
+
+# Checks for internet (if not detected, shows dat error code thing from earlier)
+try {
+    Write-Host "Checking internet availability..."
+    $global:ping = Test-Connection -TargetName 1.1.1.1 -Count 1 -ErrorAction Stop
+    Clear-Host
+} catch {
+    $StopCode = "Ping Failed"
+    Stop-Code-NoInternet
+} if ($ping.Status -eq 'TimedOut') {
+    $StopCode = "Timed Out"
+    Stop-Code-NoInternet
+} if ($ping.Status -eq 'DestinationHostUnreachable') {
+    $StopCode = "Host Unreachable"
+} if ($ping.Status -eq '11050') {
+    $StopCode = "GENERAL FAILURE: 11050"
+    Stop-Code-NoInternet
+}
 
 # Version indicator
 $commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/main" -UseBasicParsing
 $version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt" -UseBasicParsing
 
 # Checks for admin
-$Admin = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
-if (-not $Admin) {
+$adminState = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
+if (-not $adminState) {
     Clear-Host
     Write-Host @"
 [91mSetup Cannot Continue:
@@ -166,7 +200,7 @@ function Start-KonOS {
 # Restore Point Stuff...
 $host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(120,30)
 $host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(120,30)
-Write-Host "$KonOS Create A Restore Point"
+Write-Host "[$($KonOS)] Create A Restore Point"
 Write-Host "`nCreating a Restore Point will backup the current state of your Windows installation." 
 Write-Host "This can save you from a huge headache if things go wrong."                 
 Write-Host "`nCreate a restore point?"
@@ -174,7 +208,7 @@ Write-Host "`n[92m[Y] Yes [91m[N] No[37m[?25h" -NoNewLine
 
 function Confirm-RestorePoint {
     Clear-Host
-    Write-Host $KonOS + "Creating Restore Point..."
+    Write-Host "[$($KonOS)] Creating Restore Point..."
     Try {
         New-ItemProperty `
             -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore' `
@@ -202,7 +236,7 @@ function Confirm-RestorePoint {
 }
 
 function Deny-RestorePoint {
-    Write-Host $KonOS + " Are you sure you want to proceed without a restore point?"
+    Write-Host "[$($KonOS)] Are you sure you want to proceed without a restore point?"
     Write-Host "[92m[Y] Yes [91m[N] No[37m[?25h" -NoNewLine
 }
 
@@ -239,3 +273,7 @@ if (Test-Path -Path $filePath -PathType Container) {
         -UseBasicParsing | Out-Null
     PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"
 }
+
+# enjailor
+# WOAH
+# Look at the SIZE of those EASTER EGGS!!!
