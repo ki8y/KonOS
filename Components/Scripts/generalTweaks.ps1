@@ -250,10 +250,13 @@ $accent
             Write-Host ("`r" + '[91m*[97m Disabling ' + $task + ' in task scheduler... ──────────────────────────────────────')
         }
     }
-    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Autochk\' -TaskName "Proxy" | Out-Null,
-    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\DiskDiagnostic\' -TaskName 'Microsoft-Windows-DiskDiagnosticDataCollector' | Out-Null,
+
+Show-Throbber -Message "$($Blue)Disabling Telemetry via various scheduled tasks and registry keys..." {
+    
+    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Autochk\' -TaskName "Proxy" | Out-Null
+    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\DiskDiagnostic\' -TaskName 'Microsoft-Windows-DiskDiagnosticDataCollector' | Out-Null
     Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Maps\' -TaskName 'MapsUpdateTask' | Out-Null
-    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Windows Error Reporting\' -Taskname 'QueueReporting' | Out-Null,
+    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Windows Error Reporting\' -Taskname 'QueueReporting' | Out-Null
 
     New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name 'AllowTelemetry' -PropertyType Dword -Value 0 -Force | Out-Null
     New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name 'AllowTelemetry' -PropertyType Dword -Value 0 -Force | Out-Null
@@ -291,6 +294,7 @@ $accent
     New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name 'Priority' -PropertyType Dword -Value 6 -Force | Out-Null
     New-ItemProperty -Path "Registry::HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Tasks\Games" -Name 'Scheduling Category' -PropertyType String -Value High -Force | Out-Null
     New-ItemProperty -Path "Registry::HKCU\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" -Name 'ScoobeSystemSettingEnabled' -PropertyType Dword -Value 0 -Force | Out-Null
+}
 
 Write-Host "🛈 Disabling IPv6..." -ForegroundColor Blue
     New-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" -Name "DisabledComponents" -PropertyType Dword -Value "255" -Force | Out-Null
