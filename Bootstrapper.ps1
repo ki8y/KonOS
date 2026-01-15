@@ -7,6 +7,10 @@ TikTok: https://www.tiktok.com/@konpakulol #>
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
 $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper"
+$host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(120,30)
+Start-Sleep -Milliseconds 30
+$host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(120,30)
+
 
 Clear-Host
 $accent = '[38;5;99m'
@@ -50,8 +54,8 @@ try {
 }
 
 # Version indicator
-$commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/main" -UseBasicParsing
-$version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt" -UseBasicParsing
+$commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/master" -UseBasicParsing
+$version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/version.txt" -UseBasicParsing
 
 # Checks for admin
 $adminState = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
@@ -247,18 +251,18 @@ switch ($LASTEXITCODE) {
 }
 
 Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/KonOS.ps1" `
+    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/KonOS.ps1" `
     -OutFile "$env:systemDrive\Kon OS\KonOS.ps1" `
     -UseBasicParsing | Out-Null
 
 Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Modules/Throbber.psm1" `
+    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/Throbber.psm1" `
     -OutFile "$env:systemDrive\Kon OS\Modules\Throbber.psm1" `
     -UseBasicParsing | Out-Null
 
 Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Modules/ColourCodes.psd1" `
-    -OutFile "$env:systemDrive\Kon OS\Modules\ColourCodes.psd1" `
+    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/ColourCodes.psm1" `
+    -OutFile "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1" `
     -UseBasicParsing | Out-Null
 
 # Path
@@ -268,7 +272,7 @@ if (Test-Path -Path $filePath -PathType Container) {
 } else {
     New-Item -ItemType Directory "C:\Kon OS\Scripts" | Out-Null
     Invoke-WebRequest `
-        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/Components/Scripts/getDependencies.ps1" `
+        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Scripts/getDependencies.ps1" `
         -OutFile "$env:systemDrive\Kon OS\Scripts\checkForDependencies.ps1" `
         -UseBasicParsing | Out-Null
     PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"

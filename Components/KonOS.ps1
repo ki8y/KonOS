@@ -14,11 +14,11 @@ if (Test-Path -Path $filePath -PathType Container) {
 } else {
     Show-Throbber -Message "Downloading modules..." {
     Invoke-WebRequest `
-        "https://github.com/ki8y/KonOS/raw/main/Components/Sounds/startup.wav" `
+        "https://github.com/ki8y/KonOS/raw/master/Components/Sounds/startup.wav" `
         -OutFile "$env:systemDrive\Kon OS\Modules\snd\startup.wav"
 
     Invoke-WebRequest `
-        "https://github.com/ki8y/KonOS/raw/main/Components/Sounds/shutdown.wav" `
+        "https://github.com/ki8y/KonOS/raw/master/Components/Sounds/shutdown.wav" `
         -OutFile "$env:systemDrive\Kon OS\Modules\snd\shutdown.wav"
     
     }
@@ -47,8 +47,8 @@ function Exit-KonOS {
 # ──Version String───────────────────────────────────
 
 New-Item -ItemType File "$env:systemDrive\Kon OS\ver.txt" -ErrorAction SilentlyContinue
-$commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/KonOS/commits/main"
-$version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/main/version.txt"
+$commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/KonOS/commits/master"
+$version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/version.txt"
 $content = "   │  ⚙️ $($White)$($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))  $accent│"
 Set-Content "$env:systemDrive\Kon OS\ver.txt" `
 @"
@@ -84,7 +84,7 @@ function Start-Setup {
     $name = "generalTweaks.ps1"
     Show-Throbber -Message "Downloading $($Cyan)$name..." {
         Invoke-WebRequest `
-        -Uri 'https://github.com/ki8y/KonOS/raw/main/Components/Scripts/generalTweaks.ps1' `
+        -Uri 'https://github.com/ki8y/KonOS/raw/master/Components/Scripts/generalTweaks.ps1' `
         -OutFile "$env:systemDrive\Kon OS\Scripts\$name" | Out-Null
     }
     Write-Host "`r[✓] Installing $name...        " -ForegroundColor Green
@@ -92,7 +92,7 @@ function Start-Setup {
     $name = "serviceControl.ps1"
     Show-Throbber -Message "Downloading $($Cyan)$name..." {
         Invoke-WebRequest `
-        -Uri 'https://raw.githubusercontent.com/ki8y/KonOS/raw/main/Components/Scripts/serviceControl.ps1' `
+        -Uri 'https://raw.githubusercontent.com/ki8y/KonOS/raw/master/Components/Scripts/serviceControl.ps1' `
         -OutFile "$env:systemDrive\Kon OS\Scripts\$name" | Out-Null
     }
     Write-Host "`r[✓] Installing $name...        " -ForegroundColor Green
