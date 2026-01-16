@@ -171,10 +171,8 @@ $services = @(
     'ssh-agent',
     'tzautoupdate',
     'MSDTC',
-    'SecurityHealthService',
     'SysMain',
     'WdiServiceHost',
-    'WinDefend',
     'seclogon',
     'wscsvc',
     'wisvc',
@@ -574,6 +572,7 @@ $services = @(
     'RpcSs',
     'SamSs',
     'Schedule',
+    'SecurityHealthService',
     'SENS',
     'SgrmBroker',
     'SystemEventsBroker',
@@ -583,6 +582,7 @@ $services = @(
     'VaultSvc',
     'DispBrokerDesktopSvc',
     'tiledatamodelsvc',
+    'WinDefend',
     'Winmgmt'
 )
 foreach ($svc in $services) {
