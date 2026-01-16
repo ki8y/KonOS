@@ -20,6 +20,29 @@ $Magenta = '[95m'
 $Cyan = '[96m'
 $White = '[97m'
 
-$Reset = '[39m' # Would rarely use this, can cause issues in powershell 5.1 with the default blue window.
+# Dark colours (Background)
+$BlackBG = '[40m'
+$DarkRedBG = '[41m'
+$DarkGreenBG = '[42m'
+$DarkYellowBG = '[43m'
+$DarkBlueBG = '[44m'
+$DarkMagentaBG = '[45m'
+$DarkCyanBG = '[46m'
+$DarkWhiteBG = '[47m' # Still useless
 
-$accent = '[38;5;99m' # Kon OS purple :D
+# Regular Colours (Background)
+$GrayBG = '[100m'
+$RedBG = '[101m'
+$GreenBG = '[102m'
+$YellowBG = '[103m'
+$BlueBG = '[104m'
+$MagentaBG = '[105m'
+$CyanBG = '[106m'
+$WhiteBG = '[107m'
+
+$Reset = '[39m' # Would rarely use this, can cause issues in powershell 5.1 with the default blue window.
+$ResetBG = '[49m' # Ditto
+
+# Kon OS purple :D
+$accent = '[38;5;99m'
+$accentBG = '[48;5;99m'
