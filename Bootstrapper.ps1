@@ -191,7 +191,6 @@ Please install Windows 11 (24H2 or newer) and try again.
 }
 
 function Start-KonOS {
-    Unblock-File -Path "$env:systemDrive\Kon OS\KonOS.ps1" 
     Start-Process -FilePath "pwsh.exe" -ArgumentList @(
     "-NoProfile"
     "-ExecutionPolicy"
@@ -250,33 +249,49 @@ switch ($LASTEXITCODE) {
     2 { Deny-RestorePoint }
 }
 
-Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/KonOS.ps1" `
-    -OutFile "$env:systemDrive\Kon OS\KonOS.ps1" `
-    -UseBasicParsing | Out-Null
-
-Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/Throbber.psm1" `
-    -OutFile "$env:systemDrive\Kon OS\Modules\Throbber.psm1" `
-    -UseBasicParsing | Out-Null
-
-Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/ColourCodes.psm1" `
-    -OutFile "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1" `
-    -UseBasicParsing | Out-Null
-
 # Path
 $filePath = "$env:SystemDrive\Kon OS\Dependencies"
-if (Test-Path -Path $filePath -PathType Container) {
-    Start-KonOS
-} else {
-    New-Item -ItemType Directory "C:\Kon OS\Scripts" | Out-Null
+function Start-Setup {
     Invoke-WebRequest `
-        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Scripts/getDependencies.ps1" `
-        -OutFile "$env:systemDrive\Kon OS\Scripts\checkForDependencies.ps1" `
+        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/KonOS.ps1" `
+        -OutFile "$env:systemDrive\Kon OS\KonOS.ps1" `
         -UseBasicParsing | Out-Null
-    PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"
+
+    Invoke-WebRequest `
+        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/Throbber.psm1" `
+        -OutFile "$env:systemDrive\Kon OS\Modules\Throbber.psm1" `
+        -UseBasicParsing | Out-Null
+
+    Invoke-WebRequest `
+        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/ColourCodes.psm1" `
+        -OutFile "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1" `
+        -UseBasicParsing | Out-Null
+
+    Unblock-File -Path "$env:systemDrive\Kon OS\KonOS.ps1" 
+
+        
+
+    if (Test-Path -Path $filePath -PathType Container) {
+        Start-KonOS
+    } else {
+        New-Item -ItemType Directory "C:\Kon OS\Scripts" | Out-Null
+        Invoke-WebRequest `
+            -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Scripts/getDependencies.ps1" `
+            -OutFile "$env:systemDrive\Kon OS\Scripts\checkForDependencies.ps1" `
+            -UseBasicParsing | Out-Null
+        PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"
 }
+
+# SENTAI I KNOW U DONT KNOW HOW U HELPED ME BUT I SWEAR TO GOD UR THE GREATEST
+New-Item -ItemType Directory "$env:systemDrive\Kon OS\Modules\CharacterArt" -Force | Out-Null
+Invoke-WebRequest `
+    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/refs/heads/master/Components/Modules/CharacterArt/konosLogo.txt" `
+    -OutFile "$env:systemDrive\Kon OS\Modules\CharacterArt\konosLogo.txt" `
+    -UseBasicParsing
+
+Get-Content -Path "$env:systemDrive\Kon OS\Modules\CharacterArt\konosLogo.txt" -Raw
+cmd /c "pause >nul"
+
 
 # enjailor
 # WOAH
