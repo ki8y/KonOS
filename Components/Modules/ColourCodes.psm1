@@ -46,3 +46,5 @@ $ResetBG = '[49m' # Ditto
 # Kon OS purple :D
 $accent = '[38;5;99m'
 $accentBG = '[48;5;99m'
+
+$ESC = '' # Helpful for any other esc code needed
