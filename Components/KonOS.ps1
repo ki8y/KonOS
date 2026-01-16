@@ -38,7 +38,7 @@ function Exit-KonOS {
         Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinue
         Remove-Item -Path "$env:systemDrive\Kon OS\Scripts" -Recurse -Force -ErrorAction SilentlyContinue
     }
-    Write-Host "`r[[92mOK[0m] Exiting Kon OS..."
+    Write-Host "`r[`e[92mOK`e[39m] Exiting Kon OS..."
     Write-Host "See you later!" -ForegroundColor Cyan
     $sound.PlaySync()
     [System.Environment]::Exit(0)
@@ -68,11 +68,57 @@ function Start-Setup {
     # Checks if Windows Defender is enabled.
     $defenderService = Get-Service -Name 'WinDefend'
     if ($defenderService.Status -eq "Running") { 
-        Write-Host "Windows Defender is running, adding Kon OS to exclusion zone..."
-        Add-MpPreference -ExclusionPath "$env:systemDrive\Kon OS" -Force
+        Write-Host "Windows Defender is running, adding Kon OS to exclusion zone..." -ForegroundColor Yellow
+        try {
+            # Add-MpPreference -ExclusionPath "$env:systemDrive\Kon OS" -Force -ErrorAction Stop
+            Write-Error "" -ErrorAction Stop
+        } catch {
+            Write-Host "Error: Kon OS could not be added to the defender exclusion zone. `nPlease read the following instructions for disabling Windows Defender manually to continue." -ForegroundColor Red
+            Write-Host "`nPress any key to open Windows Security..."
+            cmd.exe /c "pause" | Out-Null
+            Write-Host "`nOpening Windows Security panel..." -ForegroundColor Blue
+            Start-Process 'windowsdefender://'
+            Write-Host "Step 1: Click `"Virus and threat protection`" > `"Manage Settings`""
+            Write-Host "Step 2: Disable real time protection and tamper protection."
+            Write-Host "Step 3: Close Windows Security"
+            Write-Host "`nPress any key to continue after you've completed these steps."
+            cmd.exe /c "pause" | Out-Null
+        }
     } else {
         Write-Host "Windows Defender is not running."
     }
+
+    # Checks for UCPD (in powershell 5.1 cause in 7.5 trying to set the service returns a permissions error)
+    PowerShell -NoProfile -Command @'
+    $ucpdService = Get-Service -Name "ucpd"
+    if ($ucpdService.Status -eq "Running") { 
+        Write-Host "`n[!] The User Choice Protection Driver (UCPD) is running." -ForegroundColor Red
+        Write-Host "Disabling UCPD...`n" -ForegroundColor Yellow
+            Disable-ScheduledTask -TaskPath "\Microsoft\Windows\AppxDeploymentClient\" -TaskName "UCPD velocity" | Out-Null
+            Set-ItemProperty -Path "Registry::HKLM\SYSTEM\CurrentControlSet\Services\UCPD" -Name 'Start' -Value '4' -Force | Out-Null
+            Set-Service -Name "UCPD" -StartupType Disabled | Out-Null
+        
+        Write-Host "UCPD has been disabled, however you'll need to restart your PC for changes to take effect." -ForegroundColor Yellow
+        Write-Host "Press any key to restart your pc..."
+        cmd /c "pause" | Out-Null
+        
+        Write-Host "`n[38;5;46mRestarting in 5..." -NoNewLine
+        Start-Sleep 1
+        Write-Host "`r[38;5;154mRestarting in 4..." -NoNewLine
+        Start-Sleep 1
+        Write-Host "`r[38;5;220mRestarting in 3..." -NoNewLine
+        Start-Sleep 1
+        Write-Host "`r[38;5;202mRestarting in 2..." -NoNewLine
+        Start-Sleep 1
+        Write-Host "`r[38;5;196mRestarting in 1..."
+        Start-Sleep 1
+        
+        Write-Host "Restarting..."
+        shutdown -r -t 0
+    } else {
+        Write-Host "UCPD is not running."
+    }
+'@
 
     # Downloads scripts...
     Write-Host @"
