@@ -190,6 +190,12 @@ Please install Windows 11 (24H2 or newer) and try again.
     Exit-Setup
 }
 
+New-Item -ItemType Directory "$env:systemDrive\Kon OS\Modules\CharacterArt" -Force | Out-Null
+Invoke-WebRequest `
+    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/refs/heads/master/Components/Modules/CharacterArt/konosLogo.txt" `
+    -OutFile "$env:systemDrive\Kon OS\Modules\CharacterArt\konosLogo.txt" `
+    -UseBasicParsing
+
 function Start-KonOS {
     Start-Process -FilePath "pwsh.exe" -ArgumentList @(
     "-NoProfile"
@@ -280,14 +286,10 @@ function Start-Setup {
             -OutFile "$env:systemDrive\Kon OS\Scripts\checkForDependencies.ps1" `
             -UseBasicParsing | Out-Null
         PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"
+    }  
 }
 
 # SENTAI I KNOW U DONT KNOW HOW U HELPED ME BUT I SWEAR TO GOD UR THE GREATEST
-New-Item -ItemType Directory "$env:systemDrive\Kon OS\Modules\CharacterArt" -Force | Out-Null
-Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/refs/heads/master/Components/Modules/CharacterArt/konosLogo.txt" `
-    -OutFile "$env:systemDrive\Kon OS\Modules\CharacterArt\konosLogo.txt" `
-    -UseBasicParsing
 
 Get-Content -Path "$env:systemDrive\Kon OS\Modules\CharacterArt\konosLogo.txt" -Raw
 cmd /c "pause >nul"
