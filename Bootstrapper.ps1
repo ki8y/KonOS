@@ -275,8 +275,6 @@ function Start-Setup {
 
     Unblock-File -Path "$env:systemDrive\Kon OS\KonOS.ps1" 
 
-        
-
     if (Test-Path -Path $filePath -PathType Container) {
         Start-KonOS
     } else {
