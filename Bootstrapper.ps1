@@ -1,4 +1,4 @@
-<# Hi, plz dont judge my bad code... Thanks for installing Kon OS btw :D 
+﻿<# Hi, plz dont judge my bad code... Thanks for installing Kon OS btw :D 
 If you need to contact me:
 Discord Server: https://discord.gg/MdXtURScqX
 Discord: @ki8y
@@ -7,29 +7,52 @@ TikTok: https://www.tiktok.com/@konpakulol #>
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
 $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper"
-$host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(120,30)
-Start-Sleep -Milliseconds 30
-$host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(120,30)
-
-
 Clear-Host
+
 $accent = '[38;5;99m'
-$KonOS="$($accent)Kon OS[97m"
+$KonOS = "$($accent)Kon OS[97m"
 
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
 
+function Install-Terminal {
+        New-Item -ItemType Directory "$env:systemDrive\Kon OS\temp" -ErrorAction SilentlyContinue | Out-Null
+        $uri = 'https://github.com/microsoft/terminal/releases/download/v1.23.13503.0/Microsoft.WindowsTerminal_1.23.13503.0_8wekyb3d8bbwe.msixbundle'
+        $outfile = "$env:systemDrive\Users\$env:userName\Downloads\WindowsTerminal.msixbundle"
+        curl.exe -s -L "$uri" -o "$outfile"
+    Invoke-WebRequest -Uri "https://github.com/microsoft/terminal/releases/download/v1.23.13503.0/Microsoft.WindowsTerminal_1.23.13503.0_8wekyb3d8bbwe.msixbundle" -OutFile "$env:systemDrive\Users\$env:Username\Downloads\WindowsTerminal.msixbundle" -UseBasicparsing
+}
+
+if ($env:WT_SESSION) {
+    if (Test-File -FileType Leaf "$env:systemDrive\Kon OS\temp\wt_fullscreen.flag") {
+
+    } else {
+        WT --Fullscreen PowerShell -Command (Invoke-Expression ((Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/ki8y/KonOS/experimental/bomtest.ps1').TrimStart([char]0xFEFF)))
+    }
+} else {
+    if (Test-File -FileType Leaf "$env:systemDrive\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.23.12811.0_x64__8wekyb3d8bbwe\wt.exe") {
+        WT --Fullscreen PowerShell -Command (Invoke-Expression ((Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/ki8y/KonOS/experimental/bomtest.ps1').TrimStart([char]0xFEFF)))
+    } else {
+        Write-Host "$KonOS You don't have Windows Terminal installed. Install it now? (y/n)" -NoNewline
+        choice /c YN /n | Out-Null
+        switch ($LASTEXITCODE) {
+        1 { Install-Terminal }
+        2 { Deny-Terminal }
+}
+    }
+}
+
 # Error code thing
 function Stop-Code-NoInternet {
     Write-Host @"
-`e[91mSetup Cannot Continue:
+[91mSetup Cannot Continue:
 
-`e[93mYou can't install Kon OS without an internet connection.
+[93mYou can't install Kon OS without an internet connection.
 Please connect to the internet and try again.
 
-`e[91m($StopCode)
+[91m($StopCode)
 
-`e[97mPress any key to exit setup...
+[97mPress any key to exit setup...
 "@ -NoNewLine
     cmd.exe /c "pause >nul"
     [System.Environment]::Exit(0)
@@ -38,7 +61,7 @@ Please connect to the internet and try again.
 # Checks for internet (if not detected, shows dat error code thing from earlier)
 try {
     Write-Host "Checking internet availability..."
-    $global:ping = Test-Connection -TargetName 1.1.1.1 -Count 1 -ErrorAction Stop
+    $global:ping = Test-Connection -ComputerName 1.1.1.1 -Count 1 -ErrorAction Stop
     Clear-Host
 } catch {
     $StopCode = "Ping Failed"
@@ -46,12 +69,25 @@ try {
 } if ($ping.Status -eq 'TimedOut') {
     $StopCode = "Timed Out"
     Stop-Code-NoInternet
-} if ($ping.Status -eq 'DestinationHostUnreachable') {
+} elseif ($ping.Status -eq 'DestinationHostUnreachable') {
     $StopCode = "Host Unreachable"
-} if ($ping.Status -eq '11050') {
+} elseif ($ping.Status -eq '11050') {
     $StopCode = "GENERAL FAILURE: 11050"
     Stop-Code-NoInternet
 }
+
+# ──Version String───────────────────────────────────
+
+New-Item -ItemType File "$env:systemDrive\Kon OS\ver.txt" -ErrorAction SilentlyContinue
+$commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/KonOS/commits/master"
+$version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/version.txt"
+$content = "   │  ⚙️ $($White)$($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))  $accent│"
+Set-Content "$env:systemDrive\Kon OS\ver.txt" `
+@"
+[38;5;99m   ╭─────────────────────────────╮
+$content
+[38;5;99m   ╰─────────────────────────────╯
+"@ -NoNewLine
 
 # Version indicator
 $commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/master" -UseBasicParsing
@@ -190,12 +226,6 @@ Please install Windows 11 (24H2 or newer) and try again.
     Exit-Setup
 }
 
-New-Item -ItemType Directory "$env:systemDrive\Kon OS\Modules\CharacterArt" -Force | Out-Null
-Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/refs/heads/master/Components/Modules/CharacterArt/konosLogo.txt" `
-    -OutFile "$env:systemDrive\Kon OS\Modules\CharacterArt\konosLogo.txt" `
-    -UseBasicParsing
-
 function Start-KonOS {
     Start-Process -FilePath "pwsh.exe" -ArgumentList @(
     "-NoProfile"
@@ -288,8 +318,36 @@ function Start-Setup {
 }
 
 # SENTAI I KNOW U DONT KNOW HOW U HELPED ME BUT I SWEAR TO GOD UR THE GREATEST
+$Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper | $($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))"
+Write-Host @"
+$accent
+[?25l
 
-Get-Content -Path "$env:systemDrive\Kon OS\Modules\CharacterArt\konosLogo.txt" -Raw
+
+
+
+
+
+
+ 
+                                    ██╗  ██╗ ██████╗ ███╗   ██╗     ██████╗ ███████╗
+                                    ██║ ██╔╝██╔═══██╗████╗  ██║    ██╔═══██╗██╔════╝
+                                    █████╔╝ ██║   ██║██╔██╗ ██║    ██║   ██║███████╗
+                                    ██╔═██╗ ██║   ██║██║╚██╗██║    ██║   ██║╚════██║
+                                    ██║  ██╗╚██████╔╝██║ ╚████║    ╚██████╔╝███████║
+                                    ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
+
+                             ╔════════════════════════════════════════════════════════════╗
+                             ║                        [97mBegin Setup?$accent                        ║
+                             ╚════════════════════════════════════════════════════════════╝
+
+[32m                                         ╭────────────╮[31m          ╭────────────╮
+[32m                                         │   ✅ [Y]   │[31m          │   ❎ [N]   │
+[32m                                         ╰────────────╯[31m          ╰────────────╯
+$accent
+
+"@
+Write-Host $(Get-Content "$env:systemDrive\Kon OS\ver.txt" | Out-String) -NoNewLine "[37m"
 cmd /c "pause >nul"
 
 
