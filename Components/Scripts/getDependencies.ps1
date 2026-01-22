@@ -1,4 +1,4 @@
-Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
+﻿Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
 Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
 
 $Host.UI.RawUI.BackgroundColor = 'Black'

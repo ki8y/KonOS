@@ -1,4 +1,4 @@
-Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
+﻿Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
 Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
 
 $host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(80,10)
@@ -20,7 +20,6 @@ if (Test-Path -Path $filePath -PathType Container) {
     Invoke-WebRequest `
         "https://github.com/ki8y/KonOS/raw/master/Components/Sounds/shutdown.wav" `
         -OutFile "$env:systemDrive\Kon OS\Modules\snd\shutdown.wav"
-    
     }
 }   
 
