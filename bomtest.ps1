@@ -1,9 +1,10 @@
-﻿Start-Sleep -Milliseconds 15
+﻿# yes
+Start-Sleep -Milliseconds 15
 $Host.UI.RawUI.WindowTitle = "Kon OS UTF-8 PowerShell 5.1 Test"
 $host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size(120,30)
 Start-Sleep -Milliseconds 15 # sometimes powershell bugs out and i get an error and idk why but i hope this fixes it
 $host.UI.RawUI.BufferSize = New-Object System.Management.Automation.Host.Size(120,3000)
-pause
+Pause
 
 $accent = '[38;5;99m'
 $white = '[97m'
@@ -11,7 +12,7 @@ $white = '[97m'
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
 
-# version string indicator thingy
+# Version String Indicator Thingy
 $commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/KonOS/commits/master"
 $version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/version.txt"
 $content = "   │  ⚙️ $($White)$($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))  $accent│"
