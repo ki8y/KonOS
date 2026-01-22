@@ -1,7 +1,9 @@
-﻿$Host.UI.RawUI.WindowTitle = "Kon OS UTF-8 PowerShell 5.1 Test"
+﻿Start-Sleep -Milliseconds 15
+$Host.UI.RawUI.WindowTitle = "Kon OS UTF-8 PowerShell 5.1 Test"
 $host.UI.RawUI.WindowSize = New-Object System.Management.Automation.Host.Size(120,30)
 Start-Sleep -Milliseconds 15 # sometimes powershell bugs out and i get an error and idk why but i hope this fixes it
 $host.UI.RawUI.BufferSize = New-Object System.Management.Automation.Host.Size(120,3000)
+pause
 
 $accent = '[38;5;99m'
 $white = '[97m'
