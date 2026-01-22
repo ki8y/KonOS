@@ -6,7 +6,7 @@ function Show-Throbber {
         [scriptblock]$Action
     )
 
-    $spinnyThing = @('╭','|','╭','|')
+    $spinnyThing = @('\','|','/','|')
     $i = 0
 
     $run = Start-Job -ScriptBlock $Action
