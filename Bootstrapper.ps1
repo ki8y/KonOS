@@ -7,6 +7,7 @@ TikTok: https://www.tiktok.com/@konpakulol #>
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
 $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper"
+New-Item -ItemType Directory "$env:systemDrive\Kon OS" -ErrorAction SilentlyContinue -Force | Out-Null
 Clear-Host
 
 $accent = '[38;5;99m'
@@ -14,33 +15,6 @@ $KonOS = "$($accent)Kon OS[97m"
 
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
-
-function Install-Terminal {
-        New-Item -ItemType Directory "$env:systemDrive\Kon OS\temp" -ErrorAction SilentlyContinue | Out-Null
-        $uri = 'https://github.com/microsoft/terminal/releases/download/v1.23.13503.0/Microsoft.WindowsTerminal_1.23.13503.0_8wekyb3d8bbwe.msixbundle'
-        $outfile = "$env:systemDrive\Users\$env:userName\Downloads\WindowsTerminal.msixbundle"
-        curl.exe -s -L "$uri" -o "$outfile"
-    Invoke-WebRequest -Uri "https://github.com/microsoft/terminal/releases/download/v1.23.13503.0/Microsoft.WindowsTerminal_1.23.13503.0_8wekyb3d8bbwe.msixbundle" -OutFile "$env:systemDrive\Users\$env:Username\Downloads\WindowsTerminal.msixbundle" -UseBasicparsing
-}
-
-if ($env:WT_SESSION) {
-    if (Test-File -FileType Leaf "$env:systemDrive\Kon OS\temp\wt_fullscreen.flag") {
-
-    } else {
-        WT --Fullscreen PowerShell -Command (Invoke-Expression ((Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/ki8y/KonOS/experimental/bomtest.ps1').TrimStart([char]0xFEFF)))
-    }
-} else {
-    if (Test-File -FileType Leaf "$env:systemDrive\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.23.12811.0_x64__8wekyb3d8bbwe\wt.exe") {
-        WT --Fullscreen PowerShell -Command (Invoke-Expression ((Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/ki8y/KonOS/experimental/bomtest.ps1').TrimStart([char]0xFEFF)))
-    } else {
-        Write-Host "$KonOS You don't have Windows Terminal installed. Install it now? (y/n)" -NoNewline
-        choice /c YN /n | Out-Null
-        switch ($LASTEXITCODE) {
-        1 { Install-Terminal }
-        2 { Deny-Terminal }
-}
-    }
-}
 
 # Error code thing
 function Stop-Code-NoInternet {
@@ -74,6 +48,38 @@ try {
 } elseif ($ping.Status -eq '11050') {
     $StopCode = "GENERAL FAILURE: 11050"
     Stop-Code-NoInternet
+}
+
+function Install-Terminal {
+        
+        New-Item -ItemType Directory "$env:systemDrive\Kon OS\temp" -ErrorAction SilentlyContinue | Out-Null
+        
+        # Download getDependencies.ps1
+            $displayName = "getDependencies.ps1"
+            $uri = 'https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Scripts/getDependencies.ps1'
+            $outfile = "$env:systemDrive\Kon OS\Scripts\checkForDependencies.ps1"
+        Write-Host "Downloading $($displayName)..."
+        curl.exe -s -L "$uri" -o "$outfile"
+    
+}
+
+if ($env:WT_SESSION) {
+    if (Test-File -FileType Leaf "$env:systemDrive\Kon OS\temp\wt_fullscreen.flag") {
+
+    } else {
+        WT --Fullscreen PowerShell -Command (Invoke-Expression ((Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/ki8y/KonOS/experimental/bomtest.ps1').TrimStart([char]0xFEFF)))
+    }
+} else {
+    if (Test-File -FileType Leaf "$env:systemDrive\Program Files\WindowsApps\Microsoft.WindowsTerminal_1.23.12811.0_x64__8wekyb3d8bbwe\wt.exe") {
+        WT --Fullscreen PowerShell -Command (Invoke-Expression ((Invoke-RestMethod -Uri 'https://raw.githubusercontent.com/ki8y/KonOS/experimental/bomtest.ps1').TrimStart([char]0xFEFF)))
+    } else {
+        Write-Host "$KonOS You don't have Windows Terminal installed. Install it now? (y/n)" -NoNewline
+        choice /c YN /n | Out-Null
+        switch ($LASTEXITCODE) {
+        1 { Install-Terminal }
+        2 { Deny-Terminal }
+        }
+    }
 }
 
 # ──Version String───────────────────────────────────
@@ -146,7 +152,7 @@ Press any key to continue...
 "@
     $sound.Play()
     cmd.exe /c "pause >nul"
-    PromptForDependencies
+    Exit-KonOS
 }
 
 # Win11 24H2
@@ -165,7 +171,7 @@ Continue the installation?
 "@
     $sound.Play()
     cmd.exe /c "pause >nul"
-    PromptForDependencies
+    Exit-KonOS
 }
 
 # Win11 22H2
@@ -181,7 +187,7 @@ Continue the installation?
 "@
     $sound.Play()
     cmd.exe /c "pause >nul"
-    PromptForDependencies
+    Exit-KonOS
 }
 
 # Win11 21H2
