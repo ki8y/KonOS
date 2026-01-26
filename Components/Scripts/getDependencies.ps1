@@ -25,7 +25,7 @@ function Install-Dependencies {
         Write-Host "`r[✓] Installing Chocolatey..." -ForegroundColor Green 
     }
 
-    # Scoop
+    <# Scoop OK YKW FUCK SCOOP
     $filepath = "$env:systemDrive\users\$env:Username\scoop"
     if (Test-Path -Path $filePath -PathType Container) {
         Write-Host "[$($KonOS)] Scoop is already installed. Skipping..."
@@ -41,7 +41,7 @@ function Install-Dependencies {
             
 	    }
         Write-Host "`r[✓] Installing Scoop..." -ForegroundColor Green 
-    }
+    }#>
 
     # Nanazip (7-zip fork)
     $filepath = "$env:systemDrive\Users\$env:Username\AppData\Local\Microsoft\WindowsApps\NanaZip.exe"
