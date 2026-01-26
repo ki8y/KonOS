@@ -21,7 +21,9 @@ function Install-Dependencies {
         Show-Throbber -Message "Installing Chocolatey..." {
     	[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072 | Out-Null
     	Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) | Out-Null
-	} }
+	    }
+        Write-Host "[✓] Installing Chocolatey..." -ForegroundColor Green 
+    }
 
     # Scoop
     $filepath = "$env:systemDrive\users\$env:Username\scoop"
@@ -30,16 +32,20 @@ function Install-Dependencies {
     } else {
         Show-Throbber -Message "Installing Scoop..." {
         Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression | Out-Null
-	} }
+	    }
+        Write-Host "[✓] Installing Scoop..." -ForegroundColor Green 
+    }
 
     # Nanazip (7-zip fork)
     $filepath = "$env:systemDrive\Users\$env:Username\AppData\Local\Microsoft\WindowsApps\NanaZip.exe"
     if (Test-Path -Path $filePath -PathType Leaf) {
         Write-Host "[$($KonOS)] NanaZip is already installed. Skipping..."
     } else {
-        Show-Throbber -Message "Installing NanaZip (nanazip)..." {
+        Show-Throbber -Message "Installing NanaZip..." {
         choco install nanazip --confirm | Out-Null 
-    } }
+	    }
+        Write-Host "[✓] Installing NanaZip..." -ForegroundColor Green 
+    }
 
     # Powershell 7
 	$filePath = "$env:systemDrive\Program Files\PowerShell\7\pwsh.exe"
@@ -53,7 +59,9 @@ function Install-Dependencies {
         New-ItemProperty -Path "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command" | Out-Null
         New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command' -Name '(Default)' -Value '"C:\Program Files\PowerShell\7\pwsh.exe" -NoExit -NoProfile -ExecutionPolicy Bypass -Command "$host.UI.RawUI.WindowTitle = ''PowerShell 7 (x64)''; & ''%1''"' -Force | Out-Null
         Write-Host "[$($KonOS)] Powershell-Core installed successfully."
-    } }
+	    }
+        Write-Host "[✓] Installing Powershell 7 (powershell-core)" -ForegroundColor Green 
+    }
 
     # PowerRun
     $filePath = "$env:systemDrive\Kon OS\PowerRun"
@@ -66,7 +74,9 @@ function Install-Dependencies {
         curl.exe -s -L "$uri" -o "$outfile"
         nanazipc x "$env:systemDrive\Kon OS\PowerRun.zip" -o"$env:systemDrive\Kon OS\" -y | Out-Null
         Remove-Item -Path "$env:systemDrive\Kon OS\PowerRun.zip" -Force | Out-Null
-    } }
+	    }
+        Write-Host "[✓] Installing PowerRun..." -ForegroundColor Green 
+    }
 
 # Winget (PLS WORK, DIS ONES SUCH A BITCH)
     $filePath = "$env:systemDrive\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.27.460.0_x64__8wekyb3d8bbwe\winget.exe"

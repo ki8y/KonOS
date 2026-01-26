@@ -234,11 +234,11 @@ Please install Windows 11 (24H2 or newer) and try again.
 
 function Start-KonOS {
     Start-Process -FilePath "pwsh.exe" -ArgumentList @(
-    "-NoProfile"
-    "-ExecutionPolicy"
-    "Bypass"
-    "-File"
-    "`"$env:systemDrive\Kon OS\KonOS.ps1`""
+        "-NoProfile"
+        "-ExecutionPolicy"
+        "Bypass"
+        "-File"
+        "`"$env:systemDrive\Kon OS\KonOS.ps1`""
     )
 }
 
