@@ -7,7 +7,7 @@ TikTok: https://www.tiktok.com/@konpakulol #>
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
 $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper"
-New-Item -ItemType Directory "$env:systemDrive\Kon OS" -ErrorAction SilentlyContinue -Force | Out-Null
+New-Item -ItemType Directory "$env:systemDrive\Kon OS\temp" -ErrorAction SilentlyContinue | Out-Null
 Clear-Host
 
 $accent = '[38;5;99m'
@@ -292,7 +292,7 @@ switch ($LASTEXITCODE) {
 }
 
 # Path
-$filePath = "$env:SystemDrive\Kon OS\Dependencies"
+
 function Start-Setup {
     New-Item -ItemType Directory "C:\Kon OS\Scripts" -ErrorAction SilentlyContinue | Out-Null
     New-Item -ItemType Directory "C:\Kon OS\Modules" -ErrorAction SilentlyContinue | Out-Null
@@ -310,7 +310,8 @@ function Start-Setup {
 
     Unblock-File -Path "$env:systemDrive\Kon OS\KonOS.ps1" 
 
-    if (Test-Path -Path $filePath -PathType Container) {
+    $filePath = "$env:SystemDrive\Kon OS\temp\dependenciesInstalled.flag"
+    if (Test-Path -Path $filePath -PathType Leaf) {
         Start-KonOS
     } else {
         New-Item -ItemType Directory "C:\Kon OS\Scripts" -ErrorAction SilentlyContinue | Out-Null
