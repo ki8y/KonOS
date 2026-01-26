@@ -117,6 +117,15 @@ function Exit-Setup {
     [System.Environment]::Exit(0)
 }
 
+# thing i made so i dont have to manually switch everything to curl.exe
+function Invoke-SpeedRequest {
+        param(
+        [string]$uri,    
+        [string]$outFile
+    )
+        curl.exe -s -L "$uri" -o "$OutFile"
+}
+
 Write-Host @"
 WARNING: THIS IS A VERY EARLY ALPHA VERSION OF KON OS
 
@@ -285,20 +294,17 @@ switch ($LASTEXITCODE) {
 # Path
 $filePath = "$env:SystemDrive\Kon OS\Dependencies"
 function Start-Setup {
-    Invoke-WebRequest `
+    Invoke-SpeedRequest `
         -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/KonOS.ps1" `
-        -OutFile "$env:systemDrive\Kon OS\KonOS.ps1" `
-        -UseBasicParsing | Out-Null
+        -OutFile "$env:systemDrive\Kon OS\KonOS.ps1"
 
-    Invoke-WebRequest `
+    Invoke-SpeedRequest `
         -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/Throbber.psm1" `
-        -OutFile "$env:systemDrive\Kon OS\Modules\Throbber.psm1" `
-        -UseBasicParsing | Out-Null
+        -OutFile "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
 
-    Invoke-WebRequest `
+    Invoke-SpeedRequest `
         -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/ColourCodes.psm1" `
-        -OutFile "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1" `
-        -UseBasicParsing | Out-Null
+        -OutFile "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
 
     Unblock-File -Path "$env:systemDrive\Kon OS\KonOS.ps1" 
 
@@ -306,16 +312,16 @@ function Start-Setup {
         Start-KonOS
     } else {
         New-Item -ItemType Directory "C:\Kon OS\Scripts" | Out-Null
-        Invoke-WebRequest `
+        Invoke-SpeedRequest `
             -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Scripts/getDependencies.ps1" `
-            -OutFile "$env:systemDrive\Kon OS\Scripts\checkForDependencies.ps1" `
-            -UseBasicParsing | Out-Null
+            -OutFile "$env:systemDrive\Kon OS\Scripts\checkForDependencies.ps1"
         PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"
     }  
 }
 
 # SENTAI I KNOW U DONT KNOW HOW U HELPED ME BUT I SWEAR TO GOD UR THE GREATEST
 $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper | $($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))"
+Clear-Host
 Write-Host @"
 $accent
 [?25l
