@@ -22,7 +22,7 @@ function Install-Dependencies {
     	[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072 | Out-Null
     	Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) | Out-Null
 	    }
-        Write-Host "[✓] Installing Chocolatey..." -ForegroundColor Green 
+        Write-Host "`r[✓] Installing Chocolatey..." -ForegroundColor Green 
     }
 
     # Scoop
@@ -33,7 +33,7 @@ function Install-Dependencies {
         Show-Throbber -Message "Installing Scoop..." {
         Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression | Out-Null
 	    }
-        Write-Host "[✓] Installing Scoop..." -ForegroundColor Green 
+        Write-Host "`r[✓] Installing Scoop..." -ForegroundColor Green 
     }
 
     # Nanazip (7-zip fork)
@@ -44,7 +44,7 @@ function Install-Dependencies {
         Show-Throbber -Message "Installing NanaZip..." {
         choco install nanazip --confirm | Out-Null 
 	    }
-        Write-Host "[✓] Installing NanaZip..." -ForegroundColor Green 
+        Write-Host "`r[✓] Installing NanaZip..." -ForegroundColor Green 
     }
 
     # Powershell 7
@@ -60,7 +60,7 @@ function Install-Dependencies {
         New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command' -Name '(Default)' -Value '"C:\Program Files\PowerShell\7\pwsh.exe" -NoExit -NoProfile -ExecutionPolicy Bypass -Command "$host.UI.RawUI.WindowTitle = ''PowerShell 7 (x64)''; & ''%1''"' -Force | Out-Null
         Write-Host "[$($KonOS)] Powershell-Core installed successfully."
 	    }
-        Write-Host "[✓] Installing Powershell 7 (powershell-core)" -ForegroundColor Green 
+        Write-Host "`r[✓] Installing Powershell 7 (powershell-core)" -ForegroundColor Green 
     }
 
     # PowerRun
@@ -75,7 +75,7 @@ function Install-Dependencies {
         nanazipc x "$env:systemDrive\Kon OS\PowerRun.zip" -o"$env:systemDrive\Kon OS\" -y | Out-Null
         Remove-Item -Path "$env:systemDrive\Kon OS\PowerRun.zip" -Force | Out-Null
 	    }
-        Write-Host "[✓] Installing PowerRun..." -ForegroundColor Green 
+        Write-Host "`r[✓] Installing PowerRun..." -ForegroundColor Green 
     }
 
 # Winget (PLS WORK, DIS ONES SUCH A BITCH)
@@ -90,7 +90,7 @@ function Install-Dependencies {
                 $OutFile = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies.zip"
                 curl.exe -s -L "$uri" -o "$OutFile"
             }
-            Write-Host "[✓] Downloading Dependencies..." -ForegroundColor Green
+            Write-Host "`r[✓] Downloading Dependencies..." -ForegroundColor Green
 
             # Extract Zip FIles
             Show-Throbber -Message "Extracting files..." {
@@ -98,7 +98,7 @@ function Install-Dependencies {
                 Remove-Item "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x86" -Recurse
                 Remove-Item "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\arm64" -Recurse
             }
-            Write-Host "[✓] Extracting files..." -ForegroundColor Green
+            Write-Host "`r[✓] Extracting files..." -ForegroundColor Green
 
             # Download app installer (winget :P)
             Show-Throbber -Message "Downloading App Installer Files..." {
@@ -106,7 +106,7 @@ function Install-Dependencies {
                 $OutFile = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\DesktopAppInstaller.msixbundle"
                 curl.exe -s -L "$uri" -o "$OutFile"
             }
-            Write-Host "[✓] Downloading App Installer Files..." -ForegroundColor Green
+            Write-Host "`r[✓] Downloading App Installer Files..." -ForegroundColor Green
 
             # FINALLY, install winget...
             Show-Throbber -Message "Installing Winget..." {
@@ -116,7 +116,7 @@ function Install-Dependencies {
                 $winget = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\DesktopAppInstaller.msixbundle"
                 Add-AppxPackage -Path "$winget" -DependencyPath "$dep1","$dep2","$dep3" -AllowUnsigned
             }
-            Write-Host "[✓] Installing Winget..." -ForegroundColor Green
+            Write-Host "`r[✓] Installing Winget..." -ForegroundColor Green
         }
 
     # VCRedist Runtimes...
@@ -249,10 +249,10 @@ cmd /c "pause >nul"
 try {
     Start-Process -FilePath "pwsh.exe" -ArgumentList @(
         "-NoProfile"
-        "-ExecutionPolicy Bypass"
-        "-Verb RunAs"
-        "-File `"C:\Kon OS\KonOS.ps1`""
-        "-ErrorAction Stop"
+        "-ExecutionPolicy"
+        "Bypass"
+        "-File"
+        "`"$env:systemDrive\Kon OS\KonOS.ps1`""
     )
 } catch {
     Write-Host "PowerShell 7 could not be opened. If you recieved this error, please contact me."
