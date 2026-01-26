@@ -11,7 +11,7 @@ $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
 
 function Install-Dependencies {
     Clear-Host
-    New-Item -ItemType Directory "$env:systemDrive\Kon OS\temp" -ErrorAction SilentlyContinue | Out-Null
+    New-Item -ItemType File "$env:systemDrive\Kon OS\temp\dependenciesInstalled.flag" -Force -ErrorAction SilentlyContinue | Out-Null
 
     # Chocolatey
     $filePath = "$env:systemDrive\ProgramData\chocolatey\bin\choco.exe"
