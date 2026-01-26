@@ -49,20 +49,13 @@ try {
     $StopCode = "GENERAL FAILURE: 11050"
     Stop-Code-NoInternet
 }
+<#
+68 lines
+237 col
+#>
 
-function Install-Terminal {
-        
-        New-Item -ItemType Directory "$env:systemDrive\Kon OS\temp" -ErrorAction SilentlyContinue | Out-Null
-        
-        # Download getDependencies.ps1
-            $displayName = "getDependencies.ps1"
-            $uri = 'https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Scripts/getDependencies.ps1'
-            $outfile = "$env:systemDrive\Kon OS\Scripts\checkForDependencies.ps1"
-        Write-Host "Downloading $($displayName)..."
-        curl.exe -s -L "$uri" -o "$outfile"
-    
-}
 
+<#
 if ($env:WT_SESSION) {
     if (Test-File -FileType Leaf "$env:systemDrive\Kon OS\temp\wt_fullscreen.flag") {
 
@@ -80,7 +73,7 @@ if ($env:WT_SESSION) {
         2 { Deny-Terminal }
         }
     }
-}
+}#>
 
 # ──Version String───────────────────────────────────
 
@@ -88,12 +81,11 @@ New-Item -ItemType File "$env:systemDrive\Kon OS\ver.txt" -ErrorAction SilentlyC
 $commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/KonOS/commits/master"
 $version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/version.txt"
 $content = "   │  ⚙️ $($White)$($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))  $accent│"
-Set-Content "$env:systemDrive\Kon OS\ver.txt" `
-@"
+$VersionArt = @"
 [38;5;99m   ╭─────────────────────────────╮
 $content
 [38;5;99m   ╰─────────────────────────────╯
-"@ -NoNewLine
+"@
 
 # Version indicator
 $commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/master" -UseBasicParsing
@@ -352,9 +344,13 @@ $accent
 [32m                                         ╰────────────╯[31m          ╰────────────╯
 $accent
 
+$VersionArt
 "@
-Write-Host $(Get-Content "$env:systemDrive\Kon OS\ver.txt" | Out-String) -NoNewLine "[37m"
-cmd /c "pause >nul"
+choice /c YN /n | Out-Null
+switch ($LASTEXITCODE) {
+    1 { Start-Setup }
+    2 { Exit-KonOS }
+}
 
 
 # enjailor
