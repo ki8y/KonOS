@@ -11,7 +11,8 @@ $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
 
 function Install-Dependencies {
     Clear-Host
-	
+    New-Item -ItemType Directory "$env:systemDrive\Kon OS\temp" -ErrorAction SilentlyContinue | Out-Null
+
     # Chocolatey
     $filePath = "$env:systemDrive\ProgramData\chocolatey\bin\choco.exe"
     if (Test-Path -Path $filePath -PathType Leaf) {
@@ -21,7 +22,6 @@ function Install-Dependencies {
     	[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072 | Out-Null
     	Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) | Out-Null
 	} }
-
 
     # Scoop
     $filepath = "$env:systemDrive\users\$env:Username\scoop"
@@ -61,16 +61,60 @@ function Install-Dependencies {
         Write-Host "[$($KonOS)] PowerRun is already installed. Skipping..."
     } else {
         Show-Throbber -Message "Installing PowerRun..." {
-        Invoke-WebRequest "https://www.sordum.org/files/downloads.php?power-run" -OutFile "$env:systemDrive\Kon OS\PowerRun.zip" -UseBasicParsing | Out-Null
+        $uri = "https://www.sordum.org/files/downloads.php?power-run" 
+        $OutFile = "$env:systemDrive\Kon OS\PowerRun.zip"
+        curl.exe -s -L "$uri" -o "$outfile"
         nanazipc x "$env:systemDrive\Kon OS\PowerRun.zip" -o"$env:systemDrive\Kon OS\" -y | Out-Null
         Remove-Item -Path "$env:systemDrive\Kon OS\PowerRun.zip" -Force | Out-Null
     } }
+
+# Winget (PLS WORK, DIS ONES SUCH A BITCH)
+    $filePath = "$env:systemDrive\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.27.460.0_x64__8wekyb3d8bbwe\winget.exe"
+    if (Test-Path -Path $filePath -PathType Leaf) {
+        Write-Host "[$($KonOS)] Winget is already installed. Skipping..." 
+    } else {
+        Write-Host "[$($KonOS)] Winget is not installed, running install process..."
+            # Install Dependencies
+            Show-Throbber -Message "Downloading Dependencies..." {
+                $uri = "https://github.com/microsoft/winget-cli/releases/download/v1.12.460/DesktopAppInstaller_Dependencies.zip"
+                $OutFile = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies.zip"
+                curl.exe -s -L "$uri" -o "$OutFile"
+            }
+            Write-Host "[✓] Downloading Dependencies..." -ForegroundColor Green
+
+            # Extract Zip FIles
+            Show-Throbber -Message "Extracting files..." {
+                nanazipc x "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies.zip" -o"$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\" -y | Out-Null
+                Remove-Item "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x86" -Recurse
+                Remove-Item "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\arm64" -Recurse
+            }
+            Write-Host "[✓] Extracting files..." -ForegroundColor Green
+
+            # Download app installer (winget :P)
+            Show-Throbber -Message "Downloading App Installer Files..." {
+                $uri = "https://github.com/microsoft/winget-cli/releases/download/v1.12.460/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+                $OutFile = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\DesktopAppInstaller.msixbundle"
+                curl.exe -s -L "$uri" -o "$OutFile"
+            }
+            Write-Host "[✓] Downloading App Installer Files..." -ForegroundColor Green
+
+            # FINALLY, install winget...
+            Show-Throbber -Message "Installing Winget..." {
+                $dep1 = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\Microsoft.VCLibs.140.00.UWPDesktop_14.0.33728.0_x64"
+                $dep2 = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\Microsoft.VCLibs.140.00_14.0.33519.0_x64"
+                $dep3 = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\Microsoft.WindowsAppRuntime.1.8_8000.616.304.0_x64"
+                $winget = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\DesktopAppInstaller.msixbundle"
+                Add-AppxPackage -Path "$winget" -DependencyPath "$dep1","$dep2","$dep3" -AllowUnsigned
+            }
+            Write-Host "[✓] Installing Winget..." -ForegroundColor Green
+        }
 
     # VCRedist Runtimes...
     Show-Throbber -Message "Installing VCRedist 2015-2022 Runtimes..." {
 	choco install vcredist140 --confirm | Out-Null
     Write-Host "`r[$($KonOS)] VCRedist 2015-2022 Runtimes installed successfully." -NoNewLine
-} }
+    } 
+}
 
 function SelectedNo {
     Clear-Host
