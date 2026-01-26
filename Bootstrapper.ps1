@@ -311,11 +311,11 @@ function Start-Setup {
     if (Test-Path -Path $filePath -PathType Container) {
         Start-KonOS
     } else {
-        New-Item -ItemType Directory "C:\Kon OS\Scripts" | Out-Null
+        New-Item -ItemType Directory "C:\Kon OS\Scripts" -ErrorAction SilentlyContinue | Out-Null
         Invoke-SpeedRequest `
             -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Scripts/getDependencies.ps1" `
             -OutFile "$env:systemDrive\Kon OS\Scripts\checkForDependencies.ps1"
-        PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Dependencies\CheckForDependencies.ps1"
+        PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Scripts\CheckForDependencies.ps1"
     }  
 }
 
