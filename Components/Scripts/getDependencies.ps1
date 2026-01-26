@@ -31,8 +31,14 @@ function Install-Dependencies {
         Write-Host "[$($KonOS)] Scoop is already installed. Skipping..."
     } else {
         Show-Throbber -Message "Installing Scoop..." {
-            Start-Process explorer.exe `
-            'powershell.exe -WindowStyle Hidden -NoProfile -ExecutionPolicy Bypass -Command "Invoke-RestMethod https://get.scoop.sh | Invoke-Expression"'
+            Start-Process -WindowStyle Hidden -FilePath "powershell.exe" -ArgumentList @(
+                "-NoProfile"
+                "-ExecutionPolicy"
+                "Bypass"
+                "-Command"
+                "Invoke-Expression `"& {$(Invoke-RestMethod get.scoop.sh)} -RunAsAdmin`" | Out-Null"
+            ) -Wait
+            
 	    }
         Write-Host "`r[✓] Installing Scoop..." -ForegroundColor Green 
     }
