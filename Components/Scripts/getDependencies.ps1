@@ -31,7 +31,13 @@ function Install-Dependencies {
         Write-Host "[$($KonOS)] Scoop is already installed. Skipping..."
     } else {
         Show-Throbber -Message "Installing Scoop..." {
-        Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression | Out-Null
+            Start-Process -WindowStyle hidden -FilePath "powershell.exe" -ArgumentList @(
+                "-NoProfile"
+                "-ExecutionPolicy"
+                "Bypass"
+                "-Command Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression | Out-Null"
+            ) -Wait
+            
 	    }
         Write-Host "`r[✓] Installing Scoop..." -ForegroundColor Green 
     }
@@ -246,15 +252,13 @@ Write-Host "[$($KonOS)] Successfully installed dependencies!" -ForegroundColor G
 Write-Host "`nPress any key to launch Kon OS..."
 cmd /c "pause >nul"
 
-try {
-    Start-Process -FilePath "pwsh.exe" -ArgumentList @(
-        "-NoProfile"
-        "-ExecutionPolicy"
-        "Bypass"
-        "-File"
-        "`"$env:systemDrive\Kon OS\KonOS.ps1`""
-    )
-} catch {
-    Write-Host "PowerShell 7 could not be opened. If you recieved this error, please contact me."
-    Write-host "`nDiscord: @ki8y"
-}
+
+Start-Process -FilePath "pwsh.exe" -Verb RunAs -ArgumentList @(
+    "-NoProfile"
+    "-ExecutionPolicy"
+    "Bypass"
+    "-File"
+    "`"$env:systemDrive\Kon OS\KonOS.ps1`""
+)
+Start-Sleep -Milliseconds 500 # lol
+[System.Environment]::Exit(0)
