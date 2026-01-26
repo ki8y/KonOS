@@ -1,4 +1,5 @@
 # Winget (PLS WORK, DIS ONES SUCH A BITCH)
+    New-Item -ItemType Directory "$env:systemDrive\Kon OS\Temp" -Force
     $filePath = "$env:systemDrive\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.27.460.0_x64__8wekyb3d8bbwe\winget.exe"
     if (Test-Path -Path $filePath -PathType Leaf) {
         Write-Host "[$($KonOS)] Winget is already installed. Skipping..." 
@@ -10,7 +11,7 @@
             curl.exe -s -L "$uri" -o "$OutFile"
 
             # Extract Zip FIles
-            nanazipc x "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies.zip" -o"$env:systemDrive\Kon OS\DesktopAppInstaller_Dependencies\" -y | Out-Null
+            nanazipc x "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies.zip" -o"$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\" -y | Out-Null
             Remove-Item "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x86" -Recurse
             Remove-Item "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\arm64" -Recurse
 
