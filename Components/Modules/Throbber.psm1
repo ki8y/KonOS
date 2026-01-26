@@ -1,9 +1,13 @@
 ﻿Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
 function Show-Throbber {
     param(
-        [string]$Colour,    
+        [Parameter(Position = 0)]
+        [scriptblock]$Action,
+    
+        [Parameter(Position = 1)]
         [string]$Message,
-        [scriptblock]$Action
+
+        [string]$Color = "$($White)"
     )
 
     $spinnyThing = @('\','|','/','|')
@@ -12,7 +16,7 @@ function Show-Throbber {
     $run = Start-Job -ScriptBlock $Action
 
     while ($run.State -eq 'Running') {
-        Write-Host -NoNewline "`r$($Colour)[$($spinnyThing[$i])] $($Message)[?25l"
+        Write-Host -NoNewline "`r$($Color)[$($spinnyThing[$i])] $Message[?25l"
         Start-Sleep -Milliseconds 100
         $i = ($i + 1) % $spinnyThing.Length
     }
