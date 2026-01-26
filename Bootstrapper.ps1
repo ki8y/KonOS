@@ -260,8 +260,8 @@ function Confirm-RestorePoint {
             -Name 'SystemRestorePointCreationFrequency' `
             -PropertyType DWord `
             -Value 0 `
-            -Force -ErrorAction Stop
-        Enable-ComputerRestore -Drive "$env:systemDrive\" -ErrorAction Stop
+            -Force -ErrorAction Stop | Out-Null
+        Enable-ComputerRestore -Drive "$env:systemDrive\" -ErrorAction Stop | Out-Null
         Checkpoint-Computer -Description 'Pre-Kon OS Installation' -ErrorAction Stop
     } catch {
         Write-Host "WARNING: Could not create a restore point." -ForegroundColor White -BackgroundColor DarkRed
