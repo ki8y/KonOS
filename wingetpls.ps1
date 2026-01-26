@@ -1,30 +1,9 @@
-﻿function Show-Throbber {
-    param(
-        [string]$Colour,    
-        [string]$Message,
-        [scriptblock]$Action
-    )
-
-    $spinnyThing = @('\','|','/','|')
-    $i = 0
-
-    $run = Start-Job -ScriptBlock $Action
-
-    while ($run.State -eq 'Running') {
-        Write-Host -NoNewline "`r$($Colour)[$($spinnyThing[$i])] $($Message)[?25l"
-        Start-Sleep -Milliseconds 100
-        $i = ($i + 1) % $spinnyThing.Length
-    }
-}
-
-
 # Winget (PLS WORK, DIS ONES SUCH A BITCH)
     $filePath = "$env:systemDrive\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.27.460.0_x64__8wekyb3d8bbwe\winget.exe"
     if (Test-Path -Path $filePath -PathType Leaf) {
         Write-Host "[$($KonOS)] Winget is already installed. Skipping..." 
     } else {
         Write-Host "[$($KonOS)] Winget is not installed, running install process..."
-        Show-Throbber -Message "Installing Winget Dependencies..." {
             # Install Dependencies
             $uri = "https://github.com/microsoft/winget-cli/releases/download/v1.12.460/DesktopAppInstaller_Dependencies.zip"
             $OutFile = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies.zip"
@@ -52,6 +31,6 @@
                 Write-Host "IT WORKSS YAYYYY"
             } catch {
                 Write-Host "It didnt work, I hate my life."
-            }
+            
         }
     }
