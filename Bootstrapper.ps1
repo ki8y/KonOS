@@ -294,6 +294,8 @@ switch ($LASTEXITCODE) {
 # Path
 $filePath = "$env:SystemDrive\Kon OS\Dependencies"
 function Start-Setup {
+    New-Item -ItemType Directory "C:\Kon OS\Scripts" -ErrorAction SilentlyContinue | Out-Null
+    New-Item -ItemType Directory "C:\Kon OS\Modules" -ErrorAction SilentlyContinue | Out-Null
     Invoke-SpeedRequest `
         -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/KonOS.ps1" `
         -OutFile "$env:systemDrive\Kon OS\KonOS.ps1"
@@ -315,7 +317,7 @@ function Start-Setup {
         Invoke-SpeedRequest `
             -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Scripts/getDependencies.ps1" `
             -OutFile "$env:systemDrive\Kon OS\Scripts\checkForDependencies.ps1"
-        PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Scripts\CheckForDependencies.ps1"
+        PowerShell -ExecutionPolicy Bypass -NoProfile -File "$env:systemDrive\Kon OS\Scripts\checkForDependencies.ps1"
     }  
 }
 
