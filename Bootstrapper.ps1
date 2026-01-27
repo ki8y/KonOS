@@ -308,6 +308,10 @@ function Start-Setup {
         -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/ColourCodes.psm1" `
         -OutFile "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
 
+    Invoke-SpeedRequest `
+        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/PsExec/PsExec64.exe"
+        -OutFile "$env:systemDrive\Kon OS\Modules\PsExec\PsExec64.exe"
+
     Unblock-File -Path "$env:systemDrive\Kon OS\KonOS.ps1" 
 
     $filePath = "$env:SystemDrive\Kon OS\temp\dependenciesInstalled.flag"
