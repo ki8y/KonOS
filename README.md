@@ -24,3 +24,11 @@ Todo:
 - [ ] Create an easy post setup configuration wizard (CLI or GUI but I'll prob do CLI since thats easier and idk how to write in c# yet...)
 - [x] Stop using batch
 - [ ] Finish documentation
+
+credits (but done poorly):
+Kate - Design, ideas, brainstorming
+Jane - Design, ideas, brainstorming
+vvs - Ideas and brainstorming
+Snowy - Epic f*ckin wallpaper...
+Sentai - Somehow gave me an epiphany
+Kon - THATS ME.
