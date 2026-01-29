@@ -25,7 +25,7 @@ Todo:
 - [x] Stop using batch
 - [ ] Finish documentation
 
-credits (but done poorly):
+### credits (but done poorly):
 Kate - Design, ideas, brainstorming
 Jane - Design, ideas, brainstorming
 vvs - Ideas and brainstorming
