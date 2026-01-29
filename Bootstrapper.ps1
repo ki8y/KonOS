@@ -1,5 +1,4 @@
-﻿<# Hi, plz dont judge my bad code... Thanks for installing Kon OS btw :D 
-If you need to contact me:
+﻿<# If you need to contact me:
 Discord Server: https://discord.gg/MdXtURScqX
 Discord: @ki8y
 TikTok: https://www.tiktok.com/@konpakulol #>
@@ -7,11 +6,26 @@ TikTok: https://www.tiktok.com/@konpakulol #>
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
 $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper"
-New-Item -ItemType Directory "$env:systemDrive\Kon OS\temp" -ErrorAction SilentlyContinue | Out-Null
 Clear-Host
 
+# defines colours + that cool thing that says [Kon OS]
+$global:White = '[97m'
 $accent = '[38;5;99m'
 $KonOS = "$($accent)Kon OS[97m"
+
+# helpful for errors
+function Exit-Setup {
+    Write-Host "Exiting Kon OS setup..." -NoNewLine
+    Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinue
+    Start-Sleep -Milliseconds 500 # this doesnt do anything valuable it just looks cooler if it says "exiting kon os..."
+    
+    [System.Environment]::Exit(0) # sometimes powershell doesnt close with the regular exit command so i found this. the downside is that it causes a garaunteed error exit code but who cares
+}
+
+New-Item -ItemType Directory "$env:systemDrive\Kon OS\temp" -ErrorAction SilentlyContinue | Out-Null # yea :P
+
+
+
 
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
@@ -103,19 +117,12 @@ if (-not $adminState) {
 [97mPress any key to exit setup...[?25l
 "@
     cmd /c 'pause >nul'
-    [System.Environment]::Exit(0)
+    exit
 }
 
 Write-Host "Welcome to $($accent)Kon OS![97m"
 Write-Host "$($version.Substring(0,12)) ($($commit.sha.Substring(0,7)))`n"
 New-Item -Path "$env:SystemDrive\Kon OS\Setup" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-
-function Exit-Setup {
-    Write-Host "Exiting Kon OS setup..." -NoNewLine
-    Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinue
-    Start-Sleep -Milliseconds 500
-    [System.Environment]::Exit(0)
-}
 
 # thing i made so i dont have to manually switch everything to curl.exe
 function Invoke-SpeedRequest {
@@ -152,7 +159,7 @@ Press any key to continue...
 "@
     $sound.Play()
     cmd.exe /c "pause >nul"
-    Exit-KonOS
+    Exit-Setup
 }
 
 # Win11 24H2
@@ -171,7 +178,7 @@ Continue the installation?
 "@
     $sound.Play()
     cmd.exe /c "pause >nul"
-    Exit-KonOS
+    Exit-Setup
 }
 
 # Win11 22H2
@@ -187,7 +194,7 @@ Continue the installation?
 "@
     $sound.Play()
     cmd.exe /c "pause >nul"
-    Exit-KonOS
+    Exit-Setup
 }
 
 # Win11 21H2
@@ -243,8 +250,6 @@ function Start-KonOS {
 }
 
 # Restore Point Stuff...
-$host.UI.RawUI.BufferSize  = New-Object System.Management.Automation.Host.Size(120,30)
-$host.UI.RawUI.WindowSize  = New-Object System.Management.Automation.Host.Size(120,30)
 Write-Host "[$($KonOS)] Create A Restore Point"
 Write-Host "`nCreating a Restore Point will backup the current state of your Windows installation." 
 Write-Host "This can save you from a huge headache if things go wrong."                 
@@ -331,6 +336,19 @@ $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper | $($version.Substring(0,12)) 
 Clear-Host
 Write-Host @"
 $accent
+
+
+
+
+
+
+
+
+
+
+
+
+
 [?25l
 
 
@@ -340,28 +358,42 @@ $accent
 
 
  
-                                    ██╗  ██╗ ██████╗ ███╗   ██╗     ██████╗ ███████╗
-                                    ██║ ██╔╝██╔═══██╗████╗  ██║    ██╔═══██╗██╔════╝
-                                    █████╔╝ ██║   ██║██╔██╗ ██║    ██║   ██║███████╗
-                                    ██╔═██╗ ██║   ██║██║╚██╗██║    ██║   ██║╚════██║
-                                    ██║  ██╗╚██████╔╝██║ ╚████║    ╚██████╔╝███████║
-                                    ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
+                                                                                ██╗  ██╗ ██████╗ ███╗   ██╗     ██████╗ ███████╗
+                                                                                ██║ ██╔╝██╔═══██╗████╗  ██║    ██╔═══██╗██╔════╝
+                                                                                █████╔╝ ██║   ██║██╔██╗ ██║    ██║   ██║███████╗
+                                                                                ██╔═██╗ ██║   ██║██║╚██╗██║    ██║   ██║╚════██║
+                                                                                ██║  ██╗╚██████╔╝██║ ╚████║    ╚██████╔╝███████║
+                                                                                ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
 
-                             ╔════════════════════════════════════════════════════════════╗
-                             ║                        [97mBegin Setup?$accent                        ║
-                             ╚════════════════════════════════════════════════════════════╝
-
-[32m                                         ╭────────────╮[31m          ╭────────────╮
-[32m                                         │   ✅ [Y]   │[31m          │   ❎ [N]   │
-[32m                                         ╰────────────╯[31m          ╰────────────╯
+                                                                         ╔════════════════════════════════════════════════════════════╗
+                                                                         ║                        [97mBegin Setup?$accent                        ║
+                                                                         ╚════════════════════════════════════════════════════════════╝
+                                                                         
+[32m                                                                                     ╭────────────╮[31m          ╭────────────╮
+[32m                                                                                     │   ✅ [Y]   │[31m          │   ❎ [N]   │
+[32m                                                                                     ╰────────────╯[31m          ╰────────────╯
 $accent
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $VersionArt
-"@
+"@ -NoNewLine
 choice /c YN /n | Out-Null
 switch ($LASTEXITCODE) {
     1 { Start-Setup }
-    2 { Exit-KonOS }
+    2 { Exit-Setup }
 }
 
 
