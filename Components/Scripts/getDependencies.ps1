@@ -1,5 +1,6 @@
 ﻿Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
 Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
+$env:path = "$env:systemDrive\Kon OS\Modules\PsExec;$env:PATH"
 
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
@@ -25,23 +26,16 @@ function Install-Dependencies {
         Write-Host "`r[✓] Installing Chocolatey..." -ForegroundColor Green 
     }
 
-    <# Scoop OK YKW FUCK SCOOP
+    # Scoop (Took more effort than you'd think...)
     $filepath = "$env:systemDrive\users\$env:Username\scoop"
     if (Test-Path -Path $filePath -PathType Container) {
         Write-Host "[$($KonOS)] Scoop is already installed. Skipping..."
     } else {
         Show-Throbber -Message "Installing Scoop..." {
-            Start-Process -WindowStyle Hidden -FilePath "powershell.exe" -ArgumentList @(
-                "-NoProfile"
-                "-ExecutionPolicy"
-                "Bypass"
-                "-Command"
-                "Invoke-Expression `"& {$(Invoke-RestMethod get.scoop.sh)} -RunAsAdmin`" | Out-Null"
-            ) -Wait
-            
-	    }
+            psexec64 -accepteula -l -nobanner Powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command "Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression"
+        }
         Write-Host "`r[✓] Installing Scoop..." -ForegroundColor Green 
-    }#>
+    }
 
     # Nanazip (7-zip fork)
     $filepath = "$env:systemDrive\Users\$env:Username\AppData\Local\Microsoft\WindowsApps\NanaZip.exe"
