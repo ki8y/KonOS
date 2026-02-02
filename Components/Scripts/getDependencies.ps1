@@ -135,14 +135,13 @@ function SelectedNo {
     [System.Environment]::Exit(0)
 }
 
-function PromptForDependencies {
-    Clear-Host
-    Write-Host "[$($KonOS)] Your computer is missing the files/applications that Kon OS depends on to run.`n`nInstall them now?`n[92m[Y]es [91m[N]o" -NoNewLine
-    choice /c YN /n | Out-Null
-    switch ($LASTEXITCODE) {
-        1 { Install-Dependencies }
-        2 { SelectedNo }
-} }
+Clear-Host
+Write-Host "[$($KonOS)] Your computer is missing the files/applications that Kon OS depends on to run.`n`nInstall them now?`n[92m[Y]es [91m[N]o" -NoNewLine
+choice /c YN /n | Out-Null
+switch ($LASTEXITCODE) {
+    1 { Install-Dependencies }
+    2 { SelectedNo }
+}
 
 Clear-Host
 Write-Host "[$($KonOS)] Successfully installed dependencies!" -ForegroundColor Green
