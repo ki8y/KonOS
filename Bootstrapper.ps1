@@ -313,7 +313,7 @@ function Start-Setup {
         -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/ColourCodes.psm1" `
         -OutFile "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
 
-    New-Item -Path "$env:systemDrive\Kon OS\Modules\PsExec" -Force -ErrorAction SilentlyContinue | Out-Null
+    New-Item -ItemType Directory -Path "$env:systemDrive\Kon OS\Modules\PsExec" -Force -ErrorAction SilentlyContinue | Out-Null
     Invoke-SpeedRequest `
         -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/PsExec/PsExec64.exe" `
         -OutFile "$env:systemDrive\Kon OS\Modules\PsExec\PsExec64.exe"
