@@ -32,7 +32,9 @@ function Install-Dependencies {
         Write-Host "[$($KonOS)] Scoop is already installed. Skipping..."
     } else {
         Show-Throbber -Message "Installing Scoop..." {
+            Set-Location -Path "$env:systemDrive\users\$env:username"
             psexec64 -accepteula -l -nobanner Powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command "Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression"
+            Set-Location -Path "$env:systemDrive\Kon OS\Scripts"
         }
         Write-Host "`r[✓] Installing Scoop..." -ForegroundColor Green 
     }
