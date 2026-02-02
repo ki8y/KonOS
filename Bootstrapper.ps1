@@ -19,7 +19,7 @@ function Exit-Setup {
     Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinue
     Start-Sleep -Milliseconds 500 # this doesnt do anything valuable it just looks cooler if it says "exiting kon os..."
     
-    [System.Environment]::Exit(0) # sometimes powershell doesnt close with the regular exit command so i found this. the downside is that it causes a garaunteed error exit code but who cares
+    [System.Environment]::Exit(0) # sometimes powershell doesnt close with the regular exit command so i found this.
 }
 
 New-Item -ItemType Directory "$env:systemDrive\Kon OS\temp" -ErrorAction SilentlyContinue | Out-Null # yea :P
@@ -42,7 +42,7 @@ Please connect to the internet and try again.
 
 [97mPress any key to exit setup...
 "@ -NoNewLine
-    cmd.exe /c "pause >nul"
+    cmd.exe /c "pause" | Out-Null
     [System.Environment]::Exit(0)
 }
 
