@@ -13,12 +13,18 @@ $Apps = @(
     "Microsoft.ParentalControls",
 	"Microsoft.RemoteDesktop",
     "Microsoft.BingWeather",
+    "Microsoft.BingNews",
+    "Microsoft.BingSearch",
     "Microsoft.GetHelp",
     "Microsoft.Getstarted",
     "Microsoft.Microsoft3DViewer",
     "Microsoft.MicrosoftOfficeHub",
     "Microsoft.MicrosoftSolitaireCollection",
+    "Microsoft.OneConnect",
     "Microsoft.MicrosoftStickyNotes",
+    "Microsoft.AutoSuperResolution",
+    "Microsoft.Messaging",
+    "Microsoft.Journal",
     "Microsoft.MSPaint",
     "Microsoft.Office.OneNote",
     "Microsoft.OneConnect",
@@ -30,6 +36,10 @@ $Apps = @(
     "Microsoft.WindowsCamera",
     "Microsoft.WindowsMaps",
     "Microsoft.WindowsSoundRecorder",
+    "Microsoft.WindowsCalculator",
+    "MicrosoftCorporationII.QuickAssist",
+    "MicrosoftWindows.CrossDevice",
+    "MicrosoftPCManager",
     "Microsoft.Xbox.TCUI",
     "Microsoft.XboxApp",
     "Microsoft.XboxGameOverlay",
@@ -37,19 +47,19 @@ $Apps = @(
     "Microsoft.XboxIdentityProvider",
     "Microsoft.Xbox.GamingAI.Companion.Host"
     "Microsoft.GamingServices"
-    "Microsoft.Microsoft.GamingApp",
+    "Microsoft.GamingApp",
     "Microsoft.YourPhone",
     "Microsoft.OneDriveSync"
-    "HPAudioControl",
+    "HPAudioControl", # thx sora
     "Microsoft.ZuneMusic",
     "Microsoft.ZuneVideo",
     "Microsoft.WindowsCommunicationsApps",
     "Microsoft.ScreenSketch",
     "Microsoft.WindowsFeedbackHub",
-    "Microsoft.BingNews",	
 	"Microsoft.Copilot",
     "Microsoft.BingFinance",
     "Microsoft.XboxLive",
+    "Microsoft.Services.Store.Engagement",
     "Microsoft.StorePurchaseApp",
     "Microsoft.WindowsStore",
     "MSTeams",
@@ -75,3 +85,6 @@ foreach ($app in $apps) {
     }
 }
 pause
+
+* You know you can do
+  better than that.
