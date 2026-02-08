@@ -148,7 +148,7 @@ Write-Host "`r[✓] Adding verbose logon screens and bluescreens..." -Foreground
 # ──Explorer Tweaks──────────────────────────────────
 
 Write-Host "Disabling wallpaper compression..." -NoNewline
-    reg.exe add "HKCU\Control Panel\Desktop" /v 'JPEGImportQuality' /t REG_DWORD /d 100 /f | Out-Null
+    reg.exe add "HKCU\Control Panel\Desktop" /v 'JPEGImportQuality' /t REG_DWORD /d 100 /f | Out-Null # FOR THE SEXIEST KON OS WALLPAPER
 
 Write-Host 'Enabling "End Task" button in taskbar...' -NoNewLine
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings" /v 'TaskbarEndTask' /t REG_DWORD /d 1 /f | Out-Null
@@ -159,7 +159,7 @@ Write-Host "Enabling hidden files and showing file extensions..."
     reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v 'CheckedValue' /t REG_DWORD /d 1 /f | Out-Null
 
 Write-Host "Enabling legacy context menu..."
-    New-Item -Path "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f
+    New-Item -Path "Registry::HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" -Force # Why is it like this ☠️
 
 Write-Host "Enabling dark mode..."
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v 'SystemUsesLightTheme' /t REG_DWORD /d 0 /f | Out-Null 
@@ -344,7 +344,7 @@ Write-Host "Disabling smooth scrolling" -ForegroundColor Blue
     reg.exe add "HKCU\Control Panel\Desktop" /v 'SmoothScroll' /t REG_DWORD /d 0 /f | Out-Null
 
 Write-Host "Flushing Windows Explorer..." -ForegroundColor Blue
-    Remove-Item "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags" /f
+    Remove-Item "Registry::HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags" -Recurse -Force | Out-Null
     reg.exe add "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\AllFolders\Shell" /v 'FolderType' /t REG_SZ /d "NotSpecified" /f | Out-Null
 
 Write-Host "Disabling fast user switching..." -ForegroundColor Blue
@@ -352,3 +352,14 @@ Write-Host "Disabling fast user switching..." -ForegroundColor Blue
 
 Write-Host "Disabling Windows Ink related features..." -ForegroundColor Blue
     reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace" /v 'AllowWindowsInkWorkspace' /t REG_DWORD /d 0 /f | Out-Null
+
+Show-Throbber -Message "Disabling Smart Screen..." -Colour "$Blue" {
+    # (Main)
+    reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" /t REG_SZ /v "SmartScreenEnabled" /d "Off" /f | Out-Null
+    reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /t REG_DWORD /v "EnableSmartScreen" /d 0 /f | Out-Null
+    # (Edge)
+    reg.exe add "HKCU\Software\Microsoft\Edge\SmartScreenEnabled" /ve /t REG_DWORD /d 0 /f | Out-Null
+    # (Store Apps)
+    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\AppHost" /t REG_DWORD /v "EnableWebContentEvaluation" /d 0 /f | Out-Null
+    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\AppHost" /t REG_DWORD /v "PreventOverride" /d 0 /f | Out-Null
+}
