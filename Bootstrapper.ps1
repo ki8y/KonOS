@@ -100,10 +100,6 @@ $content
 [38;5;99m   ╰─────────────────────────────╯
 "@
 
-# Version indicator
-$commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/konos/commits/master" -UseBasicParsing
-$version = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/version.txt" -UseBasicParsing
-
 # Checks for admin
 $adminState = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
 if (-not $adminState) {
@@ -337,19 +333,6 @@ $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper | $($version.Substring(0,12)) 
 Clear-Host
 Write-Host @"
 $accent
-
-
-
-
-
-
-
-
-
-
-
-
-
 [?25l
 
 
@@ -359,37 +342,23 @@ $accent
 
 
  
-                                                                                ██╗  ██╗ ██████╗ ███╗   ██╗     ██████╗ ███████╗
-                                                                                ██║ ██╔╝██╔═══██╗████╗  ██║    ██╔═══██╗██╔════╝
-                                                                                █████╔╝ ██║   ██║██╔██╗ ██║    ██║   ██║███████╗
-                                                                                ██╔═██╗ ██║   ██║██║╚██╗██║    ██║   ██║╚════██║
-                                                                                ██║  ██╗╚██████╔╝██║ ╚████║    ╚██████╔╝███████║
-                                                                                ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
+                                    ██╗  ██╗ ██████╗ ███╗   ██╗     ██████╗ ███████╗
+                                    ██║ ██╔╝██╔═══██╗████╗  ██║    ██╔═══██╗██╔════╝
+                                    █████╔╝ ██║   ██║██╔██╗ ██║    ██║   ██║███████╗
+                                    ██╔═██╗ ██║   ██║██║╚██╗██║    ██║   ██║╚════██║
+                                    ██║  ██╗╚██████╔╝██║ ╚████║    ╚██████╔╝███████║
+                                    ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
 
-                                                                         ╔════════════════════════════════════════════════════════════╗
-                                                                         ║                        [97mBegin Setup?$accent                        ║
-                                                                         ╚════════════════════════════════════════════════════════════╝
-                                                                         
-[32m                                                                                     ╭────────────╮[31m          ╭────────────╮
-[32m                                                                                     │   ✅ [Y]   │[31m          │   ❎ [N]   │
-[32m                                                                                     ╰────────────╯[31m          ╰────────────╯
+                             ╔════════════════════════════════════════════════════════════╗
+                             ║                        [97mBegin Setup?$accent                        ║
+                             ╚════════════════════════════════════════════════════════════╝
+
+[32m                                         ╭────────────╮[31m          ╭────────────╮
+[32m                                         │   ✅ [Y]   │[31m          │   ❎ [N]   │
+[32m                                         ╰────────────╯[31m          ╰────────────╯
 $accent
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-$VersionArt
+$versionArt
 "@ -NoNewLine
 choice /c YN /n | Out-Null
 switch ($LASTEXITCODE) {
