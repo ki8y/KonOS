@@ -1,4 +1,6 @@
-﻿# List of app package names or names to match
+﻿$prefs = Get-Content "$env:systemDrive\Kon OS\temp\config.json" -Raw | ConvertFrom-Json
+
+# List of app package names or names to match
 $Apps = @(
     "Microsoft.549981C3F5F10",	# cortana
 	"Clipchamp",
@@ -60,8 +62,6 @@ $Apps = @(
     "Microsoft.BingFinance",
     "Microsoft.XboxLive",
     "Microsoft.Services.Store.Engagement",
-    "Microsoft.StorePurchaseApp",
-    "Microsoft.WindowsStore",
     "MSTeams",
     "ArtGroup",
     "Microsoft.Ink"
@@ -69,7 +69,7 @@ $Apps = @(
 
 foreach ($app in $apps) {
     $ProgressPreference = 'SilentlyContinue'
-    if (Get-AppxPackage -Name "$app*") {
+    if (Get-AppxPackage -Name "*$app*") {
         try {
             # Remove-AppxPackage $($app)* -ErrorAction Stop
             # Write-Error "hi" -ErrorAction Stop | Out-Null
@@ -80,11 +80,62 @@ foreach ($app in $apps) {
             Write-Host ("`r[91m*[97m Removing $app... ─────────────────────────")
         }
     } else {
-        Write-Host "`r                         ──────────────────────────────────────────────────────────────────────────────────────── [[93mskip[97m]" -NoNewLine
+        Write-Host "`r                         ──────────────────────────────────────────────────────────────────────────────────────── [[93mskipped[97m]" -NoNewLine
         Write-Host "`r[93m*[97m Removing $($app)... " -ForegroundColor Yellow
     }
 }
-pause
 
-* You know you can do
-  better than that.
+
+# Uninstalls Microsoft Store (if u pressed yes earlier)
+$apps = @(
+    "Microsoft.StorePurchaseApp",
+    "Microsoft.WindowsStore"
+)
+
+if ($prefs.removeWS) {
+    foreach ($app in $apps) {
+        $ProgressPreference = 'SilentlyContinue'
+        if (Get-AppxPackage -Name "*$app*") {
+            try {
+                # Remove-AppxPackage $($app)* -ErrorAction Stop
+                # Write-Error "hi" -ErrorAction Stop | Out-Null
+                Write-Host "`r                         ────────────────────────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+                Write-Host ("`r[92m*[97m Removing $app... ─────────────────────────")
+            } catch {
+                Write-Host "                         ──────────────────────────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+                Write-Host ("`r[91m*[97m Removing $app... ─────────────────────────")
+            }
+        } else {
+            Write-Host "`r                         ──────────────────────────────────────────────────────────────────────────────────────── [[93mskip[97m]" -NoNewLine
+            Write-Host "`r[93m*[97m Removing $($app)... " -ForegroundColor Yellow
+        }
+    }
+} else {
+    Write-Host "Keeping Microsoft Store..."
+}
+
+# Uninstalls Microsoft Edge (again, if u pressed yes earlier)
+$apps = @(
+    "MicrosoftEdge"
+)
+
+if ($prefs.removeEdge) {
+    foreach ($app in $apps) {
+        if (Get-AppxPackage -Name "*$app*") {
+            try {
+                # Remove-AppxPackage $($app)* -ErrorAction Stop
+                # Write-Error "hi" -ErrorAction Stop | Out-Null
+                Write-Host "`r                         ────────────────────────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
+                Write-Host ("`r[92m*[97m Removing $app... ─────────────────────────")
+            } catch {
+                Write-Host "                         ──────────────────────────────────────────────────────────────────────────────────────── [[91mfail[97m]" -NoNewLine
+                Write-Host ("`r[91m*[97m Removing $app... ─────────────────────────")
+            }
+        } else {
+            Write-Host "`r                         ──────────────────────────────────────────────────────────────────────────────────────── [[93mskip[97m]" -NoNewLine
+            Write-Host "`r[93m*[97m Removing $($app)... " -ForegroundColor Yellow
+        }
+    }
+} else {
+    Write-Host "Keeping Microsoft Edge..."
+}
