@@ -147,9 +147,6 @@ Write-Host "`r[✓] Adding verbose logon screens and bluescreens..." -Foreground
 
 # ──Explorer Tweaks──────────────────────────────────
 
-Write-Host "Disabling wallpaper compression..." -NoNewline
-    reg.exe add "HKCU\Control Panel\Desktop" /v 'JPEGImportQuality' /t REG_DWORD /d 100 /f | Out-Null # FOR THE SEXIEST KON OS WALLPAPER
-
 Write-Host 'Enabling "End Task" button in taskbar...' -NoNewLine
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings" /v 'TaskbarEndTask' /t REG_DWORD /d 1 /f | Out-Null
 
