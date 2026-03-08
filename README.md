@@ -12,17 +12,19 @@ Kon OS is a customizable, easy to use, open-source optimization tool for Windows
 ```
 - Then, you can install Kon OS by running this one liner:
 ```ps1
-# Invoke-Expression ((Invoke-RestMethod https://raw.githubusercontent.com/ki8y/KonOS/master/Bootstrapper.ps1).TrimStart([char]0xFEFF))
+# [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((Invoke-RestMethod https://raw.githubusercontent.com/ki8y/KonOS/master/Bootstrapper.ps1).TrimStart([char]0xFEFF))
 ```
 <sub>Unfinished readme :P</sub>
 
 Todo:
 - [x] ~~Finish general tweaks script~~ oh jesus finally...
-- [x] Finish service control script
+- [ ] Finish service control script
 - [ ] Backport to Windows 10... ☠️
 - [ ] Make Kon OS at least functional (LMFAO)
 - [ ] Create an easy post setup configuration wizard (CLI or GUI but I'll prob do CLI since thats easier and idk how to write in c# yet...)
-- [x] Stop using batch
+- [ ] Rewrite bootstrapper (again)
+- [ ] Rewrite dependency checker uhhhhhhh 
+- [ ] Stop using batch
 - [ ] Finish documentation
 
 ### credits (but done poorly):
