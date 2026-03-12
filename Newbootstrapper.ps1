@@ -19,7 +19,7 @@ $KonOS = "$($accent)Kon OS[97m"
 $KONOS = "$env:systemDrive\Kon OS"
 
 # logs
-New-Item -ItemType File "$KONOS\setupLog.txt" -ErrorAction SilentlyContinue | Out-Null # SUPA COOL LOGS!
+New-Item -ItemType File "$KONOS\setupLog.txt" -Force -ErrorAction SilentlyContinue | Out-Null # SUPA COOL LOGS!
 
 Write-Output @"
 Starting Kon OS Setup...
@@ -32,7 +32,12 @@ Starting Kon OS Setup...
 $snd = New-Object System.Media.SoundPlayer
 $snd.soundlocation = "$env:systemDrive\Windows\Media\Windows Foreground.wav" # (uses the windows error sound in case things go wrong.)
 
-function Exit-Setup { # cleans stuff up and exits da flippin SETUP.
+function Exit-Setup {
+    param(
+        [int]$exitCode = 0
+    )
+    
+    # cleans stuff up and exits da flippin SETUP.
     Write-Output "Exiting setup..."
     Write-Host "[$($KonOS)] Cleaning setup files..."
     Remove-Item -Path "$KonOS\Setup" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
@@ -41,6 +46,12 @@ function Exit-Setup { # cleans stuff up and exits da flippin SETUP.
     Start-Sleep -Milliseconds 500 # just looks cooler if it says "exiting setup" lmfao
 
     Clear-Host
+    if ($exitCode -ne 0) {
+        Write-Host "Setup exited prematurely.`nError Code: $exitcode"
+        Write-Output "Setup exited prematurely. Error Code: $exitcode" | Add-Content -Path "$KonOS\setupLog.txt"
+    } else {
+        Write-Output "Successfully cancelled setup." | Add-Content -Path "$KonOS\setupLog.txt"
+    }
     Exit
 }
 
