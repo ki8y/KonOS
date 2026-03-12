@@ -12,7 +12,7 @@ $filePath = "$env:systemDrive\Kon OS\snd"
 if (Test-Path -Path $filePath -PathType Container) {
     Write-Host ("Welcome To" + $accent + " Kon OS`e[97m.") -ForegroundColor White
 } else {
-    Show-Throbber -Message "Downloading modules..." {
+    Write-Throbber -Message "Downloading modules..." {
     Invoke-WebRequest `
         "https://github.com/ki8y/KonOS/raw/master/Components/Sounds/startup.wav" `
         -OutFile "$env:systemDrive\Kon OS\Modules\snd\startup.wav"
@@ -33,7 +33,7 @@ function Exit-KonOS {
     $sound = New-Object System.Media.SoundPlayer
     $sound.SoundLocation = "$env:systemDrive\Kon OS\Modules\snd\shutdown.wav"
     
-    Show-Throbber -Message "Exiting Kon OS setup..." {
+    Write-Throbber -Message "Exiting Kon OS setup..." {
         Remove-Item -Path "$env:systemDrive\Kon OS\Setup" -Recurse -Force -ErrorAction SilentlyContinue
         Remove-Item -Path "$env:systemDrive\Kon OS\Scripts" -Recurse -Force -ErrorAction SilentlyContinue
     }
@@ -127,7 +127,7 @@ function Start-Setup {
                                               ╰──────────────────────────╯
 "@
     $name = "generalTweaks.ps1"
-    Show-Throbber -Message "Downloading $($Cyan)$name..." {
+    Write-Throbber -Message "Downloading $($Cyan)$name..." {
         Invoke-WebRequest `
         -Uri 'https://github.com/ki8y/KonOS/raw/master/Components/Scripts/generalTweaks.ps1' `
         -OutFile "$env:systemDrive\Kon OS\Scripts\$name" | Out-Null
@@ -135,7 +135,7 @@ function Start-Setup {
     Write-Host "`r[✓] Installing $name...        " -ForegroundColor Green
 
     $name = "serviceControl.ps1"
-    Show-Throbber -Message "Downloading $($Cyan)$name..." {
+    Write-Throbber -Message "Downloading $($Cyan)$name..." {
         Invoke-WebRequest `
         -Uri 'https://raw.githubusercontent.com/ki8y/KonOS/raw/master/Components/Scripts/serviceControl.ps1' `
         -OutFile "$env:systemDrive\Kon OS\Scripts\$name" | Out-Null

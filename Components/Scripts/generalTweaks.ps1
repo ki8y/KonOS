@@ -6,7 +6,7 @@ Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
 
 # ──Disable automatic driver updates─────────────────
 
-Show-Throbber -Message "$($Blue)Disabling automatic driver updates..." {
+Write-Throbber -Message "$($Blue)Disabling automatic driver updates..." {
     reg.exe add "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Update" /v "ExcludeWUDriversInQualityUpdate" /t REG_DWORD /d 1 /f | Out-Null
     reg.exe add "HKLM\SOFTWARE\Microsoft\PolicyManager\default\Update" /v "ExcludeWUDriversInQualityUpdate" /t REG_DWORD /d 1 /f | Out-Null
     reg.exe add "HKLM\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" /v "ExcludeWUDriversInQualityUpdate" /t REG_DWORD /d 1 /f | Out-Null
@@ -20,13 +20,13 @@ Write-Host "`r[✓] Disabling automatic driver updates...        " -ForegroundCo
 
 # ──Visual Effects───────────────────────────────────
 
-Show-Throbber -Message "$($Blue)Disabling all visual effects and animations..." {
+Write-Throbber -Message "$($Blue)Disabling all visual effects and animations..." {
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v "VisualFXSetting" /t REG_DWORD /d 3 /f | Out-Null
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Desktop" /v "VisualFXSetting" /t REG_DWORD /d 3 /f | Out-Null
 }
 Write-Host "`r[✓] Disabling all visual effects and animations...        " -ForegroundColor Green
 
-Show-Throbber -Message "$($Blue)Disabling window animations..." {
+Write-Throbber -Message "$($Blue)Disabling window animations..." {
 
     reg.exe add "HKCU\Control Panel\Desktop\WindowMetrics" /v "MinAnimate" /t REG_SZ /d 0 /f | Out-Null
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v "WindowAnimations" /t REG_DWORD /d 0 /f | Out-Null
@@ -37,7 +37,7 @@ Show-Throbber -Message "$($Blue)Disabling window animations..." {
 }
 Write-Host "`r[✓] Disabling window animations...        " -ForegroundColor Green
 
-Show-Throbber -Message "$($Blue)Disabling Taskbar animations..." {
+Write-Throbber -Message "$($Blue)Disabling Taskbar animations..." {
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" /v "TaskbarAnimations" /t REG_DWORD /d 0 /f | Out-Null
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "TaskbarAnimations" /t REG_DWORD /d 0 /f | Out-Null
 }
@@ -47,7 +47,7 @@ Write-Host "[\] Disabling Aero Peek..." -ForegroundColor Blue -NoNewLine
     reg.exe add "HKCU\Software\Microsoft\Windows\DWM" /v "EnableAeroPeek" /t REG_DWORD /d 0 /f | Out-Null
 Write-Host "`r[✓] Disabling Aero Peek...        " -ForegroundColor Green
 
-Show-Throbber -Message "$($Blue)Disabling menu animations..." {
+Write-Throbber -Message "$($Blue)Disabling menu animations..." {
     reg.exe add "HKCU\Control Panel\Desktop" /v "MenuShowDelay" /t REG_SZ /d 0 /f | Out-Null
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "EnableToolTips" /t REG_DWORD /d 0 /f | Out-Null
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ListBoxSmoothScrolling" /t REG_DWORD /d 0 /f | Out-Null
@@ -65,36 +65,36 @@ Write-Host "[\] Disabling selection rectangle..." -ForegroundColor Blue -NoNewLi
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ListviewAlphaSelect" /t REG_DWORD /d 0 /f | Out-Null
 Write-Host "`r[✓] Disabling selection rectangle...          " -ForegroundColor Green
 
-Show-Throbber -Message "$($Blue)Enabling font smoothing..." {
+Write-Throbber -Message "$($Blue)Enabling font smoothing..." {
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "FontSmoothing" /t REG_DWORD /d 2 /f | Out-Null
     reg.exe add "HKCU\Control Panel\Desktop" /v "FontSmoothing" /t REG_SZ /d 2 /f | Out-Null
 }
 Write-Host "`r[✓] Enabling font smoothing...              " -ForegroundColor Green
 
-Show-Throbber -Message "$($Blue)Disabling slide combo box animations..." {
+Write-Throbber -Message "$($Blue)Disabling slide combo box animations..." {
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ComboBoxAnimation" /t REG_DWORD /d 0 /f | Out-Null
 }
 Write-Host "`r[✓] Disabling slide combo box animations...               " -ForegroundColor Green
 
-Show-Throbber -Message "$($Blue)Disabling desktop shadows..." {
+Write-Throbber -Message "$($Blue)Disabling desktop shadows..." {
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ListviewShadow" /t REG_DWORD /d 0 /f | Out-Null
 }
 Write-Host "`r[✓] Disabling desktop shadows...        " -ForegroundColor Green
 
-Show-Throbber -Message "$($Blue)Enabling Photo and video thumbnails..." {
+Write-Throbber -Message "$($Blue)Enabling Photo and video thumbnails..." {
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "IconsOnly" /t REG_DWORD /d 0 /f | Out-Null
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ThumbnailCacheSize" /t REG_DWORD /d 0 /f | Out-Null
 }
 Write-Host "`r[✓] Enabling Photo and video thumbnails...        " -ForegroundColor Green
 
-Show-Throbber -Message "$($Blue)Disabling thumbnail caching..." {
+Write-Throbber -Message "$($Blue)Disabling thumbnail caching..." {
     reg.exe add "HKCU\Software\Microsoft\Windows\DWM" /v "AlwaysHibernateThumbnails" /t REG_DWORD /d 0 /f | Out-Null
 }
 Write-Host "`r[✓] Disabling thumbnail caching...        " -ForegroundColor Green
 
 # ──Mouse Acceleration───────────────────────────────
 
-Show-Throbber -Message "$($Blue)Disabling Mouse Acceleration..." {
+Write-Throbber -Message "$($Blue)Disabling Mouse Acceleration..." {
     reg.exe add "HKCU\Control Panel\Mouse" /v MouseSpeed /t REG_SZ /d 0 /f | Out-Null
     reg.exe add "HKCU\Control Panel\Mouse" /v MouseThreshold1 /t REG_SZ /d 0 /f | Out-Null
     reg.exe add "HKCU\Control Panel\Mouse" /v MouseThreshold2 /t REG_SZ /d 0 /f | Out-Null
@@ -128,7 +128,7 @@ bcdedit /set x2apicpolicy Enable | Out-Null
 Write-Host 'Disabling Legacy APIC Mode...'
 bcdedit /set uselegacyapicmode No | Out-Null
 
-Show-Throbber -Message "$($Blue)Applying shutdown tweaks..." {
+Write-Throbber -Message "$($Blue)Applying shutdown tweaks..." {
     reg.exe add "HKCU\Control Panel\Desktop" /v "AutoEndTasks" /t REG_SZ /d "1" /f | Out-Null
     reg.exe add "HKCU\Control Panel\Desktop" /v "HungAppTimeout" /t REG_SZ /d "1000" /f | Out-Null
     reg.exe add "HKCU\Control Panel\Desktop" /v "WaitToKillAppTimeout" /t REG_SZ /d "1000" /f | Out-Null
@@ -139,7 +139,7 @@ Show-Throbber -Message "$($Blue)Applying shutdown tweaks..." {
 }
 Write-Host "`r[✓] Applying shutdown tweaks..." -ForegroundColor Green
 
-Show-Throbber -Message "$($Blue)Adding verbose logon screens and bluescreens..." {
+Write-Throbber -Message "$($Blue)Adding verbose logon screens and bluescreens..." {
     reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v "VerboseStatus" /t REG_DWORD /d '1' /f | Out-Null
     reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\CrashControl" /v "DisplayParameters" /t REG_DWORD /d '1' /f | Out-Null
 }
@@ -254,7 +254,7 @@ $accent
         }
     }
 
-Show-Throbber -Message "$($Blue)Disabling Telemetry via various scheduled tasks and registry keys..." {
+Write-Throbber -Message "$($Blue)Disabling Telemetry via various scheduled tasks and registry keys..." {
     
     Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Autochk\' -TaskName "Proxy" | Out-Null
     Disable-ScheduledTask -TaskPath 'Microsoft\Windows\DiskDiagnostic\' -TaskName 'Microsoft-Windows-DiskDiagnosticDataCollector' | Out-Null
@@ -350,7 +350,7 @@ Write-Host "Disabling fast user switching..." -ForegroundColor Blue
 Write-Host "Disabling Windows Ink related features..." -ForegroundColor Blue
     reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace" /v 'AllowWindowsInkWorkspace' /t REG_DWORD /d 0 /f | Out-Null
 
-Show-Throbber -Message "Disabling Smart Screen..." -Colour "$Blue" {
+Write-Throbber -Message "Disabling Smart Screen..." -Colour "$Blue" {
     # (Main)
     reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" /t REG_SZ /v "SmartScreenEnabled" /d "Off" /f | Out-Null
     reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /t REG_DWORD /v "EnableSmartScreen" /d 0 /f | Out-Null

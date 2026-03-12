@@ -1,4 +1,4 @@
-﻿Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
+﻿Import-Module "C:\Users\Wybie\Documents\GitHub\KonOS\Components\Modules\Throbber.psm1"
 
 # --Task Scheduler---------
 
@@ -20,7 +20,7 @@ $tasks = @(
 )
 foreach ($task in $tasks) {
     try {
-        # Write-Error "" -NoNewLine -ErrorAction Stop | Out-Null
+        
         Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
         Write-Host ("`r" + '[92m*[97m Disabling ' + $task + '... ─────────────────────────')
     } catch {
@@ -266,7 +266,7 @@ $services = @(
 )
 foreach ($svc in $services) {
     try {
-        # Get-Service $svc -ErrorAction SkipHP
+        
         Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
         Write-Host ("`r" + '[92m*[97m Disabling ' + $svc + '... ─────────────────────────')
     } catch {
@@ -595,4 +595,7 @@ foreach ($svc in $services) {
         Write-Host ("`r" + '[92m*[97m Setting ' + $svc + ' to automatic...  ──────────────────────────────────────')
     }
 }
+        Write-Throbber -Message "Disabling $($task)..." {
+        Write-Output "hi"
+        }
 pause

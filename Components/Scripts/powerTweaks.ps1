@@ -64,7 +64,7 @@ Invoke-WebRequest `
 
 $guid = "815641e7-52ff-46f3-beec-16ac0f774a85"
 
-Show-Throbber -Colour "$Blue" -Message "Importing Kon OS High Performance power plan..." {
+Write-Throbber -Colour "$Blue" -Message "Importing Kon OS High Performance power plan..." {
     $powerPlanPath = "$env:systemDrive\Kon OS\Components\Modules\powerPlans\Kon OS High Performance.pow"
     Write-Output "hi"
     powercfg -import $powerPlanPath $guid
