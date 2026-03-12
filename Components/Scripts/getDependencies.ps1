@@ -1,162 +1,208 @@
-﻿Import-Module "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
-Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
-$env:path = "$env:systemDrive\Kon OS\Modules\PsExec;$env:PATH"
+﻿Write-Output "──getDependencies.ps1────────────────────────────────"
 
-$Host.UI.RawUI.BackgroundColor = 'Black'
-$Host.UI.RawUI.ForegroundColor = 'White'
-Clear-Host
+$Dependencies = [PSCustomObject]@(
+    #[PSCustomObject]@{ Name = 'Scoop'; Path = "$env:systemDrive\users\$env:Username\scoop\shims\scoop.ps1"; Type = 'Leaf'; Installed = $null}, <# Scoop is no longer needed. #>
+    [PSCustomObject]@{ Name = 'Chocolatey'; Path = "$env:systemDrive\ProgramData\chocolatey\bin\choco.exe"; Type = 'Leaf'; Installed = $null },
+    [PSCustomObject]@{ Name = 'Winget'; Path = "$env:systemDrive\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.27.460.0_x64__8wekyb3d8bbwe\winget.exe"; Type = 'Leaf'; Installed = $null},
+    [PSCustomObject]@{ Name = 'NanaZip'; Path = "$env:systemDrive\Users\$env:Username\AppData\Local\Microsoft\WindowsApps\NanaZip.exe"; Type = 'Leaf'; Installed = $null },
+    [PSCustomObject]@{ Name = 'PowerShell-Core'; Path = "$env:systemDrive\Program Files\PowerShell\7\pwsh.exe"; Type = 'Leaf'; Installed = $null },
+    [PSCustomObject]@{ Name = 'PowerRun'; Path = "$env:systemDrive\Kon OS\Modules\PowerRun\PowerRun_x64.exe"; Type = 'Leaf'; Installed = $null },
+    [PSCustomObject]@{ Name = 'Visual Studio 2015 Runtimes'; Path = 'HKLM:\SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64'; Type = 'Container'; Installed = $null },
+    [PSCustomObject]@{ Name = 'Windows Terminal'; Path = "$env:systemDrive\Program Files\WindowsApps\Microsoft.WindowsTerminal*"; Type = 'Container'; Installed = $null }
+)
 
-$KonOS="$($accent)Kon OS[97m"
-$sound = New-Object System.Media.SoundPlayer
-$sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
+$i = 0
 
-function Install-Dependencies {
+foreach ($dep in $dependencies) {
+    Try {
+        if (-not (Test-Path -Path $dep.Path -PathType $dep.Type)) { 
+            throw "Missing $($dep.Name)!"
+        } else { $dep.Installed = $true }
+    } Catch {
+        $i = $i + 1
+        # Write-Host "$($_.Exception.Message)" -ForegroundColor DarkRed <#This is unused now because uhhhhhhhhhhhhhh yea#>
+        $dep.Installed = $false
+    }
+}
+
+# winget wants to be different for SOME REASON...
+Try {
+    Winget --version | Out-Null
+} Catch {
+    $i = $i + 1
+    # Write-Host "Missing winget.exe!" -ForegroundColor DarkRed
+}
+
+# Visual studio runtimes ALSO wanna be DIFFERENT FOR SOMEEE REASON...
+$VSRuntimeRegKey = "Registry::HKLM\SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64"
+Try {
+    if ((Test-Path -Path "$VSRuntimeRegKey" -PathType Container)) {
+        if (-not (Get-ItemProperty $VSRuntimeRegKey).Installed -eq 1) { throw "Missing Visual Studio 2015 Runtimes!" } # sometimes the key exists but the vs runtimes still arent installed, so this checks if its installed. if not, then yk the rest.
+    } else { throw "Missing Visual Studio 2015 Runtimes!" }
+} Catch {
+    $i = $i + 1
+}
+
+<#function Exit-Setup {
+    function Exit-Setup { # cleans stuff up and exits da flippin SETUP.
+    Write-Host "[$($KonOS)] Cleaning setup files..."
+    Remove-Item -Path "$env:systemDrive\Kon OS" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
+    
+    Write-Host "[$($KonOS)] Exiting setup..."
+    Start-Sleep -Milliseconds 500 # just looks cooler if it says "exiting setup" lmfao
+
     Clear-Host
-    New-Item -ItemType File "$env:systemDrive\Kon OS\temp\dependenciesInstalled.flag" -Force -ErrorAction SilentlyContinue | Out-Null
+    Exit
+}
+}#>
 
-    # Chocolatey
-    $filePath = "$env:systemDrive\ProgramData\chocolatey\bin\choco.exe"
-    if (Test-Path -Path $filePath -PathType Leaf) {
-        Write-Host "[$($KonOS)] Chocolatey is already installed. Skipping..."
-    } else {
-        Show-Throbber -Message "Installing Chocolatey..." {
-    	[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072 | Out-Null
-    	Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) | Out-Null
-	    }
-        Write-Host "`r[✓] Installing Chocolatey..." -ForegroundColor Green 
-    }
+function Install-AllMissingDependencies {
 
-    # Scoop (Took more effort than you'd think...)
-    $filepath = "$env:systemDrive\users\$env:Username\scoop"
-    if (Test-Path -Path $filePath -PathType Container) {
-        Write-Host "[$($KonOS)] Scoop is already installed. Skipping..."
-    } else {
-        Show-Throbber -Message "Installing Scoop..." {
-            Set-Location -Path "$env:systemDrive\users\$env:username"
-            psexec64 -accepteula -l -nobanner Powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command "Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression"
-            Set-Location -Path "$env:systemDrive\Kon OS\Scripts"
+$uacState = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544' # checks if admin is running, needed for some stuff
+
+    function Install-Dependency {
+        param(
+            [string]$MissingDep
+        )
+
+        $local:Dependency = "chocolatey"
+        If ("$MissingDep" -Match "$Dependency") {
+            try {
+                if (-not $uacState) { 
+                    throw "Failed to install $($dependency): You need to run this with admin privileges`nI know, it's not ideal. Blame the scoop devs."
+                }
+                [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072 # tls 1.2, aka more secure :P (noted cuz i forget what this does all the time, chocolatey includes it so i include it too.)
+                Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) # runs the chocolatey installer and stuff yea uh yes
+            } catch {
+                Write-Host "$($_.Exception.Message)" -ForegroundColor Red
+                Write-Host "`n`nRelaunch this script with administrator privileges?"
+                Write-Host "[Y]es [N]o"
+                choice /c YN /n | Out-Null
+                switch ($LASTEXITCODE) {
+                    1 {
+                        Start-Process -FilePath "pwsh.exe" -Verb RunAs -ArgumentList @(
+                            "-NoProfile"
+                            "-ExecutionPolicy"
+                            "Bypass"
+                            "-File"
+                            "`"$env:systemDrive\Kon OS\KonOS.ps1`""
+                            )
+                    } 2 {
+                        SelectedNo
+                        }
+                }
+            }
         }
-        Write-Host "`r[✓] Installing Scoop..." -ForegroundColor Green 
-    }
 
-    # Nanazip (7-zip fork)
-    $filepath = "$env:systemDrive\Users\$env:Username\AppData\Local\Microsoft\WindowsApps\NanaZip.exe"
-    if (Test-Path -Path $filePath -PathType Leaf) {
-        Write-Host "[$($KonOS)] NanaZip is already installed. Skipping..."
-    } else {
-        Show-Throbber -Message "Installing NanaZip..." {
-        choco install nanazip --confirm | Out-Null 
-	    }
-        Write-Host "`r[✓] Installing NanaZip..." -ForegroundColor Green 
-    }
+        $local:Dependency = "winget"
+        If ("$MissingDep" -Match "$Dependency") {
+            try {
+                if (-not $uacState) { 
+                    throw "Failed to install $($dependency):  You need to run this with admin privileges`nI know, it's not ideal. Blame the scoop devs."
+                }
 
-    # Powershell 7
-	$filePath = "$env:systemDrive\Program Files\PowerShell\7\pwsh.exe"
-    if (Test-Path -Path $filePath -PathType Leaf) {
-        Write-Host "[$($KonOS)] PowerShell 7 is already installed. Skipping..."
-    } else {
-        Show-Throbber -Message "Installing Powershell 7 (powershell-core)..." {
-		choco install powershell-core --confirm | Out-Null
-        New-ItemProperty -Path "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v "POWERSHELL_TELEMETRY_OPTOUT" /t REG_SZ /d "1" /f | Out-Null
-        New-ItemProperty -Path "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run" /v "MUIVerb" /t REG_SZ /d "Run With Powershell 7" /f | Out-Null
-        New-ItemProperty -Path "HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command" | Out-Null
-        New-ItemProperty -Path 'Registry::HKEY_CLASSES_ROOT\SystemFileAssociations\.ps1\Shell\Windows.pwsh.Run\Command' -Name '(Default)' -Value '"C:\Program Files\PowerShell\7\pwsh.exe" -NoExit -NoProfile -ExecutionPolicy Bypass -Command "$host.UI.RawUI.WindowTitle = ''PowerShell 7 (x64)''; & ''%1''"' -Force | Out-Null
-        Write-Host "[$($KonOS)] Powershell-Core installed successfully."
-	    }
-        Write-Host "`r[✓] Installing Powershell 7 (powershell-core)" -ForegroundColor Green 
-    }
-
-    # PowerRun
-    $filePath = "$env:systemDrive\Kon OS\PowerRun"
-    if (Test-Path -Path $filePath -PathType Container) {
-        Write-Host "[$($KonOS)] PowerRun is already installed. Skipping..."
-    } else {
-        Show-Throbber -Message "Installing PowerRun..." {
-        $uri = "https://www.sordum.org/files/downloads.php?power-run" 
-        $OutFile = "$env:systemDrive\Kon OS\PowerRun.zip"
-        curl.exe -s -L "$uri" -o "$outfile"
-        nanazipc x "$env:systemDrive\Kon OS\PowerRun.zip" -o"$env:systemDrive\Kon OS\" -y | Out-Null
-        Remove-Item -Path "$env:systemDrive\Kon OS\PowerRun.zip" -Force | Out-Null
-	    }
-        Write-Host "`r[✓] Installing PowerRun..." -ForegroundColor Green 
-    }
-
-# Winget (PLS WORK, DIS ONES SUCH A BITCH)
-    $filePath = "$env:systemDrive\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.27.460.0_x64__8wekyb3d8bbwe\winget.exe"
-    if (Test-Path -Path $filePath -PathType Leaf) {
-        Write-Host "[$($KonOS)] Winget is already installed. Skipping..." 
-    } else {
-        Write-Host "[$($KonOS)] Winget is not installed, running install process..."
-            # Install Dependencies
-            Show-Throbber -Message "Downloading Dependencies..." {
+                # Downloads winget dependencies
                 $uri = "https://github.com/microsoft/winget-cli/releases/download/v1.12.460/DesktopAppInstaller_Dependencies.zip"
                 $OutFile = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies.zip"
                 curl.exe -s -L "$uri" -o "$OutFile"
-            }
-            Write-Host "`r[✓] Downloading Dependencies..." -ForegroundColor Green
+                if ($LASTEXITCODE -gt 0) { throw "Failed to install $($dependency): Failed to download files. ($($LASTEXITCODE))"}
 
-            # Extract Zip FIles
-            Show-Throbber -Message "Extracting files..." {
-                nanazipc x "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies.zip" -o"$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\" -y | Out-Null
+                # Extracts da files
+                Expand-Archive -Path "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies.zip" -DestinationPath "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\" -Force | Out-Null
                 Remove-Item "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x86" -Recurse
                 Remove-Item "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\arm64" -Recurse
-            }
-            Write-Host "`r[✓] Extracting files..." -ForegroundColor Green
 
-            # Download app installer (winget :P)
-            Show-Throbber -Message "Downloading App Installer Files..." {
+                # Downloads app installer (which contains winget blah blah)
                 $uri = "https://github.com/microsoft/winget-cli/releases/download/v1.12.460/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
                 $OutFile = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\DesktopAppInstaller.msixbundle"
-                curl.exe -s -L "$uri" -o "$OutFile"
-            }
-            Write-Host "`r[✓] Downloading App Installer Files..." -ForegroundColor Green
 
-            # FINALLY, install winget...
-            Show-Throbber -Message "Installing Winget..." {
-                $dep1 = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\Microsoft.VCLibs.140.00.UWPDesktop_14.0.33728.0_x64"
-                $dep2 = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\Microsoft.VCLibs.140.00_14.0.33519.0_x64"
-                $dep3 = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\Microsoft.WindowsAppRuntime.1.8_8000.616.304.0_x64"
-                $winget = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\DesktopAppInstaller.msixbundle"
-                Add-AppxPackage -Path "$winget" -DependencyPath "$dep1","$dep2","$dep3" -AllowUnsigned
+                curl.exe -s -L "$uri" -o "$OutFile"
+                if ($LASTEXITCODE -gt 0) { throw "Failed to install $($dependency): Failed to download files. ($($LASTEXITCODE))"}
+
+                # installs app installer and winget, dai jus stands for desktop app installer lmfao
+                $DAI = [PSCustomObject]@{
+                    D1 = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\Microsoft.VCLibs.140.00.UWPDesktop_14.0.33728.0_x64.appx";
+                    D2 = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\Microsoft.VCLibs.140.00_14.0.33519.0_x64.appx";
+                    D3 = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\Microsoft.WindowsAppRuntime.1.8_8000.616.304.0_x64.appx";
+                    winget = "$env:systemDrive\Kon OS\temp\DesktopAppInstaller_Dependencies\x64\DesktopAppInstaller.msixbundle"
+                }
+
+                Add-AppxPackage -Path "$($DAI.winget)" -DependencyPath "$($DAI.D1)","$($DAI.D2)","$($DAI.D3)" -AllowUnsigned -ForceApplicationShutdown
+                winget source update --accept-source-agreements
+                winget update -e --id Microsoft.AppInstaller --accept-package-agreements --accept-source-agreements --force
+
+            } catch {
+                Write-Host "$($_.Exception.Message)" -ForegroundColor Red
+                Write-Host "`n`nRelaunch this script with administrator privileges?"
+                Write-Host "[Y]es [N]o (NON-FUNCTIONAL)"
+                pause
             }
-            Write-Host "`r[✓] Installing Winget..." -ForegroundColor Green
         }
 
-    # VCRedist Runtimes...
-    Show-Throbber -Message "Installing VCRedist 2015-2022 Runtimes..." {
-	choco install vcredist140 --confirm | Out-Null
-    Write-Host "`r[$($KonOS)] VCRedist 2015-2022 Runtimes installed successfully." -NoNewLine
-    } 
+        $local:Dependency = "NanaZip"
+        If ("$MissingDep" -Match "$Dependency") {
+            winget install -e --id M2Team.NanaZip --accept-package-agreements --accept-source-agreements --force | Out-Null
+	    }
+
+        $local:Dependency = "PowerShell-Core"
+        If ("$MissingDep" -Match "$Dependency") {
+            winget install --id Microsoft.PowerShell --accept-package-agreements --accept-source-agreements --force | Out-Null
+        }
+
+        $local:Dependency = "PowerRun"
+        If ("$MissingDep" -Match "$Dependency") {
+            $uri = "https://www.sordum.org/files/downloads.php?power-run" 
+            $OutFile = "$env:systemDrive\Kon OS\temp\PowerRun.zip"
+            curl.exe -s -L "$uri" -o "$outfile"
+
+            Expand-Archive -Path "$env:systemDrive\Kon OS\temp\PowerRun.zip" -DestinationPath "$env:systemDrive\Kon OS\" -Force | Out-Null
+            Remove-Item -Path "$env:systemDrive\Kon OS\temp\PowerRun.zip" -Force | Out-Null
+	    }
+
+        $local:Dependency = "Windows Terminal"
+        If ("$MissingDep" -Match "$Dependency") {
+            winget install --exact --id Microsoft.WindowsTerminal --accept-package-agreements --accept-source-agreements --force | Out-Null
+        }
+
+        $local:Dependency = "Visual Studio 2015 Runtimes"
+        If ("$MissingDep" -Match "$Dependency") {
+            winget install --exact --id Microsoft.VCRedist.2015+.x64 --accept-package-agreements --accept-source-agreements --force | Out-Null
+        }
+
+    }
+
+    <#foreach ($depe in ($dependencies | Select-Object Name,Installed | Where-Object { $_.Installed -eq $false})) {
+        Install-Dependency -MissingDep "$($depe.Name)"
+        Write-Host "$($Depe.Name)"
+    }#>
+    $Dependencies | Where-Object {-not $_.Installed} | ForEach-Object {
+        if (-not $_.Installed) {
+            Write-Host "[ℹ️] Installing $($_.Name)..." -NoNewLine
+            Install-Dependency -MissingDep "$($_.Name)"    
+            Write-Host "`r[✓] Installing $($_.Name)..." -ForegroundColor Green
+        }
+    }
+    $Dependencies
 }
 
-function SelectedNo {
-    Clear-Host
-    Write-Host "[91mSetup Cannot Continue:`n`n[93mKon OS cannot be installed without the required dependencies.`nPlease install the dependencies and try again.`n`n[91m(MISSING DEPENDENCIES)"
-    Write-Host "Press any key to exit setup..." -ForegroundColor White -NoNewLine
-    cmd.exe /c "pause >nul"
-    [System.Environment]::Exit(0)
+clear-host
+if ($i -gt 0) {
+    Write-Host "You have [91m$($i)[33m dependencie(s) missing. `n" -ForegroundColor DarkYellow
+
+    Write-Host "[33mMissing dependencies: [93m$((($dependencies | Where-Object {-not $_.Installed}).Name) -join ', ')"
+    #foreach ($dep in ($dependencies | Select-Object Name,Installed | Where-Object { $_.Installed -eq $false})) {
+    #    Write-Host "$($dep.Name)" -ForegroundColor Yellow
+    #}
+
+    Write-Host "Install them now? [Y]es [N]o"
+
+    choice.exe /c YN /n 
+    switch ($LASTEXITCODE) {
+    1 { Install-AllMissingDependencies }
+    2 { Exit-Setup }
+}
 }
 
-Clear-Host
-Write-Host "[$($KonOS)] Your computer is missing the files/applications that Kon OS depends on to run.`n`nInstall them now?`n[92m[Y]es [91m[N]o" -NoNewLine
-choice /c YN /n | Out-Null
-switch ($LASTEXITCODE) {
-    1 { Install-Dependencies }
-    2 { SelectedNo }
+function Install-KonOS {
+
 }
-
-Clear-Host
-Write-Host "[$($KonOS)] Successfully installed dependencies!" -ForegroundColor Green
-Write-Host "`nPress any key to launch Kon OS..."
-cmd /c "pause >nul"
-
-
-Start-Process -FilePath "pwsh.exe" -Verb RunAs -ArgumentList @(
-    "-NoProfile"
-    "-ExecutionPolicy"
-    "Bypass"
-    "-File"
-    "`"$env:systemDrive\Kon OS\KonOS.ps1`""
-)
-Start-Sleep -Milliseconds 500 # lol
-[System.Environment]::Exit(0)
