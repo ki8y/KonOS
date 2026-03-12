@@ -1,5 +1,7 @@
-﻿Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
-function Show-Throbber {
+﻿#Import-Module "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
+Import-Module "C:\Users\Wybie\Documents\GitHub\KonOS\Components\Modules\ColourCodes.psm1"
+
+function Write-Throbber {
     param(
         [Parameter(Position = 0)]
         [scriptblock]$Action,
