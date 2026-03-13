@@ -186,7 +186,7 @@ $uacState = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contain
 }
 
 clear-host
-if ($i -gt 0) {
+if ($i -ne 0) {
     Write-Host "You have [91m$($i)[33m dependencie(s) missing. `n" -ForegroundColor DarkYellow
 
     Write-Host "[33mMissing dependencies: [93m$((($dependencies | Where-Object {-not $_.Installed}).Name) -join ', ')"
@@ -198,10 +198,14 @@ if ($i -gt 0) {
 
     choice.exe /c YN /n 
     switch ($LASTEXITCODE) {
-    1 { Install-AllMissingDependencies }
-    2 { Exit-Setup }
+        1 { Install-AllMissingDependencies }
+        2 { Exit-Setup }
+    }
+} elseif ($i -eq 0) {
+    
+    exit
 }
-}
+
 
 function Install-KonOS {
 
