@@ -24,9 +24,6 @@ function Exit-Setup {
 
 New-Item -ItemType Directory "$env:systemDrive\Kon OS\temp" -ErrorAction SilentlyContinue | Out-Null # yea :P
 
-
-
-
 $sound = New-Object System.Media.SoundPlayer
 $sound.SoundLocation = "$env:systemDrive\Windows\Media\Windows Ding.wav"
 
@@ -298,21 +295,17 @@ function Start-Setup {
     New-Item -ItemType Directory "C:\Kon OS\Scripts" -ErrorAction SilentlyContinue | Out-Null
     New-Item -ItemType Directory "C:\Kon OS\Modules" -ErrorAction SilentlyContinue | Out-Null
     Invoke-SpeedRequest `
-        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/KonOS.ps1" `
+        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Setup/KonOS.ps1" `
         -OutFile "$env:systemDrive\Kon OS\KonOS.ps1"
 
     Invoke-SpeedRequest `
-        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/Throbber.psm1" `
+        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Universal/Modules/Throbber.psm1" `
         -OutFile "$env:systemDrive\Kon OS\Modules\Throbber.psm1"
 
     Invoke-SpeedRequest `
-        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/ColourCodes.psm1" `
+        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Setup/Modules/ColourCodes.psm1" `
         -OutFile "$env:systemDrive\Kon OS\Modules\ColourCodes.psm1"
 
-    New-Item -ItemType Directory -Path "$env:systemDrive\Kon OS\Modules\PsExec" -Force -ErrorAction SilentlyContinue | Out-Null
-    Invoke-SpeedRequest `
-        -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/PsExec/PsExec64.exe" `
-        -OutFile "$env:systemDrive\Kon OS\Modules\PsExec\PsExec64.exe"
 
     Unblock-File -Path "$env:systemDrive\Kon OS\KonOS.ps1" 
 
