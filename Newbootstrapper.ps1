@@ -141,13 +141,13 @@ $flags = [PSCustomObject]@{
 $flags | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\flags.json"
 
 Invoke-SpeedRequest `
-    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/Throbber.psm1" `
+    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Universal/Modules/Throbber.psm1" `
     -OutFile "$KONOS\Modules\Throbber.psm1"
 
 Invoke-SpeedRequest `
-    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Modules/ColourCodes.psm1" `
+    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Setup/Modules/ColourCodes.psm1" `
     -OutFile "$KONOS\Modules\ColourCodes.psm1"
 
 Invoke-SpeedRequest `
-    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Scripts/getDependencies.ps1" `
+    -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Setup/Scripts/getDependencies.ps1" `
     -OutFile "$KONOS\Setup\Scripts\checkForDependencies.ps1"   
