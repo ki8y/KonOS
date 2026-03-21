@@ -71,8 +71,7 @@ foreach ($app in $apps) {
     $ProgressPreference = 'SilentlyContinue'
     if (Get-AppxPackage -Name "*$app*") {
         try {
-            # Remove-AppxPackage $($app)* -ErrorAction Stop
-            # Write-Error "hi" -ErrorAction Stop | Out-Null
+            Remove-AppxPackage $($app)* -AllUsers -ErrorAction Stop
             Write-Host "`r                         ────────────────────────────────────────────────────────────────────────────────────────── [[92mok[97m]" -NoNewLine
             Write-Host ("`r[92m*[97m Removing $app... ─────────────────────────")
         } catch {
