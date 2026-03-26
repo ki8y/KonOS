@@ -19,7 +19,7 @@ $KonOS = "$($accent)Kon OS[97m"
 $KONOS = "$env:systemDrive\Kon OS"
 
 # logs
-New-Item -ItemType File "$KONOS\setupLog.txt" -Force -ErrorAction SilentlyContinue | Out-Null # SUPA COOL LOGS!
+New-Item -ItemType File "$KONOS\setupLog.txt" -ErrorAction SilentlyContinue | Out-Null # SUPA COOL LOGS!
 
 Write-Output @"
 Starting Kon OS Setup...
@@ -27,6 +27,17 @@ Starting Kon OS Setup...
 ──Bootstrapper.ps1───────────────────────────────────
 
 "@ | Add-Content -Path "$KonOS\setupLog.txt"
+
+$conWidth = $Host.UI.RawUI.WindowSize.Width
+$conHeight = $Host.UI.RawUI.WindowSize.Height
+
+if ($conWidth -lt 64) {
+    Start-Job -ScriptBlock { wt.exe --size 120,30 Powershell.exe -NoLogo -NoExit -NoProfile -file 'C:\Users\Wyatt\Downloads\runslikecock.ps1' }
+    [System.Environment]::Exit(0)
+} elseif ($conHeight -lt 19) {
+    Start-Job -ScriptBlock { wt.exe --size 120,30 Powershell.exe -NoLogo -NoExit -NoProfile -file 'C:\Users\Wyatt\Downloads\runslikecock.ps1' }
+    [System.Environment]::Exit(0)
+}
 
 # initializes the windows error sound in case things go wrong.
 $bell = New-Object System.Media.SoundPlayer
@@ -147,23 +158,33 @@ New-Item -ItemType Directory "$KONOS\Resources" -ErrorAction SilentlyContinue | 
 New-Item -ItemType File "$KONOS\Setup\flags.json" -ErrorAction SilentlyContinue | Out-Null # Flags for various stuffs and stuffs and... yes!
 
 # Title Screen :D (It looks like this so it fits in any terminal size)
-$conWidth = $Host.UI.RawUI.WindowSize.Width
-$conHeight = $Host.UI.RawUI.WindowSize.Height
 
-$LeftIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 48) / 2 - 1))
-$LineIndent = [Math]::Max(0, [Math]::Floor(($ConHeight - 6) / 2 - 1))
+$TitleIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 48) / 2 - 1))
+$SubtitleIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 62) / 2 - 1))
+$ButtonIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 38) / 2 - 1))
+$LineIndent = [Math]::Max(0, [Math]::Floor(($ConHeight - 6) / 2 - 3))
 
-$Offset = " " * $LeftIndent
-$Offset2 = "`n" * $LineIndent
+$Offset = " " * $TitleIndent
+$Offset2 = " " * $SubtitleIndent
+$Offset3 = " " * $ButtonIndent 
+$Offset4 = "`n" * $LineIndent
 
 Write-Host @"
-$Offset2
+$Offset4
 $offset ██╗  ██╗ ██████╗ ███╗   ██╗     ██████╗ ███████╗
 $offset ██║ ██╔╝██╔═══██╗████╗  ██║    ██╔═══██╗██╔════╝
 $offset █████╔╝ ██║   ██║██╔██╗ ██║    ██║   ██║███████╗
 $offset ██╔═██╗ ██║   ██║██║╚██╗██║    ██║   ██║╚════██║
 $offset ██║  ██╗╚██████╔╝██║ ╚████║    ╚██████╔╝███████║
 $offset ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
+
+$offset2 ╔════════════════════════════════════════════════════════════╗
+$offset2 ║                        [97mBegin Setup?$accent                        ║
+$offset2 ╚════════════════════════════════════════════════════════════╝
+
+$offset3 [32m╭────────────╮[31m          ╭────────────╮
+$offset3 [32m│   ✅ [Y]   │[31m          │   ❎ [N]   │
+$offset3 [32m╰────────────╯[31m          ╰────────────╯
 "@
 
 if ($env:WT_SESSION) { $WTSession = $true }
