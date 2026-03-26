@@ -29,15 +29,17 @@ Starting Kon OS Setup...
 "@ | Add-Content -Path "$KonOS\setupLog.txt"
 
 # initializes the windows error sound in case things go wrong.
-$snd = New-Object System.Media.SoundPlayer
-$snd.soundlocation = "$env:systemDrive\Windows\Media\Windows Foreground.wav" # (uses the windows error sound in case things go wrong.)
+$bell = New-Object System.Media.SoundPlayer
+$bell.soundLocation = "$env:systemDrive\Windows\Media\Windows Foreground.wav" # (uses the windows error sound in case things go wrong.)
 
 function Exit-Setup {
+    # cleans stuff up and exits da flippin SETUP.
+
     param(
         [int]$exitCode = 0
     )
     
-    # cleans stuff up and exits da flippin SETUP.
+    
     Write-Output "Exiting setup..."
     Write-Host "[$($KonOS)] Cleaning setup files..."
     Remove-Item -Path "$KonOS\Setup" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
@@ -53,6 +55,20 @@ function Exit-Setup {
         Write-Output "Successfully cancelled setup." | Add-Content -Path "$KonOS\setupLog.txt"
     }
     Exit
+}
+
+function Read-Choice {
+    # helper function for boolean choices :P
+    param(
+        [Parameter(Mandatory)]
+        [string]$Name
+    )
+
+    choice /c YN /n | Out-Null
+    switch ($LASTEXITCODE) {
+        1 { Set-Variable -Name "$name" -Value $true -Scope Script -Force }
+        2 { Set-Variable -Name "$name" -Value $false -Scope Script -Force }
+    }
 }
 
 function Invoke-CriticalStop { # Exits setup if a critical error occurs. yea :P
@@ -130,12 +146,52 @@ New-Item -ItemType Directory "$KONOS\Sounds" -ErrorAction SilentlyContinue | Out
 New-Item -ItemType Directory "$KONOS\Resources" -ErrorAction SilentlyContinue | Out-Null # this'll be used after the setup for configs nd stuff yeah
 New-Item -ItemType File "$KONOS\Setup\flags.json" -ErrorAction SilentlyContinue | Out-Null # Flags for various stuffs and stuffs and... yes!
 
+# Title Screen :D (It looks like this so it fits in any terminal size)
+$conWidth = $Host.UI.RawUI.WindowSize.Width
+$conHeight = $Host.UI.RawUI.WindowSize.Height
+
+$LeftIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 48) / 2 - 1))
+$LineIndent = [Math]::Max(0, [Math]::Floor(($ConHeight - 6) / 2 - 1))
+
+$Offset = " " * $LeftIndent
+$Offset2 = "`n" * $LineIndent
+
+Write-Host @"
+$Offset2
+$offset ██╗  ██╗ ██████╗ ███╗   ██╗     ██████╗ ███████╗
+$offset ██║ ██╔╝██╔═══██╗████╗  ██║    ██╔═══██╗██╔════╝
+$offset █████╔╝ ██║   ██║██╔██╗ ██║    ██║   ██║███████╗
+$offset ██╔═██╗ ██║   ██║██║╚██╗██║    ██║   ██║╚════██║
+$offset ██║  ██╗╚██████╔╝██║ ╚████║    ╚██████╔╝███████║
+$offset ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
+"@
+
 if ($env:WT_SESSION) { $WTSession = $true }
 else { $WTSession = $false }
 
-$flags = [PSCustomObject]@{
-    "WTSession" = $WTSession
+# Choices
+Write-Host "Create a restore point? (Y/N) *Recommended*"
+Read-Choice -Name "CreateRP"
 
+Write-Host "Uninstall Microsoft Edge? (Y/N)"
+Read-Choice -Name "RemoveEdge"
+
+Write-Host "Would you like to uninstall Microsoft Store? (Y/N)"
+Read-Choice -Name "RemoveWS"
+
+Write-Host "Disable Wi-Fi? (Y/N)"
+Read-Choice -Name "DisableWifi"
+
+$setup = [PSCustomObject]@{
+    "Flags" = @{
+        "WTSession" = $WTSession
+    }
+    "Prefs" = [PSCustomObject]@{
+        "CreateRP"   = $CreateRP
+        "RemoveEdge" = $RemoveEdge
+        "RemoveWS"   = $RemoveWS
+        "DisableWifi" = $DisableWifi
+    }
 }
 
 $flags | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\flags.json"
