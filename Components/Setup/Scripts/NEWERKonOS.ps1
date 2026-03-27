@@ -13,3 +13,20 @@ Read-Choice -Name "RemoveWS"
 
 Write-Host "Disable Wi-Fi? (Y/N)"
 Read-Choice -Name "DisableWifi"
+
+Write-Host "Disable Wi-Fi? (Y/N)"
+Read-Choice -Name "DisableWifi"
+
+$setup = [PSCustomObject]@{
+    "Flags" = @{
+        "WTSession" = $WTSession
+    }
+    "Prefs" = [PSCustomObject]@{
+        "CreateRP"   = $CreateRP
+        "RemoveEdge" = $RemoveEdge
+        "RemoveWS"   = $RemoveWS
+        "DisableWifi" = $DisableWifi
+    }
+}
+
+$flags | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\flags.json"
