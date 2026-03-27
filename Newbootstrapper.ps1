@@ -65,7 +65,7 @@ function Exit-Setup {
     } else {
         Write-Output "Successfully cancelled setup." | Add-Content -Path "$KonOS\setupLog.txt"
     }
-    Exit
+    Exit $exitCode
 }
 
 function Read-Choice {
@@ -85,7 +85,8 @@ function Read-Choice {
 function Invoke-CriticalStop { # Exits setup if a critical error occurs. yea :P
     param(
         [string]$StopCode,
-        [string]$Message
+        [string]$Message,
+        [int]$ExitCode = 0
     )
     $snd.Play()
     Clear-Host
@@ -98,7 +99,14 @@ function Invoke-CriticalStop { # Exits setup if a critical error occurs. yea :P
 [97mPress any key to exit setup...[?25l
 "@
     cmd /c 'pause >nul'
-    Exit-Setup
+    Exit-Setup -ExitCode $ExitCode
+}
+
+Write-Output "Checking for admin..."
+# Checks for admin (the script needs to run without elevated privileges at first because scoop is very picky.)
+$uacState = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
+if (-not $uacState) {
+    Invoke-CriticalStop -StopCode "Elevated_Privileges_Detected" -Message "Kon OS needs to be initialized without administrator privileges.`nI know, it's not ideal. Blame the scoop devs."
 }
 
 # Invoke-WebRequest is slow on PS5 but I didnt wanna switch everything to use curl.exe manually, so I made this. Invoke-SpeedRequest 😸😸
@@ -108,14 +116,6 @@ function Invoke-SpeedRequest {
         [string]$outFile
     )
     curl.exe -s -L "$uri" -o "$OutFile"
-}
-
-Write-Output "Checking for admin..."
-
-# Checks for admin (the script needs to run without elevated privileges at first because scoop is very picky.)
-$uacState = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
-if ($uacState) {
-    Invoke-CriticalStop -StopCode "Elevated_Privileges_Detected" -Message "Kon OS needs to be initialized without administrator privileges.`nI know, it's not ideal. Blame the scoop devs."
 }
 
 # Checks windows build
