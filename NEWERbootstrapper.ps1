@@ -18,11 +18,9 @@ $accent = '[38;5;99m'
 $conWidth = $Host.UI.RawUI.WindowSize.Width
 $conHeight = $Host.UI.RawUI.WindowSize.Height
 
-if ($conWidth -lt 64) {
-    Start-Job -ScriptBlock { wt.exe --size 120,30 Powershell.exe -NoLogo -NoExit -NoProfile -file 'C:\Users\Wyatt\Downloads\runslikecock.ps1' }
-    [System.Environment]::Exit(0)
-} elseif ($conHeight -lt 19) {
-    Start-Job -ScriptBlock { wt.exe --size 120,30 Powershell.exe -NoLogo -NoExit -NoProfile -file 'C:\Users\Wyatt\Downloads\runslikecock.ps1' }
+if ($conWidth -lt 64 -or $conHeight -lt 19) {
+    $wtlocation = (where.exe wt.exe)
+    Start-Process -FilePath "$wtlocation" -ArgumentList "--size 120,30 Powershell.exe -NoLogo -NoExit -NoProfile -File C:\Users\Wybie\Downloads\runslikecock.ps1"
     [System.Environment]::Exit(0)
 }
 
@@ -41,12 +39,6 @@ Starting Kon OS Setup...
 
 # Uri thing, meant to make downloading files easier for me :P
 $BaseUri = 'https://raw.githubusercontent.com/ki8y/KonOS/master/Components'
-
-# Functions (initialized online so it doesnt install anything before the setup starts)
-Invoke-RestMethod -Uri "$($BaseUri)/Setup/Modules/ColourCodes.psm1" | Invoke-Expression
-Invoke-RestMethod -Uri "$($BaseUri)/Setup/Modules/Exit-Setup.psm1" | Invoke-Expression
-Invoke-RestMethod -Uri "$($BaseUri)/Setup/Modules/Invoke-CriticalStop.psm1" | Invoke-Expression
-Invoke-RestMethod -Uri "$($BaseUri)/Setup/Modules/Read-Choice.psm1" | Invoke-Expression
 
 # Checks for admin (the script needs to run without elevated privileges at first because scoop is very picky.)
 Write-Output "Checking for admin..."
