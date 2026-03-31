@@ -6,7 +6,6 @@ function ErrorHandler {
         [string]$Message
     )
 
-
     if ($LASTEXITCODE -ne 0) {
         throw $message
     }
@@ -246,7 +245,6 @@ if ($i -ne 0) {
     
     exit
 }
-
 
 function Install-KonOS {
 
