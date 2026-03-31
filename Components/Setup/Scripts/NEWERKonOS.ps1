@@ -29,4 +29,4 @@ $setup = [PSCustomObject]@{
     }
 }
 
-$flags | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\flags.json"
+$setup | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupConfig.json"
