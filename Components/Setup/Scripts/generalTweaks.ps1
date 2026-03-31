@@ -156,7 +156,7 @@ Write-Host "Enabling hidden files and showing file extensions..."
     reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v 'CheckedValue' /t REG_DWORD /d 1 /f | Out-Null
 
 Write-Host "Enabling legacy context menu..."
-    New-Item -Path "Registry::HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" -Force # Why is it like this ☠️
+    reg.exe add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /ve | Out-Null # Why is it like this ☠️
 
 Write-Host "Enabling dark mode..."
     reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v 'SystemUsesLightTheme' /t REG_DWORD /d 0 /f | Out-Null 
@@ -215,7 +215,7 @@ $accent
     )
     foreach ($task in $tasks) {
         try {
-            Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Application Experience\' -Taskname "$Task" -ErrorAction Stop
+            Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Application Experience\' -Taskname "$task" -ErrorAction Stop
             Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [$($Green)ok$White]" -NoNewLine
             Write-Host ("`r" + "$Green*$White Disabling " + $task + ' in task scheduler... ─────────────────────────')
         } catch {
