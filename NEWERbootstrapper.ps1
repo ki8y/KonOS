@@ -19,9 +19,23 @@ $conWidth = $Host.UI.RawUI.WindowSize.Width
 $conHeight = $Host.UI.RawUI.WindowSize.Height
 
 if ($conWidth -lt 64 -or $conHeight -lt 19) {
-    $wtlocation = (where.exe wt.exe)
-    Start-Process -FilePath "$wtlocation" -ArgumentList "--size 120,30 Powershell.exe -NoLogo -NoExit -NoProfile -File C:\Users\Wybie\Downloads\runslikecock.ps1"
-    [System.Environment]::Exit(0)
+    if (-not $env:WT_SESSION) {
+        # make sure the script doesnt completely break if the user isnt using windows terminal
+        try {
+            $wtlocation = (Get-Command wt.exe | Select-Object -ExpandProperty Source -ErrorAction Stop)
+            Start-Process -FilePath "$wtlocation" -ArgumentList "--size 120,30 Powershell.exe -NoLogo -NoExit -NoProfile -File C:\Users\Wybie\Downloads\centertextTest.ps1"
+            [System.Environment]::Exit(0)
+        }
+        catch {
+            throw "Windows Terminal is not installed. Falling back to conhost.exe..." | 
+            cmd.exe /c "mode con: cols=120 lines=30"
+        }
+    }
+    else {
+        $wtlocation = (Get-Command wt.exe | Select-Object -ExpandProperty Source)
+        Start-Process -FilePath "$wtlocation" -ArgumentList "--size 120,30 Powershell.exe -NoLogo -NoExit -NoProfile -File C:\Users\Wybie\Downloads\centertextTest.ps1"
+        [System.Environment]::Exit(0)
+    }
 }
 
 # defines path thing
@@ -51,15 +65,15 @@ if (-not $uacState) {
 $SpeedRequest = {
     function Invoke-SpeedRequest { 
         param(
-            [string]$uri,    
-            [string]$outFile,
+            [string]$URI,    
+            [string]$OutFile,
             [switch]$Silent
         )
 
         if ($Silent) {
             curl.exe -s -L "$uri" -o "$OutFile"
         }
-        elseif (-not $Silent) {
+        else {
             curl.exe -L "$uri" -o "$OutFile"
         }
     }

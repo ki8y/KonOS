@@ -38,17 +38,17 @@ do {
     Write-Host "`nDisable Wi-Fi? [Y/N]"
     $DisableWifi = Read-Choice
 
-$setup = [PSCustomObject]@{
-    "Flags" = [PSCustomObject]@{
-        "WTSession" = $WTSession
+    $setup = [PSCustomObject]@{
+        "Flags" = [PSCustomObject]@{
+            "WTSession" = $WTSession
+        }
+        "Prefs" = [PSCustomObject]@{
+            "CreateRP"   = $CreateRP
+            "RemoveEdge" = $RemoveEdge
+            "RemoveWS"   = $RemoveWS
+            "DisableWifi" = $DisableWifi
+        }
     }
-    "Prefs" = [PSCustomObject]@{
-        "CreateRP"   = $CreateRP
-        "RemoveEdge" = $RemoveEdge
-        "RemoveWS"   = $RemoveWS
-        "DisableWifi" = $DisableWifi
-    }
-}
 
     Clear-Host
 Write-Host @"
