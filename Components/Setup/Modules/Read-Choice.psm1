@@ -1,13 +1,16 @@
-function Read-Choice {
-    # helper function for boolean choices :P
-    param(
-        [Parameter(Mandatory)]
-        [string]$Name
-    )
+﻿function Read-Choice {
+    # helper function for YES/NO choices :P
 
+    Write-Host "» " -ForegroundColor Blue -NoNewLine
     choice /c YN /n | Out-Null
     switch ($LASTEXITCODE) {
-        1 { Set-Variable -Name "$name" -Value $true -Scope Script -Force }
-        2 { Set-Variable -Name "$name" -Value $false -Scope Script -Force }
+        1 { 
+            Write-Host "Yes"
+            return $true
+        }
+        2 {
+            Write-Host "No"
+            return $false
+        }
     }
 }
