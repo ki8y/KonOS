@@ -7,14 +7,25 @@ This is basically just bootstrapper.ps1 but I split it up so it's easier for me 
 
 $esc = ([char]27)
 
-Import-Module
+Import-Module "$HOME\Documents\GitHub\KonOS\Components\Setup\Modules\Read-Choice.psm1"
+$KONOS = "$env:systemDrive\Kon OS"
+
+Clear-Host
+if ($env:WT_SESSION) { $WTSession = $true } else { $WTSession = $false }
+Write-Host "How would you like to setup Kon OS?"
+Write-Host @"
+[1] Express installation - Automatically apply recommended setup settings
+[2] Custom installation - Customize the installation to whatever you like
+"@
+choice.exe /c 12 /n | Out-Null
+switch ($LASTEXITCODE) {
+    1 { <#express installation#> }
+    2 { <#Custom installation#> }
+}
+# ^^^^ this could probably be done with the confirmprefs variable but im in class so i gotta wrap this up for now LOL
 
 do {
-    Clear-Host
-    if ($env:WT_SESSION) { $WTSession = $true } else { $WTSession = $false }
 
-    $KONOS = "$env:systemDrive\Kon OS"
-    Import-Module "$HOME\Documents\GitHub\KonOS\Components\Setup\Modules\Read-Choice.psm1"
     # Import-Module "$KonOS\Setup\Modules\Read-Choice.psm1" (FINAL FOR SCRIPT)
 
     # Choices
