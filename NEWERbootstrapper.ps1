@@ -15,8 +15,8 @@ $global:White = '[97m'
 $accent = '[38;5;99m'
 
 # Console Width nd stuff
-$conWidth = $Host.UI.RawUI.WindowSize.Width
-$conHeight = $Host.UI.RawUI.WindowSize.Height
+$conWidth = (Get-Host).UI.RawUI.WindowSize.Width
+$conHeight = (Get-Host).UI.RawUI.WindowSize.Height
 
 if ($conWidth -lt 64 -or $conHeight -lt 19) {
     if (-not $env:WT_SESSION) {
