@@ -78,21 +78,50 @@ Disable Wi-Fi           =  [$($DisableWifi)]
     } while (-not $ConfirmPrefs)
 }
 else {
-    $setup = [PSCustomObject]@{
-        "Flags" = [PSCustomObject]@{
-            "WTSession" = $WTSession
-        }
-        "Prefs" = [PSCustomObject]@{
-            "CreateRP"   = $True
-            "RemoveEdge" = $True
-            "RemoveWS"   = $True
-            "DisableWifi" = $False
-        }
+    $Flags += @{
+        "WTSession" = $WTSession
+    }
+    $Prefs = [PSCustomObject]@{
+        "CreateRP"   = $True
+        "RemoveEdge" = $True
+        "RemoveWS"   = $True
+        "DisableWifi" = $False
     }
 }
 
 New-Item -ItemType File -Path "$KonOS\Setup\setupConfig.json" -Force -ErrorAction Stop | Out-Null
+New-Item -ItemType File -Path "$KonOS\Setup\setupFlags.json" -Force -ErrorAction Stop | Out-Null
 $setup | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupConfig.json" -Encoding UTF8 # this does some pretty funny stuff on powershell 5.1. still works though so idc 🤷‍♂️
+$flags | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupFlags.json" -Encoding UTF8
 
 Write-Output "[Debug] Opening config file in text editor..."
 start-process "notepad++" -ArgumentList "`"C:\Kon OS\Setup\setupConfig.json`""
+
+# ── UCPD Detection ─────────────────────────────────
+
+Write-Output "Checking if the User Choice Protection Driver is running..." | Tee-Object -Path "$KONOS\setupLog.txt"
+if (Get-Service -Name UCPD) {
+    
+    Write-Output "UCPD is running" | Tee-Object -Path "$KONOS\setupLog.txt"
+    $flags += @{"ucpdWorkaround" = $true}
+
+    # Deletes UCPD entirely from task scheduler, registry, and services
+    Write-Output "Deleting UCPD..." | Tee-Object -Path "$KONOS\setupLog.txt"
+    Unregister-ScheduledTask -TaskPath "Microsoft\Windows\AppxDeploymentClient" -TaskName "UCPD velocity" -Confirm:$false
+    reg.exe delete "HKLM\SYSTEM\CurrentControlSet\Services\UCPD" /f # yea, i know about New-ItemProperty. i just trust reg.exe better.
+    sc.exe delete UCPD # "Remove-Service!!! no, powershell 5.1 :("
+
+    # make script launch on logon
+    $action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-ExecutionPolicy Bypass -NoProfile -File `"$KonOS\Setup\Setup.ps1`""
+    $trigger = New-ScheduledTaskTrigger -AtLogOn
+    $settings = New-ScheduledTaskSettingsSet -WakeToRun
+
+    if (-not (Get-SchedueledTask -TaskName "UcpdWorkaround")) {
+        Register-ScheduledTask -TaskName "UcpdWorkaround" -Action $action -Trigger $trigger -Settings $settings -User $env:USERNAME -RunLevel Highest -Force
+    }
+
+    # HOPEFULLY this all works and this restarts the pc.
+    shutdown.exe /r /t 0 /f
+    exit 0
+
+}
