@@ -10,9 +10,14 @@ $Host.UI.RawUI.ForegroundColor = 'White'
 $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper"
 Clear-Host
 
+# ESC code
+$esc = ([char]27)
+
 # Colours
-$global:White = '[97m'
-$accent = '[38;5;99m'
+$global:White = '$($esc)[97m'
+$accent = '$($esc)[38;5;99m'
+
+255, 218, 233
 
 # Console Width nd stuff
 $conWidth = (Get-Host).UI.RawUI.WindowSize.Width
@@ -61,24 +66,6 @@ if (-not $uacState) {
     Invoke-CriticalStop -StopCode "Elevated_Privileges_Detected" -Message "Kon OS needs to be initialized without administrator privileges.`nI know, it's not ideal. Blame the scoop devs."
 }
 
-# Invoke-WebRequest is slow on powershell 5, so i made this helper function
-$SpeedRequest = {
-    function Invoke-SpeedRequest { 
-        param(
-            [string]$URI,    
-            [string]$OutFile,
-            [switch]$Silent
-        )
-
-        if ($Silent) {
-            curl.exe -s -L "$uri" -o "$OutFile"
-        }
-        else {
-            curl.exe -L "$uri" -o "$OutFile"
-        }
-    }
-}
-
 # ──Fun Stuff Begins Here────────────────────────────
 
 Clear-Host
@@ -118,7 +105,7 @@ $Files = @(
 $jobs = @()
 
 foreach ($file in $files) {
-    $jobs += Start-Job -InitializationScript $SpeedRequest -ArgumentList $KonOS -Name $file.OutFile -ScriptBlock {
+    $jobs += Start-Job -InitializationScript { Import-Module "$KONOS\Setup\Modules\Invoke-SpeedRequest.psm1" } -ArgumentList $KonOS -Name $file.OutFile -ScriptBlock {
         $params = $Using:file
         Invoke-SpeedRequest @params
         Write-Host "$Params"
@@ -131,6 +118,7 @@ Import-Module -Path "$KonOS\Setup\Modules\ColourCodes.psm1"
 Import-Module -Path "$KonOS\Setup\Modules\Invoke-CriticalStop.psm1"
 Import-Module -Path "$KonOS\Setup\Modules\Exit-Setup.psm1"
 Import-Module -Path "$KonOS\Setup\Modules\Read-Choice.psm1"
+Import-Module -Path "$KonOS\Setup\Modules\Invoke-SpeedRequest.psm1"
 
 # Title Screen :D (It looks like this so it fits in any terminal size)
 
@@ -154,16 +142,16 @@ $offset ██║  ██╗╚██████╔╝██║ ╚████
 $offset ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝     ╚═════╝ ╚══════╝
 
 $offset2 ╔════════════════════════════════════════════════════════════╗
-$offset2 ║                        [97mBegin Setup?$accent                        ║
+$offset2 ║                        $($esc)[97mBegin Setup?$accent                        ║
 $offset2 ╚════════════════════════════════════════════════════════════╝
 
-$offset3 [32m╭────────────╮[31m          ╭────────────╮
-$offset3 [32m│   ✅ [Y]   │[31m          │   ❎ [N]   │
-$offset3 [32m╰────────────╯[31m          ╰────────────╯
+$offset3 $($esc)[32m╭────────────╮$($esc)[31m          ╭────────────╮
+$offset3 $($esc)[32m│   ✅ [Y]   │$($esc)[31m          │   ❎ [N]   │
+$offset3 $($esc)[32m╰────────────╯$($esc)[31m          ╰────────────╯
 "@
 
 choice /c YN /n | Out-Null
 switch ($LASTEXITCODE) {
-    1 { PowerShell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -File "$KonOS\Setup\Modules\KonOS.ps1" }
+    1 { PowerShell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -File "$KonOS\Setup\Modules\Setup.ps1" }
     2 { Exit-Setup }
 }
