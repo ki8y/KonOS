@@ -1,17 +1,34 @@
 ﻿<# KonOS.ps1
-Built for Windows PowerShell 5.1 & PowerShell 7.6 (LTS)
+Built for PowerShell 7.6 (LTS)
 
 This is basically just bootstrapper.ps1 but I split it up so it's easier for me to read. #>
 
 # choice prompts for setup so u can go afk
 
 $esc = ([char]27)
-
-Import-Module "$HOME\Documents\GitHub\KonOS\Components\Setup\Modules\Read-Choice.psm1"
 $KONOS = "$env:systemDrive\Kon OS"
 
+Import-Module "$KONOS\Setup\Modules\Read-Choice.psm1"
+Import-Module "$KONOS\Setup\Modules\Invoke-CriticalStop.psm1"
+Import-Module "$KONOS\Setup\Modules\Exit-Setup.psm1"
+Import-Module "$KONOS\Setup\Modules\ColourCodes.psm1"
+
 Clear-Host
-if ($env:WT_SESSION) { $WTSession = $true } else { $WTSession = $false }
+# Flags nd stuff
+if ($env:WT_SESSION) {
+    $Flags += @{
+        "WTSession" = $true
+    }
+}
+
+if ($($PSVersionTable).PSVersion.Major -lt 7) {
+    Invoke-CriticalStop -StopCode "Invalid_PowerShell_Detected" -Message @"
+Setup.ps1 needs to be launched with PowerShell 7 or higher.
+
+If you got this error, that means you either launched this script manually or I messed up somehow.
+If the latter, please report this bug :(
+"@
+}
 
 Write-Host "How would you like to setup Kon OS?"
 Write-Host @"
@@ -34,7 +51,7 @@ if (-not $ExpressInstall) {
         $CreateRP = Read-Choice
 
         if (-not $CreateRP) {
-            Write-Host "`nAre you sure!? Not creating a restore point can complicate things if things go seriously wrong.`nPlease type `"I understand the risks`" to proceed without a restore point. Otherwise, press enter to continue.`n$($ESC)[94m» " -ForegroundColor Red -NoNewLine
+            Write-Host "`nAre you sure!? Not creating a restore point can complicate things if things go seriously wrong.`nPlease type `"I understand the risks`" to proceed without a restore point. Otherwise, press enter to continue.`n$($ESC)[94m» " -ForegroundColor Red -NoNewline
             $ConfirmNoRP = Read-Host
             if ($ConfirmNoRP -notmatch "I understand the risks") {
                 $CreateRP = $true
@@ -50,20 +67,18 @@ if (-not $ExpressInstall) {
         Write-Host "`nDisable Wi-Fi? [Y/N]"
         $DisableWifi = Read-Choice
 
-        $setup = [PSCustomObject]@{
-            "Flags" = [PSCustomObject]@{
-                "WTSession" = $WTSession
-            }
-            "Prefs" = [PSCustomObject]@{
-                "CreateRP"   = $CreateRP
-                "RemoveEdge" = $RemoveEdge
-                "RemoveWS"   = $RemoveWS
-                "DisableWifi" = $DisableWifi
-            }
+        $Flags += @{
+            "WTSession" = $WTSession
+        }
+        $Prefs = [PSCustomObject]@{
+            "CreateRP" = $True
+            "RemoveEdge" = $True
+            "RemoveWS" = $True
+            "DisableWifi" = $False
         }
 
         Clear-Host
-Write-Host @"
+        Write-Host @"
 ├────── These are your settings ──────┤
 
 Create restore point    =  [$($CreateRP)]
@@ -82,9 +97,9 @@ else {
         "WTSession" = $WTSession
     }
     $Prefs = [PSCustomObject]@{
-        "CreateRP"   = $True
+        "CreateRP" = $True
         "RemoveEdge" = $True
-        "RemoveWS"   = $True
+        "RemoveWS" = $True
         "DisableWifi" = $False
     }
 }
@@ -95,18 +110,18 @@ $setup | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupConfig.json" -Enc
 $flags | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupFlags.json" -Encoding UTF8
 
 Write-Output "[Debug] Opening config file in text editor..."
-start-process "notepad++" -ArgumentList "`"C:\Kon OS\Setup\setupConfig.json`""
+Start-Process "notepad++" -ArgumentList "`"C:\Kon OS\Setup\setupConfig.json`""
 
 # ── UCPD Detection ─────────────────────────────────
 
-Write-Output "Checking if the User Choice Protection Driver is running..." | Tee-Object -Path "$KONOS\setupLog.txt"
+Write-Output "Checking if the User Choice Protection Driver is running..." | Tee-Object -Path "$KONOS\setupLog.txt" -Append
 if (Get-Service -Name UCPD) {
     
-    Write-Output "UCPD is running" | Tee-Object -Path "$KONOS\setupLog.txt"
-    $flags += @{"ucpdWorkaround" = $true}
+    Write-Output "UCPD is running" | Tee-Object -Path "$KONOS\setupLog.txt" -Append
+    $flags += @{"ucpdWorkaround" = $true }
 
     # Deletes UCPD entirely from task scheduler, registry, and services
-    Write-Output "Deleting UCPD..." | Tee-Object -Path "$KONOS\setupLog.txt"
+    Write-Output "Deleting UCPD..." | Tee-Object -Path "$KONOS\setupLog.txt" -Append
     Unregister-ScheduledTask -TaskPath "Microsoft\Windows\AppxDeploymentClient" -TaskName "UCPD velocity" -Confirm:$false
     reg.exe delete "HKLM\SYSTEM\CurrentControlSet\Services\UCPD" /f # yea, i know about New-ItemProperty. i just trust reg.exe better.
     sc.exe delete UCPD # "Remove-Service!!! no, powershell 5.1 :("
