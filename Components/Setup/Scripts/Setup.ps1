@@ -1,4 +1,4 @@
-﻿<# KonOS.ps1
+<# Setup.ps1
 Built for PowerShell 7.6 (LTS)
 
 This is basically just bootstrapper.ps1 but I split it up so it's easier for me to read. #>
@@ -7,6 +7,8 @@ This is basically just bootstrapper.ps1 but I split it up so it's easier for me 
 
 $esc = ([char]27)
 $KONOS = "$env:systemDrive\Kon OS"
+
+Write-Output "──Setup.ps1──────────────────────────────────────────`n" | Add-Content -Path "$KonOS\setupLog.txt"
 
 Import-Module "$KONOS\Setup\Modules\Read-Choice.psm1"
 Import-Module "$KONOS\Setup\Modules\Invoke-CriticalStop.psm1"
@@ -27,9 +29,10 @@ Setup.ps1 needs to be launched with PowerShell 7 or higher.
 
 If you got this error, that means you either launched this script manually or I messed up somehow.
 If the latter, please report this bug :(
-"@
+"@ | Tee-Object -Path "$KonOS\setupLog.txt" -Append
 }
 
+Write-Output "Setup choice prompted, waiting for user response..." | Add-Content -Path "$KonOS\setupLog.txt"
 Write-Host "How would you like to setup Kon OS?"
 Write-Host @"
 [1] Express installation - Automatically apply recommended setup settings
@@ -43,7 +46,7 @@ switch ($LASTEXITCODE) {
 Clear-Host
 
 if (-not $ExpressInstall) {
-
+    Write-Output "Custom install selected." | Add-Content -Path "$KonOS\setupLog.txt"
     do {
 
         # Choices
@@ -93,6 +96,7 @@ Disable Wi-Fi           =  [$($DisableWifi)]
     } while (-not $ConfirmPrefs)
 }
 else {
+    Write-Output "Express install selected." | Add-Content -Path "$KonOS\setupLog.txt"
     $Flags += @{
         "WTSession" = $WTSession
     }
@@ -104,9 +108,10 @@ else {
     }
 }
 
+Write-Output "Creating flag and config files..." | Add-Content -Path "$KonOS\setupLog.txt"
 New-Item -ItemType File -Path "$KonOS\Setup\setupConfig.json" -Force -ErrorAction Stop | Out-Null
 New-Item -ItemType File -Path "$KonOS\Setup\setupFlags.json" -Force -ErrorAction Stop | Out-Null
-$setup | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupConfig.json" -Encoding UTF8 # this does some pretty funny stuff on powershell 5.1. still works though so idc 🤷‍♂️
+$prefs | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupConfig.json" -Encoding UTF8
 $flags | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupFlags.json" -Encoding UTF8
 
 Write-Output "[Debug] Opening config file in text editor..."
@@ -124,7 +129,7 @@ if (Get-Service -Name UCPD) {
     Write-Output "Deleting UCPD..." | Tee-Object -Path "$KONOS\setupLog.txt" -Append
     Unregister-ScheduledTask -TaskPath "Microsoft\Windows\AppxDeploymentClient" -TaskName "UCPD velocity" -Confirm:$false
     reg.exe delete "HKLM\SYSTEM\CurrentControlSet\Services\UCPD" /f # yea, i know about New-ItemProperty. i just trust reg.exe better.
-    sc.exe delete UCPD # "Remove-Service!!! no, powershell 5.1 :("
+    Remove-Service -Name UCPD
 
     # make script launch on logon
     $action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-ExecutionPolicy Bypass -NoProfile -File `"$KonOS\Setup\Setup.ps1`""
