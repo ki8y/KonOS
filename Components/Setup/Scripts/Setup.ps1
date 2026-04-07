@@ -106,7 +106,7 @@ else {
 
 New-Item -ItemType File -Path "$KonOS\Setup\setupConfig.json" -Force -ErrorAction Stop | Out-Null
 New-Item -ItemType File -Path "$KonOS\Setup\setupFlags.json" -Force -ErrorAction Stop | Out-Null
-$setup | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupConfig.json" -Encoding UTF8 # this does some pretty funny stuff on powershell 5.1. still works though so idc 🤷‍♂️
+$prefs | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupConfig.json" -Encoding UTF8 # this does some pretty funny stuff on powershell 5.1. still works though so idc 🤷‍♂️
 $flags | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupFlags.json" -Encoding UTF8
 
 Write-Output "[Debug] Opening config file in text editor..."
