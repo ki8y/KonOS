@@ -73,7 +73,7 @@ $TitleIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 48) / 2 - 1)) # -48 bec
 $SubtitleIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 62) / 2 - 1)) # -62 because thats how big the subtitle is in columns
 $ButtonIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 38) / 2 - 1)) # the buttons are 38 columns wide
 $LineIndent = [Math]::Max(0, [Math]::Floor(($ConHeight - 6) / 2 - 3)) # the kon os ansi logo is 6 lines tall, i dont include the others cause i want the kon os logo to be the center.
-$LineIndent2 = [Math]::Max(0, [Math]::Floor((($ConHeight - $LineIndent) - 14) - 3) - 1 ) # For the version indicator, I feel like this is gonna be the hardest one
+$LineIndent2 = [Math]::Max(0, [Math]::Floor((($ConHeight - $LineIndent) - 14) - 3) - 2   ) # For the version indicator, I feel like this is gonna be the hardest one
 
 # title lines = 14
 
