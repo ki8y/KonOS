@@ -17,7 +17,7 @@ $esc = ([char]27)
 $global:White = '$($esc)[97m'
 $accent = '$($esc)[38;5;99m'
 
-255, 218, 233
+# 255, 218, 233
 
 # Console Width nd stuff
 $conWidth = (Get-Host).UI.RawUI.WindowSize.Width
