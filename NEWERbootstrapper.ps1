@@ -17,7 +17,7 @@ $esc = ([char]27)
 $global:White = '$($esc)[97m'
 $accent = '$($esc)[38;5;99m'
 
-255, 218, 233
+# 255, 218, 233
 
 # Console Width nd stuff
 $conWidth = (Get-Host).UI.RawUI.WindowSize.Width
@@ -57,7 +57,7 @@ Starting Kon OS Setup...
 "@ | Add-Content -Path "$KonOS\setupLog.txt"
 
 # Uri thing, meant to make downloading files easier for me :P
-$BaseUri = 'https://raw.githubusercontent.com/ki8y/KonOS/master/Components'
+$BaseUri = 'https://raw.githubusercontent.com/ki8y/KonOS/master'
 
 # Checks for admin (the script needs to run without elevated privileges at first because scoop is very picky.)
 Write-Output "Checking for admin..."
@@ -81,23 +81,27 @@ New-Item -ItemType File "$KONOS\Setup\flags.json" -ErrorAction SilentlyContinue 
 
 $Files = @(
     @{
-        Uri = "$($BaseUri)/Setup/Modules/ColourCodes.psm1"
+        Uri = "$($BaseUri)/Components/Setup/Modules/ColourCodes.psm1"
         OutFile = "$KonOS\Setup\Modules\ColourCodes.psm1"
     }
     @{
-        Uri = "$($BaseUri)/Setup/Modules/Invoke-CriticalStop.psm1"
+        Uri = "$($BaseUri)/Components/Setup/Modules/Invoke-CriticalStop.psm1"
         OutFile = "$KonOS\Setup\Modules\Invoke-CriticalStop.psm1"
     }
     @{
-        Uri = "$($BaseUri)/Setup/Modules/Invoke-SpeedRequest.psm1"
+        Uri = "$($BaseUri)/Components/Setup/Modules/Invoke-SpeedRequest.psm1"
         OutFile = "$KonOS\Setup\Modules\Invoke-SpeedRequest.psm1"
     }
     @{
-        Uri = "$($BaseUri)/Setup/Modules/Exit-Setup.psm1"
+        Uri = "$($BaseUri)/Components/Setup/Modules/Exit-Setup.psm1"
         OutFile = "$KonOS\Setup\Modules\Exit-Setup.psm1"
     }
     @{
-        Uri = "$($BaseUri)/Setup/Modules/Read-Choice.psm1"
+        Uri = "$($BaseUri)/Components/Setup/Modules/Read-Choice.psm1"
+        OutFile = "$KonOS\Setup\Modules\Read-Choice.psm1"
+    }
+        @{
+        Uri = "$($BaseUri)/Components/Setup/Modules/Write-Box.psm1"
         OutFile = "$KonOS\Setup\Modules\Read-Choice.psm1"
     }
 )
@@ -122,18 +126,33 @@ Import-Module -Path "$KonOS\Setup\Modules\Invoke-SpeedRequest.psm1"
 
 # Title Screen :D (It looks like this so it fits in any terminal size)
 
-$TitleIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 48) / 2 - 1))
-$SubtitleIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 62) / 2 - 1))
-$ButtonIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 38) / 2 - 1))
-$LineIndent = [Math]::Max(0, [Math]::Floor(($ConHeight - 6) / 2 - 3))
+$TitleIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 48) / 2 - 1)) # -48 because thats how big the kon os logo is in columns
+$SubtitleIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 62) / 2 - 1)) # -62 because thats how big the subtitle is in columns
+$ButtonIndent = [Math]::Max(0, [Math]::Floor(($conWidth - 38) / 2 - 1)) # the buttons are 38 columns wide
+$LineIndent = [Math]::Max(0, [Math]::Floor(($ConHeight - 6) / 2 - 3)) # the kon os ansi logo is 6 lines tall, i dont include the others cause i want the kon os logo to be the center.
+$LineIndent2 = [Math]::Max(0, [Math]::Floor(($ConHeight - $LineIndent) - 3)) # For the version indicator, I feel like this is gonna be the hardest one
+
+# title lines = 14
 
 $Offset = " " * $TitleIndent
 $Offset2 = " " * $SubtitleIndent
 $Offset3 = " " * $ButtonIndent 
-$Offset4 = "`n" * $LineIndent
+$LineOffset = "`n" * $LineIndent
+$LineOffset2 = "`n" * $LineIndent2
+
+<#
+fun fact about this section: I was working on this at school and the version url wasnt working, so I was trying to figure out why and found that
+for some reason my school wifi blocked githubusercontent.com, NOT github.com, only githubusercontent.com. Thanks school :)
+
+And before anyone judges me for working on Kon OS in school, yes you're probably right I shouldn't be doing this but
+I'm bored and I want to think of cool things instead.
+#>
+$Version = Invoke-RestMethod -Uri "$($BaseUri)/version.json"
+$Commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/KonOS/commits/master"
+$VerIndicator = "$($Version.Major).$($Version.Minor).$($Version.Patch) $($Version.PreReleaseLabel) ($($($commit.sha.Substring(0,7))))"
 
 Write-Host @"
-$Offset4
+$LineOffset
 $offset ██╗  ██╗ ██████╗ ███╗   ██╗     ██████╗ ███████╗
 $offset ██║ ██╔╝██╔═══██╗████╗  ██║    ██╔═══██╗██╔════╝
 $offset █████╔╝ ██║   ██║██╔██╗ ██║    ██║   ██║███████╗
@@ -148,7 +167,9 @@ $offset2 ╚══════════════════════�
 $offset3 $($esc)[32m╭────────────╮$($esc)[31m          ╭────────────╮
 $offset3 $($esc)[32m│   ✅ [Y]   │$($esc)[31m          │   ❎ [N]   │
 $offset3 $($esc)[32m╰────────────╯$($esc)[31m          ╰────────────╯
+$LineIndent2
 "@
+Write-Box -Text "$VerIndicator" -Centered -Border Round -Color Blue
 
 choice /c YN /n | Out-Null
 switch ($LASTEXITCODE) {
