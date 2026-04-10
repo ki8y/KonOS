@@ -1,4 +1,4 @@
-function Write-Box {
+﻿function Write-Box {
     [CmdletBinding(DefaultParameterSetName = 'Indent')]
     param(
       
