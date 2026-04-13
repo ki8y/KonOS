@@ -66,7 +66,7 @@ Starting Kon OS Setup...
 $BaseUri = 'https://raw.githubusercontent.com/ki8y/KonOS/master'
 
 # Checks for admin
-Write-Output "Checking for admin..." | Tee-Object -Path "$KonOS\setupLog.txt" -Append
+Write-Output "Checking for admin..." | Tee-Object "$KonOS\setupLog.txt" -Append
 $uacState = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
 if (-not $uacState) {
     Write-Output "[Error] Missing administrator privileges! Prompting user to restart..." | Add-Content -Path "$KonOS\setupLog.txt"
