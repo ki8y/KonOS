@@ -43,8 +43,8 @@ Write-Throbber -Message "$($Blue)Disabling Taskbar animations..." {
 }
 Write-Host "`r[✓] Disabling Taskbar animations        " -ForegroundColor Green
 
-Write-Host "[\] Disabling Aero Peek..." -ForegroundColor Blue -NoNewLine
-    reg.exe add "HKCU\Software\Microsoft\Windows\DWM" /v "EnableAeroPeek" /t REG_DWORD /d 0 /f | Out-Null
+Write-Host "[\] Disabling Aero Peek..." -ForegroundColor Blue -NoNewline
+reg.exe add "HKCU\Software\Microsoft\Windows\DWM" /v "EnableAeroPeek" /t REG_DWORD /d 0 /f | Out-Null
 Write-Host "`r[✓] Disabling Aero Peek...        " -ForegroundColor Green
 
 Write-Throbber -Message "$($Blue)Disabling menu animations..." {
@@ -56,13 +56,13 @@ Write-Throbber -Message "$($Blue)Disabling menu animations..." {
 }
 Write-Host "`r[✓] Disabling menu Animations...        " -ForegroundColor Green
 
-Write-Host "[\] Disabling cursor shadows..." -ForegroundColor Blue -NoNewLine
+Write-Host "[\] Disabling cursor shadows..." -ForegroundColor Blue -NoNewline
     
-    New-ItemProperty -Path 'Registry::HKCU:\Control Panel\Desktop' -Name 'UserPreferencesMask' -PropertyType Binary /d ([byte[]](144,18,3,128,16,0,0,0)) -Force | Out-Null # this breaks in reg.exe soooo
+New-ItemProperty -Path 'Registry::HKCU:\Control Panel\Desktop' -Name 'UserPreferencesMask' -PropertyType Binary /d ([byte[]](144, 18, 3, 128, 16, 0, 0, 0)) -Force | Out-Null # this breaks in reg.exe soooo
 Write-Host "`r[✓] Disabling menu Animations...        " -ForegroundColor Green
 
-Write-Host "[\] Disabling selection rectangle..." -ForegroundColor Blue -NoNewLine
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ListviewAlphaSelect" /t REG_DWORD /d 0 /f | Out-Null
+Write-Host "[\] Disabling selection rectangle..." -ForegroundColor Blue -NoNewline
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ListviewAlphaSelect" /t REG_DWORD /d 0 /f | Out-Null
 Write-Host "`r[✓] Disabling selection rectangle...          " -ForegroundColor Green
 
 Write-Throbber -Message "$($Blue)Enabling font smoothing..." {
@@ -105,7 +105,7 @@ Write-Throbber -Message "$($Blue)Disabling Mouse Acceleration..." {
 Write-Host "Applying bootloader tweaks...`n"
 
 Write-Host "Setting boot menu to legacy..."
-bcdedit /set {current} bootmenupolicy Legacy | Out-Null
+bcdedit /set { current } bootmenupolicy Legacy | Out-Null
 
 Write-Host 'Deleting "useplatformclock" value...'
 bcdedit /deletevalue useplatformclock | Out-Null
@@ -147,58 +147,58 @@ Write-Host "`r[✓] Adding verbose logon screens and bluescreens..." -Foreground
 
 # ──Explorer Tweaks──────────────────────────────────
 
-Write-Host 'Enabling "End Task" button in taskbar...' -NoNewLine
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings" /v 'TaskbarEndTask' /t REG_DWORD /d 1 /f | Out-Null
+Write-Host 'Enabling "End Task" button in taskbar...' -NoNewline
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings" /v 'TaskbarEndTask' /t REG_DWORD /d 1 /f | Out-Null
 
 Write-Host "Enabling hidden files and showing file extensions..."
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v 'HideFileExt' /t REG_DWORD /d 0 /f | Out-Null 
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v 'UseCompactMode' /t REG_DWORD /d 1 /f | Out-Null 
-    reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v 'CheckedValue' /t REG_DWORD /d 1 /f | Out-Null
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v 'HideFileExt' /t REG_DWORD /d 0 /f | Out-Null 
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v 'UseCompactMode' /t REG_DWORD /d 1 /f | Out-Null 
+reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL" /v 'CheckedValue' /t REG_DWORD /d 1 /f | Out-Null
 
 Write-Host "Enabling legacy context menu..."
-    reg.exe add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /ve | Out-Null # Why is it like this ☠️
+reg.exe add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /ve | Out-Null # Why is it like this ☠️
 
 Write-Host "Enabling dark mode..."
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v 'SystemUsesLightTheme' /t REG_DWORD /d 0 /f | Out-Null 
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v 'AppsUseLightTheme' /t REG_DWORD /d 0 /f | Out-Null 
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v 'SystemUsesLightTheme' /t REG_DWORD /d 0 /f | Out-Null 
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v 'AppsUseLightTheme' /t REG_DWORD /d 0 /f | Out-Null 
 
 Write-Host "Disabling copilot..."
-    reg.exe add "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" /v 'TurnOffWindowsCopilot' /t REG_DWORD /d 1 /f | Out-Null 
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v 'ShowCopilotButton' /t REG_DWORD /d 0 /f | Out-Null 
+reg.exe add "HKCU\Software\Policies\Microsoft\Windows\WindowsCopilot" /v 'TurnOffWindowsCopilot' /t REG_DWORD /d 1 /f | Out-Null 
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v 'ShowCopilotButton' /t REG_DWORD /d 0 /f | Out-Null 
 
 Write-Host "Disabling transparency..."
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v 'EnableTransparency' /t REG_DWORD /d 0 /f | Out-Null 
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v 'EnableTransparency' /t REG_DWORD /d 0 /f | Out-Null 
 
 Write-Host "Disabling sticky keys..."
-    reg.exe add "HKCU\Control Panel\Accessibility\StickyKeys" /v Flags /t REG_SZ /d 506 /f | Out-Null 
+reg.exe add "HKCU\Control Panel\Accessibility\StickyKeys" /v Flags /t REG_SZ /d 506 /f | Out-Null 
 
 Write-Host "Disabling Toast Notifications..."
-    reg.exe add "HKCU\Software\Policies\Microsoft\Windows\Explorer" /v 'DisableNotificationCenter' /t REG_DWORD /d 1 /f | Out-Null 
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications" /v 'ToastEnabled' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\Software\Policies\Microsoft\Windows\Explorer" /v 'DisableNotificationCenter' /t REG_DWORD /d 1 /f | Out-Null 
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\PushNotifications" /v 'ToastEnabled' /t REG_DWORD /d 0 /f | Out-Null
 
 # ──Useless background processes─────────────────────
 
 Write-Host "Disabling background processes..." -ForegroundColor Blue
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f | Out-Null 
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle /t REG_DWORD /d 0 /f | Out-Null 
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\AppPrivacy" /v LetAppsRunInBackground /t REG_DWORD /d 2 /f | Out-Null 
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v GlobalUserDisabled /t REG_DWORD /d 1 /f | Out-Null 
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v BackgroundAppGlobalToggle /t REG_DWORD /d 0 /f | Out-Null 
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\AppPrivacy" /v LetAppsRunInBackground /t REG_DWORD /d 2 /f | Out-Null 
 
 Write-Host "Disabling activity history..." -ForegroundColor Blue
-    reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v EnableActivityFeed /t REG_DWORD /d 0 /f | Out-Null 
-    reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v PublishUserActivities /t REG_DWORD /d 0 /f | Out-Null 
-    reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v UploadUserActivities /t REG_DWORD /d 0 /f | Out-Null 
+reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v EnableActivityFeed /t REG_DWORD /d 0 /f | Out-Null 
+reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v PublishUserActivities /t REG_DWORD /d 0 /f | Out-Null 
+reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v UploadUserActivities /t REG_DWORD /d 0 /f | Out-Null 
 
 Write-Host "Disabling location services..." -ForegroundColor Blue
-    reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location" /v "Value" /t REG_SZ /d "deny" /f | Out-Null 
-    reg.exe add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Sensor\Overrides\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}" /v "SensorPermissionState" /t REG_DWORD /d "0" /f | Out-Null 
-    reg.exe add "HKLM\SYSTEM\CurrentControlSet\Services\lfsvc\Service\Configuration" /v "Status" /t REG_DWORD /d "0" /f | Out-Null 
-    reg.exe add "HKLM\SYSTEM\Maps" /v "AutoUpdateEnabled" /t REG_DWORD /d "0" /f | Out-Null 
+reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location" /v "Value" /t REG_SZ /d "deny" /f | Out-Null 
+reg.exe add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Sensor\Overrides\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}" /v "SensorPermissionState" /t REG_DWORD /d "0" /f | Out-Null 
+reg.exe add "HKLM\SYSTEM\CurrentControlSet\Services\lfsvc\Service\Configuration" /v "Status" /t REG_DWORD /d "0" /f | Out-Null 
+reg.exe add "HKLM\SYSTEM\Maps" /v "AutoUpdateEnabled" /t REG_DWORD /d "0" /f | Out-Null 
 
 Write-Host "Disabling UAC" -ForegroundColor Blue
-    reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v EnableLUA /t REG_DWORD /d 0 /f | Out-Null 
+reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v EnableLUA /t REG_DWORD /d 0 /f | Out-Null 
 
 Write-Host "Disabling login blur" -ForegroundColor Blue
-    reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v DisableAcrylicBackgroundOnLogon /t REG_DWORD /d 1 /f | Out-Null
+reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v DisableAcrylicBackgroundOnLogon /t REG_DWORD /d 1 /f | Out-Null
 
 Write-Host @"
 $accent
@@ -206,60 +206,63 @@ $accent
                                               │  🛡️ Disabling Telemetry  │
                                               ╰──────────────────────────╯
 "@
-    $tasks = @(
-        'Microsoft Compatibility Appraiser',
-        'ProgramDataUpdater',
-        'MareBackup',
-        'StartupAppTask',
-        'PcaPatchDbTask'
-    )
-    foreach ($task in $tasks) {
-        try {
-            Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Application Experience\' -Taskname "$task" -ErrorAction Stop
-            Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [$($Green)ok$White]" -NoNewLine
-            Write-Host ("`r" + "$Green*$White Disabling " + $task + ' in task scheduler... ─────────────────────────')
-        } catch {
-            Write-Host "                                              ─────────────────────────────────────────────────────────────────── [$($Red)fail$White]" -NoNewLine
-            Write-Host ("`r" + '[91m*[97m Disabling ' + $task + ' in task scheduler... ──────────────────────────────────────')
-        }
+$tasks = @(
+    'Microsoft Compatibility Appraiser',
+    'ProgramDataUpdater',
+    'MareBackup',
+    'StartupAppTask',
+    'PcaPatchDbTask'
+)
+foreach ($task in $tasks) {
+    try {
+        Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Application Experience\' -TaskName "$task" -ErrorAction Stop
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [$($Green)ok$White]" -NoNewline
+        Write-Host ("`r" + "$Green*$White Disabling " + $task + ' in task scheduler... ─────────────────────────')
     }
+    catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [$($Red)fail$White]" -NoNewline
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $task + ' in task scheduler... ──────────────────────────────────────')
+    }
+}
 
-    $tasks = @(
-        'DmClient',
-        'DmClientOnScenarioDownload'
-    )
-    foreach ($task in $tasks) {
-        try {
-            Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Feedback\Siuf\' -Taskname "$Task" -ErrorAction Stop | Out-Null
-            Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [$($Green)ok$White]" -NoNewLine
-            Write-Host ("`r" + "$Green*$White Disabling " + $task + ' in task scheduler... ─────────────────────────')
-        } catch {
-            Write-Host "                                              ─────────────────────────────────────────────────────────────────── [$($Red)fail$White]" -NoNewLine
-            Write-Host ("`r" + '[91m*[97m Disabling ' + $task + ' in task scheduler... ──────────────────────────────────────')
-        }
+$tasks = @(
+    'DmClient',
+    'DmClientOnScenarioDownload'
+)
+foreach ($task in $tasks) {
+    try {
+        Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Feedback\Siuf\' -TaskName "$Task" -ErrorAction Stop | Out-Null
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [$($Green)ok$White]" -NoNewline
+        Write-Host ("`r" + "$Green*$White Disabling " + $task + ' in task scheduler... ─────────────────────────')
     }
+    catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [$($Red)fail$White]" -NoNewline
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $task + ' in task scheduler... ──────────────────────────────────────')
+    }
+}
 
-    $tasks = @(
-        'Consolidator',
-        'UsbCeip'
-    )
-    foreach ($task in $tasks) {
-        try {
-            Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Customer Experience Improvement Program\' -Taskname "$Task" -ErrorAction Stop | Out-Null
-            Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [$($Green)ok$White]" -NoNewLine
-            Write-Host ("`r" + "$Green*$White Disabling " + $task + ' in task scheduler... ─────────────────────────')
-        } catch {
-            Write-Host "                                              ─────────────────────────────────────────────────────────────────── [$($Red)fail$White]" -NoNewLine
-            Write-Host ("`r" + '[91m*[97m Disabling ' + $task + ' in task scheduler... ──────────────────────────────────────')
-        }
+$tasks = @(
+    'Consolidator',
+    'UsbCeip'
+)
+foreach ($task in $tasks) {
+    try {
+        Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Customer Experience Improvement Program\' -TaskName "$Task" -ErrorAction Stop | Out-Null
+        Write-Host "`r                                           ──────────────────────────────────────────────────────────────────────── [$($Green)ok$White]" -NoNewline
+        Write-Host ("`r" + "$Green*$White Disabling " + $task + ' in task scheduler... ─────────────────────────')
     }
+    catch {
+        Write-Host "                                              ─────────────────────────────────────────────────────────────────── [$($Red)fail$White]" -NoNewline
+        Write-Host ("`r" + '[91m*[97m Disabling ' + $task + ' in task scheduler... ──────────────────────────────────────')
+    }
+}
 
 Write-Throbber -Message "$($Blue)Disabling Telemetry via various scheduled tasks and registry keys..." {
     
     Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Autochk\' -TaskName "Proxy" | Out-Null
     Disable-ScheduledTask -TaskPath 'Microsoft\Windows\DiskDiagnostic\' -TaskName 'Microsoft-Windows-DiskDiagnosticDataCollector' | Out-Null
     Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Maps\' -TaskName 'MapsUpdateTask' | Out-Null
-    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Windows Error Reporting\' -Taskname 'QueueReporting' | Out-Null
+    Disable-ScheduledTask -TaskPath 'Microsoft\Windows\Windows Error Reporting\' -TaskName 'QueueReporting' | Out-Null
 
     reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" /v 'AllowTelemetry' /t REG_DWORD /d 0 /f | Out-Null
     reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection" /v 'AllowTelemetry' /t REG_DWORD /d 0 /f | Out-Null
@@ -300,55 +303,55 @@ Write-Throbber -Message "$($Blue)Disabling Telemetry via various scheduled tasks
 }
 
 Write-Host "Disabling Teredo..."
-    reg.exe add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" /v "DisabledComponents" /t REG_DWORD /d "255" /f | Out-Null
-    netsh.exe interface teredo set state disabled
+reg.exe add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" /v "DisabledComponents" /t REG_DWORD /d "255" /f | Out-Null
+netsh.exe interface teredo set state disabled
 
 Write-Host "Disabling IPv6..." -ForegroundColor Blue
-    Disable-NetAdapterBinding -Name "*" -ComponentID ms_tcpip6 | Out-Null
+Disable-NetAdapterBinding -Name "*" -ComponentID ms_tcpip6 | Out-Null
 
 Write-Host "Disabling GameDVR..." -ForegroundColor Blue
-    reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_Enabled' /t REG_DWORD /d 0 /f | Out-Null
-    reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR" /v 'AllowGameDVR' /t REG_DWORD /d 0 /f | Out-Null
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v 'AppCaptureEnabled' /t REG_DWORD /d 0 /f | Out-Null
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v 'AudioCaptureEnabled' /t REG_DWORD /d 0 /f | Out-Null
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v 'HistoricalCaptureEnabled' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_Enabled' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\GameDVR" /v 'AllowGameDVR' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v 'AppCaptureEnabled' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v 'AudioCaptureEnabled' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v 'HistoricalCaptureEnabled' /t REG_DWORD /d 0 /f | Out-Null
 
 Write-Host "Disabling Bing Search in start menu..." -ForegroundColor Blue
-    reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v 'BingSearchEnabled' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v 'BingSearchEnabled' /t REG_DWORD /d 0 /f | Out-Null
 
 Write-Host "Disabling Fullscreen Optimizations (FSO)" -ForegroundColor Blue
-    reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_FSEBehavior' /t REG_DWORD /d 2 /f | Out-Null
-    reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_DSEBehavior' /t REG_DWORD /d 2 /f | Out-Null
-    reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_DXGIHonorFSEWindowsCompatible' /t REG_DWORD /d 1 /f | Out-Null
-    reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_HonorUserFSEBehaviorMode' /t REG_DWORD /d 1 /f | Out-Null
-    reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_EFSEFeatureFlags' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_FSEBehavior' /t REG_DWORD /d 2 /f | Out-Null
+reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_DSEBehavior' /t REG_DWORD /d 2 /f | Out-Null
+reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_DXGIHonorFSEWindowsCompatible' /t REG_DWORD /d 1 /f | Out-Null
+reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_HonorUserFSEBehaviorMode' /t REG_DWORD /d 1 /f | Out-Null
+reg.exe add "HKCU\System\GameConfigStore" /v 'GameDVR_EFSEFeatureFlags' /t REG_DWORD /d 0 /f | Out-Null
 
 Write-Host "Disabling Game bar..." -ForegroundColor Blue
-    reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'ShowStartupPanel' /t REG_DWORD /d 0 /f | Out-Null
-    reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'GamePanelStartupTipIndex' /t REG_DWORD /d 3 /f | Out-Null
-    reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'UseNexusForGameBarEnabled' /t REG_DWORD /d 0 /f | Out-Null
-    reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'AllowAutoGameMode' /t REG_DWORD /d 0 /f | Out-Null
-    reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'AutoGameModeEnabled' /t REG_DWORD /d 0 /f | Out-Null 
-    reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'GameBarEnabled' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'ShowStartupPanel' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'GamePanelStartupTipIndex' /t REG_DWORD /d 3 /f | Out-Null
+reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'UseNexusForGameBarEnabled' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'AllowAutoGameMode' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'AutoGameModeEnabled' /t REG_DWORD /d 0 /f | Out-Null 
+reg.exe add "HKCU\Software\Microsoft\GameBar" /v 'GameBarEnabled' /t REG_DWORD /d 0 /f | Out-Null
 
 Write-Host "Disabling Core Isolation..." -ForegroundColor Blue
-    reg.exe add "HKLM\System\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity" /v 'Enabled' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKLM\System\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity" /v 'Enabled' /t REG_DWORD /d 0 /f | Out-Null
 
 Write-Host "Disabling Live Tiles..." -ForegroundColor Blue
-    reg.exe add "HKCU\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" /v 'NoTileApplicationNotification' /t REG_DWORD /d 1 /f | Out-Null
+reg.exe add "HKCU\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" /v 'NoTileApplicationNotification' /t REG_DWORD /d 1 /f | Out-Null
 
 Write-Host "Disabling smooth scrolling" -ForegroundColor Blue
-    reg.exe add "HKCU\Control Panel\Desktop" /v 'SmoothScroll' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKCU\Control Panel\Desktop" /v 'SmoothScroll' /t REG_DWORD /d 0 /f | Out-Null
 
 Write-Host "Flushing Windows Explorer..." -ForegroundColor Blue
-    Remove-Item "Registry::HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags" -Recurse -Force | Out-Null
-    reg.exe add "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\AllFolders\Shell" /v 'FolderType' /t REG_SZ /d "NotSpecified" /f | Out-Null
+Remove-Item "Registry::HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags" -Recurse -Force | Out-Null
+reg.exe add "HKCU\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\AllFolders\Shell" /v 'FolderType' /t REG_SZ /d "NotSpecified" /f | Out-Null
 
 Write-Host "Disabling fast user switching..." -ForegroundColor Blue
-    reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v 'HideFastUserSwitching' /t REG_DWORD /d 1 /f | Out-Null
+reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v 'HideFastUserSwitching' /t REG_DWORD /d 1 /f | Out-Null
 
 Write-Host "Disabling Windows Ink related features..." -ForegroundColor Blue
-    reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace" /v 'AllowWindowsInkWorkspace' /t REG_DWORD /d 0 /f | Out-Null
+reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace" /v 'AllowWindowsInkWorkspace' /t REG_DWORD /d 0 /f | Out-Null
 
 Write-Throbber -Message "Disabling Smart Screen..." -Colour "$Blue" {
     # (Main)
