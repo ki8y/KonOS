@@ -15,13 +15,9 @@ Import-Module "$KONOS\Setup\Modules\Invoke-CriticalStop.psm1"
 Import-Module "$KONOS\Setup\Modules\Exit-Setup.psm1"
 Import-Module "$KONOS\Setup\Modules\ColourCodes.psm1"
 
+$flags = Get-Content "$KONOS\Setup\setupFlags.json" -Raw | ConvertFrom-Json
+
 Clear-Host
-# Flags nd stuff
-if ($env:WT_SESSION) {
-    $Flags += @{
-        "WTSession" = $true
-    }
-}
 
 if ($($PSVersionTable).PSVersion.Major -lt 7) {
     Invoke-CriticalStop -StopCode "Invalid_PowerShell_Detected" -Message @"
@@ -70,9 +66,6 @@ if (-not $ExpressInstall) {
         Write-Host "`nDisable Wi-Fi? [Y/N]"
         $DisableWifi = Read-Choice
 
-        $Flags += @{
-            "WTSession" = $WTSession
-        }
         $Prefs = [PSCustomObject]@{
             "CreateRP" = $True
             "RemoveEdge" = $True
@@ -97,9 +90,6 @@ Disable Wi-Fi           =  [$($DisableWifi)]
 }
 else {
     Write-Output "Express install selected." | Add-Content -Path "$KonOS\setupLog.txt"
-    $Flags += @{
-        "WTSession" = $WTSession
-    }
     $Prefs = [PSCustomObject]@{
         "CreateRP" = $True
         "RemoveEdge" = $True
