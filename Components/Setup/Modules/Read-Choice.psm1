@@ -2,9 +2,6 @@
     # helper function for YES/NO choices :P
 
     $esc = ([char]27)
-
-    $validResponse = $false
-
     
     $konSize = (Get-Host).UI.RawUI.WindowSize # Console size (konsize lololo)
     
@@ -16,14 +13,15 @@
     $IndentX = [Math]::Max(0, [Math]::Floor(($konSize.Width - $ErrorMessage.Length) / 2 - 1))
     $IndentY = [Math]::Max(0, [Math]::Floor(($konSize.Height - 3) / 2))
 
-    $OffsetX = " " * $IndentX
-    $OffsetY = "`n" * $IndentY
-
     $fColor = "$($esc)[31m"
     $highlighter = "$($esc)[97m"
 
     do {
-        Write-Host "`r» " -ForegroundColor Blue -NoNewline; $cursorPos = (Get-Host).UI.RawUI.CursorPosition
+        Write-Host "`r» " -ForegroundColor Blue -NoNewline; $cursorPos = [PSCustomObject]@{
+            # save cursor position for error message
+            "x" = [Console]::get_CursorLeft()
+            "y" = [Console]::get_CursorTop()
+        }
 
         switch (([System.Console]::ReadKey($true) | Select-Object -ExpandProperty Key)) {
             Y {
@@ -38,18 +36,25 @@
             }
             default {
                 # error message
-                Write-Host "$ESC[H" -NoNewline
+                Write-Host "$esc[?25l" -NoNewline # hide cursor
+                [Console]::SetCursorPosition(0, 0)
+
+                # i gotta figure out how to make this look cleaner lol
+                Write-Host (([Console]::SetCursorPosition(($IndentX), ($IndentY))) + "$fColor" + "╭" + ("─" * $innerWidth) + "╮")
+                Write-Host (([Console]::SetCursorPosition(($IndentX), ([Console]::get_CursorTop()))) + "$fColor" + "│" + (" " * $Padding) + "$Highlighter" + $ErrorMessage + "$fColor" + (" " * $Padding) + "│")
+                Write-Host (([Console]::SetCursorPosition(($IndentX), ([Console]::get_CursorTop()))) + "$fColor" + "╰" + ("─" * $innerWidth) + "╯")
                 
-                Write-Host ("$($OffsetY)`n$($offsetX)" + "$fColor" + "╭" + ("─" * $innerWidth) + "╮")
-                Write-Host ("$($offsetX)" + "$fColor" + "│" + (" " * $Padding) + "$Highlighter" + $ErrorMessage + "$fColor" + (" " * $Padding) + "│")
-                Write-Host ("$($offsetX)" + "$fColor" + "╰" + ("─" * $innerWidth) + "╯") -NoNewline
+                [System.Console]::ReadKey($true) | Out-Null # kinda like 'cmd /c pause.exe | out-null' but it should have less overhead.
                 
-                [System.Console]::ReadKey($true) | Out-Null
-                Write-Host "$esc[3A"
-                $clearError = " " * ($innerWidth + 2)
-                Write-Host "$offsetx$clearError`n$offsetx$clearError`n$offsetx$clearError"
-                Write-Host "$esc[$($cursorPos.Y);$($cursorPos.X)f"
-                Write-Host "$esc[2C" -NoNewline
+                $wipeError = " " * ($innerWidth + 2)
+                1..3 | ForEach-Object {
+                    # clear the error screen
+                    Write-Host ([Console]::SetCursorPosition(($IndentX), ([Console]::get_CursorTop() - 1))) -NoNewline
+                    Write-Host "$WipeError" -NoNewline
+                }
+
+                [Console]::SetCursorPosition($($cursorPos.X), $($cursorPos.Y))
+                Write-Host "$esc[?25h" -NoNewline # unhide cursor
             }
         } 
     } while (-not $validResponse)
