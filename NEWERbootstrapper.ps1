@@ -205,3 +205,7 @@ switch ($LASTEXITCODE) {
     1 { PowerShell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -File "$KonOS\Setup\Modules\Setup.ps1" }
     2 { Exit-Setup }
 }
+
+
+
+# miaw :cat_hi:
