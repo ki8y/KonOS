@@ -130,6 +130,14 @@ $Files = @(
         Uri = "$($BaseUri)/Components/Universal/Sounds/startup.wav"
         OutFile = "$KonOS\Sounds\Startup.wav"
     }
+    @{
+        Uri = "$($BaseUri)/Components/Setup/Scripts/Setup.ps1"
+        OutFile = "$KonOS\Setup\Setup.ps1"
+    }
+    @{
+        Uri = "$($BaseUri)/Components/Setup/Scripts/getDependencies.ps1"
+        OutFile = "$KonOS\Setup\Script\getDependencies.ps1"
+    }
 )
 
 $jobs = @()
