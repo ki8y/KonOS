@@ -16,7 +16,7 @@ Import-Module "$KONOS\Setup\Modules\Exit-Setup.psm1"
 Import-Module "$KONOS\Setup\Modules\ColourCodes.psm1"
 
 $flags = Get-Content "$KONOS\Setup\setupFlags.json" -Raw | ConvertFrom-Json
-
+Pause
 Clear-Host
 
 if ($($PSVersionTable).PSVersion.Major -lt 7) {
@@ -104,16 +104,16 @@ New-Item -ItemType File -Path "$KonOS\Setup\setupFlags.json" -Force -ErrorAction
 $prefs | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupConfig.json" -Encoding UTF8
 $flags | ConvertTo-Json | Set-Content -Path "$KONOS\Setup\setupFlags.json" -Encoding UTF8
 
-Write-Output "[Debug] Opening config file in text editor..."
-Start-Process "notepad++" -ArgumentList "`"C:\Kon OS\Setup\setupConfig.json`""
+#Write-Output "[Debug] Opening config file in text editor..."
+#Start-Process "notepad++" -ArgumentList "`"C:\Kon OS\Setup\setupConfig.json`""
 
 # ── UCPD Detection ─────────────────────────────────
 
 Write-Output "Checking if the User Choice Protection Driver is running..." | Tee-Object -Path "$KONOS\setupLog.txt" -Append
-if (Get-Service -Name UCPD) {
+if ( Get-Service -Name UCPD | Where-Object { $_.Status -match "Running" } ) {
     
     Write-Output "UCPD is running" | Tee-Object -Path "$KONOS\setupLog.txt" -Append
-    $flags += @{"ucpdWorkaround" = $true }
+    $flags += @{ "ucpdWorkaround" = $true }
 
     # Deletes UCPD entirely from task scheduler, registry, and services
     Write-Output "Deleting UCPD..." | Tee-Object -Path "$KONOS\setupLog.txt" -Append
