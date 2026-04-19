@@ -14,7 +14,26 @@ Built for Powershell 5.1
 [] - Create cleanup script nd stuffs ahgashaiusdoasd
 
 #>
+$uacState = ([Security.Principal.WindowsIdentity]::GetCurrent()).Groups -contains 'S-1-5-32-544'
+if ($uacState) {
+    Write-Output "[Error] Missing administrator privileges! Prompting user to restart..." | Add-Content -Path "$KonOS\setupLog.txt"
 
+    Write-Host "[!] Kon OS needs to be started with administrator privileges! `n`nRestart with administrator privileges?" -ForegroundColor DarkYellow
+    Write-Host "[Y]es // [N]o"
+
+    Write-Host "» " -ForegroundColor Blue -NoNewline
+    choice /c YN /n | Out-Null
+    switch ($LASTEXITCODE) {
+        1 { 
+            Write-Host "Yes"
+            <# Launch windows terminal, unless it doesnt exist #>
+        }
+        2 {
+            Write-Host "No"
+            <# Tell user that the script can't continue #>
+        }
+    }
+}
 
 # make log file
 $guid = New-Guid | Select-Object -ExpandProperty Guid
@@ -38,5 +57,5 @@ $process = Start-Process -FilePath "powershell.exe -ExecutionPolicy Bypass -File
 if ($process.ExitCode -eq 0) {
     Write-Output "The program executed successfully."
 } else {
-     Write-Output "The program failed with exit code: $($p.ExitCode)"
+     Write-Output "The program failed with exit code: $($process.ExitCode)"
 }
