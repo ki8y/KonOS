@@ -1,4 +1,4 @@
-# Very simple module that reliably changes registry keys :)
+﻿# Very simple module that reliably changes registry keys :)
 function Set-Registry {
     param(
         [Parameter(Mandatory = $true)]  
@@ -15,24 +15,42 @@ function Set-Registry {
 
         [switch]$WhatIf,
         [switch]$Force,
-        [switch]$Confirm
-
+        [switch]$Confirm,
+        [switch]$Silent
     )
-    switch ((Test-Path -PathType Any -Path "Registry::$($Path)")) {
+
+    
+
+    <#switch ((Test-Path -PathType Any -Path "Registry::$($Path)")) {
         $True {
             Set-ItemProperty -Path "Registry::$($Path)" -Name "$Name" -PropertyType "$PropertyType" -Value "$Value" -Force:$Force -Confirm:$Confirm -WhatIf:$WhatIf -ErrorAction Stop
         }
         $False {
             New-Item -Path "Registry::$Path" -ErrorAction SilentlyContinue
-            New-ItemProperty -Path "Registry::$($Path)" -Name "$Name" -PropertyType "$PropertyType" -Value "$Value" -Force:$Force -Confirm:$Confirm -WhatIf:$WhatIf -ErrorAction Stop
+            
         }
+    }#>
+    
+
         
+    try {
+        Get-ItemProperty -Path "Registry::$($Path)" -Name $Name -ErrorAction Stop | Out-Null
         
-        try {
-        
-        }
-        catch {
-            <#Do this if a terminating exception happens#>
+        if (-not $Silent) {
+            Write-Host " Setting $Name in $Path to $Value"
+            try {
+                Set-ItemProperty -Path "Registry::$($Path)" -Name "$Name" -PropertyType "$PropertyType" -Value "$Value" -Force:$Force -Confirm:$Confirm -WhatIf:$WhatIf -ErrorAction Stop
+                Write-Host "[] Setting $Name in $Path to $Value" -ForegroundColor Green
+            }
+            catch {
+                Write-Host "[] Setting $Name in $Path to $Value" -ForegroundColor Red
+                New-ItemProperty -Path "Registry::$($Path)" -Name "$Name" -PropertyType "$PropertyType" -Value "$Value" -Force:$Force -Confirm:$Confirm -WhatIf:$WhatIf -ErrorAction Stop
+            }
+            
         }
     }
+    catch {
+        Write-Host "This key does not exist."
+    }
+
 }
