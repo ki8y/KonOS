@@ -1,22 +1,34 @@
 # Read-Choice but instead it uses custom keybinds instead of only Y/N.
 function Read-Choice {
     # Choice.exe replacement
-    param( 
+    param(
+        # [ValidateLength(1, 1)] <# This works just as well i just wanted to test custom errors, I'll bring this back eventually.#>
         [PSCustomObject]$Binds,
         [string]$Sound
     )
 
-    $Binds | ForEach-Object { # make sure the user didnt input two buttons for a key lol
-        if ($_.Length -ne 1) {
-            throw "You cant do dat"
-            Write-Host "$_.Exception.Message"
+    $esc = ([char]27)
+
+    try {
+        $Binds | ForEach-Object { # make sure the user didnt input two buttons for a key lol
+            if ($_.Length -ne 1) {
+                throw "You can only have one character per button"
+                
+            }
+            if ($Binds.Count -lt 2) {
+                throw "You need more than one choice"
+            }
         }
     }
-
+    catch {
+        Write-Host $_.Exception.Message -ForegroundColor Red
+        break
+    }
+    
     # Error message
     function Write-ChoiceError {
         param (
-            [string]$ErrorMessage
+            [string]$ErrorMessagea
         )
 
         $konSize = (Get-Host).UI.RawUI.WindowSize # Console size (konsize lololo)
@@ -51,8 +63,22 @@ function Read-Choice {
         [Console]::SetCursorPosition($($cursorPos.X), $($cursorPos.Y))
         Write-Host "$esc[?25h" -NoNewline # unhide cursor
     }
-
-    if ($Binds -notcontains $Key) {
-        Write-ChoiceError -ErrorMessage "ⓧ Invalid key. Press any key to try again..."
+    
+    Write-Host "» " -ForegroundColor Blue -NoNewline; $cursorPos = [PSCustomObject]@{
+        # save cursor position for error message
+        "x" = [Console]::get_CursorLeft()
+        "y" = [Console]::get_CursorTop()
     }
+
+    do {
+        $Key = ([System.Console]::ReadKey($true) | Select-Object -ExpandProperty Key)
+        if ($Binds -notcontains $Key) {
+            Write-ChoiceError -ErrorMessage "ⓧ Invalid key. Press any key to try again..."
+        }
+        else {
+            Write-Host $Key
+            return $Key 
+            $KeyPressed = $True
+        }
+    } while (-not $KeyPressed)
 }
