@@ -5,6 +5,10 @@ This script basically just downloads all the other scripts and runs them.
 plz dont judge my bad code ;-; #>
 
 # Sets the background for powershell since for some reason it looooves to be blue and i think thats ugly.
+param(
+    [switch]$IgnoreWindowsBuild # A switch to disable the Windows Build Check
+)
+
 $Host.UI.RawUI.BackgroundColor = 'Black'
 $Host.UI.RawUI.ForegroundColor = 'White'
 $Host.UI.RawUI.WindowTitle = "Kon OS Bootstrapper"
@@ -213,7 +217,7 @@ switch ($LASTEXITCODE) {
     1 { PowerShell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -File "$KonOS\Setup\Modules\Setup.ps1" }
     2 { Exit-Setup }
 }
-
+    
 
 
 # miaw :cat_hi:
