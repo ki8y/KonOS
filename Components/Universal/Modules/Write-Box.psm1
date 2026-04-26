@@ -66,25 +66,36 @@
 
     switch ($Border) {
         round {
-            Write-Host ("$offset" + "$fColor" + "╭" + ("─" * $innerWidth) + "╮")
-            Write-Host ("$offset" + "$fColor" + "│" + (" " * $Padding) + "$Highlighter" + $Text + "$fColor" + (" " * $Padding) + "│")
-            Write-Host ("$offset" + "$fColor" + "╰" + ("─" * $innerWidth) + "╯") -NoNewline:$NoNewLine
+            $Box = @{
+                1 = ("$offset" + "$fColor" + "╭" + ("─" * $innerWidth) + "╮")
+                2 = ("$offset" + "$fColor" + "│" + (" " * $Padding) + "$Highlighter" + $Text + "$fColor" + (" " * $Padding) + "│")
+                3 = ("$offset" + "$fColor" + "╰" + ("─" * $innerWidth) + "╯")
+            }
         }
 
         sharp {
-            Write-Host ("$offset" + "$fColor" + "┌" + ("─" * $innerWidth) + "┐")
-            Write-Host ("$offset" + "$fColor" + "│" + (" " * $Padding) + "$Highlighter" + $Text + "$fColor" + (" " * $Padding) + "│")
-            Write-Host ("$offset" + "└" + ("─" * $innerWidth) + "┘") -NoNewline:$NoNewLine
+            $Box = @{
+                1 = ("$offset" + "$fColor" + "┌" + ("─" * $innerWidth) + "┐")
+                2 = ("$offset" + "$fColor" + "│" + (" " * $Padding) + "$Highlighter" + $Text + "$fColor" + (" " * $Padding) + "│")
+                3 = ("$offset" + "└" + ("─" * $innerWidth) + "┘")
+            }
         }
 
         double { 
-            Write-Host ("$offset" + "$fColor" + "╔" + ("═" * $innerWidth) + "$fColor" + "╗")
-            Write-Host ("$offset" + "$fColor" + "║" + (" " * $Padding) + "$Highlighter" + $Text + "$fColor" + (" " * $Padding) + "║")
-            Write-Host ("$offset" + "$fColor" + "╚" + ("═" * $innerWidth) + "$fColor" + "╝") -NoNewline:$NoNewLine
+            $Box = @{
+                1 = ("$offset" + "$fColor" + "╔" + ("═" * $innerWidth) + "$fColor" + "╗")
+                2 = ("$offset" + "$fColor" + "║" + (" " * $Padding) + "$Highlighter" + $Text + "$fColor" + (" " * $Padding) + "║")
+                3 = ("$offset" + "$fColor" + "╚" + ("═" * $innerWidth) + "$fColor" + "╝")
+            }
         }
 
         none {
-            Write-Host ($RawOffset + $Text) -NoNewline:$NoNewLine
+            $Box = ($RawOffset + $Text)
         }
     }
+    Write-Host @(
+        $Box.1,
+        $Box.2,
+        $Box.3
+    ) -Separator "`n" -NoNewline:$NoNewline 6>&1
 }
