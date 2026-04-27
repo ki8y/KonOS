@@ -97,5 +97,5 @@
         $Box.1,
         $Box.2,
         $Box.3
-    ) -Separator "`n" -NoNewline:$NoNewline 6>&1
+    ) -Separator "`n" -NoNewline:$NoNewline
 }
