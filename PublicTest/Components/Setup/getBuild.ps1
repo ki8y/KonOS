@@ -19,25 +19,43 @@ else {
             Write-Host @(
                 "Your version of Windows ($($Build.Name) $($Build.Version)) has limited support.`n",
                 "While compatible, I don't work hard to maintain support for these versions of Windows.",
-                "You may encounter bugs, errors, or other inconveniences. (If you do, report them please :D)`n",
-		"Press any key to proceed anyway..."
+                "You may encounter bugs, errors, or other inconveniences.",
+                "(If you do, report them please :D)`n",
+                "Press any key to proceed anyway..."
             ) -Separator "`n" -ForegroundColor DarkYellow -NoNewline
             [System.Console]::ReadKey($true) | Out-Null
         }
         None {
             Write-Host @(
                 "Your version of Windows ($($Build.Name) $($Build.Version)) is not supported.`n",
-                "I will not maintain support for these versions of Windows, and I'd highly recommend installing a newer version of Windows.",
+                "I will not maintain support for these versions of Windows,"
+                "and I'd highly recommend installing a newer version.",
                 "You may encounter bugs, errors, or other inconveniences.`n",
-		"Press any key to proceed anyway..."
-            ) -Separator "`n" -ForegroundColor Red -NoNewline
+                "Press any key to proceed anyway..."
+            ) -Separator "`n" -ForegroundColor DarkRed -NoNewline
             [System.Console]::ReadKey($true) | Out-Null
         }
         Experimental {
-            Write-Host "Your version of Windows is in experimental testing."
+            Write-Host @(
+                "Your version of Windows ($($Build.Name) $($Build.Version)) is in experimental testing.`n",
+                "These versions of Windows are fully supported, but considered unstable.",
+                "You may encounter bugs, errors, or other inconveniences.",
+                "(If you do, report them please :D)`n",
+                "Press any key to proceed anyway..."
+            ) -Separator "`n" -ForegroundColor Cyan -NoNewline
+            [System.Console]::ReadKey($true) | Out-Null
         }
         default {
-            Write-Host "Your version of Windows is not whitelisted."
+            Write-Host @(
+                "Your version of Windows ($($Build.Name) $($Build.Version)) is not whitelisted.`n",
+                "If you recieved this error, this could mean:",
+                "- You're on an EXTREMELY old version of Windows",
+                "- You're on an insider build of Windows",
+                "- You're on the latest version and I simply just haven't added it to the data file yet.",
+                "Press any key to exit..."
+            ) -Separator "`n" -ForegroundColor Red -NoNewline
+            [System.Console]::ReadKey($true) | Out-Null
+            Exit-Setup
         }
     }
 }
