@@ -1,6 +1,12 @@
 param (
     [switch]$BypassVersionCheck
 )
+# ESC code
+$esc = ([char]27)
+
+$KONOS = "$env:systemDrive\Kon OS"
+
+Import-Module "$KonOS\Modules\Write-Box.psm1"
 
 $buildList = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Setup/Data/SupportedBuilds.json"
 $BuildID = [System.Environment]::OSVersion.Version.Build | Write-Output
@@ -12,12 +18,13 @@ if ($BypassVersionCheck) {
 }
 else {
     switch ($Build.Support) {
-        Full {
+        Limited {
             <# Do nothing lol #>
         }
-        Limited {
+        Full {
+            Write-Box -Text "Your version of Windows has limited support."
             Write-Host @(
-                "Your version of Windows ($($Build.Name) $($Build.Version)) has limited support.`n",
+                "The version of Windows you're using ($($Build.Name) $($Build.Version)) has limited support.`n",
                 "While compatible, I don't work hard to maintain support for these versions of Windows.",
                 "You may encounter bugs, errors, or other inconveniences.",
                 "(If you do, report them please :D)`n",
