@@ -15,12 +15,54 @@
           "Type": 4
         }
       ],
-      "DisableBingSearch": {
+      "DisableBingSearch": [
+        {
         "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Search",
         "Value": "BingSearchEnabled",
         "Data": 0,
         "Type": 4
-      }
+        }
+      ],
+      "DisableSearchSuggestions": [
+        {
+          "Key": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\Explorer",
+          "Value": "DisableSearchBoxSuggestions",
+          "Data": 1,
+          "Type": 4
+        }
+      ],
+      "DisableCopilot": [
+        {
+          "Key": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot",
+          "Value": "TurnOffWindowsCopilot",
+          "Data": 1,
+          "Type": 4
+        },
+        {
+          "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "Value": "ShowCopilotButton",
+          "Data": 0,
+          "Type": 4
+        }
+      ],
+      "DisableBackgroundUsage": [
+        {
+          "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Search",
+          "Value": "BackgroundAppGlobalToggle",
+          "Data": 0,
+          "Type": 4
+        }
+      ]
+    },
+    "StartTweaks": {
+      "HideRecommendedSection": [
+        {
+          "Key": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\Explorer",
+          "Value": "HideRecommendedSection",
+          "Data": 1,
+          "Type": 4
+        }
+      ]
     }
   }
 }
