@@ -86,6 +86,7 @@
       "HideRecommendedSection": {
         "Name": "Disable Recommended Section",
         "Description": "Disables Recommended Section in Start Menu",
+        "MinBuild": 22000,
           "Registry": [
           {
             "Key": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\Explorer",
