@@ -7,6 +7,7 @@ $esc = ([char]27)
 $KONOS = "$env:systemDrive\Kon OS"
 
 Import-Module "$KonOS\Modules\Write-Box.psm1"
+$Flags = (Get-Content -Path "$env:systemDrive\Kon OS\Setup\flags.json" | ConvertFrom-Json)
 
 $buildList = Invoke-RestMethod -Uri "https://raw.githubusercontent.com/ki8y/KonOS/master/Components/Setup/Data/SupportedBuilds.json"
 $BuildID = [System.Environment]::OSVersion.Version.Build | Write-Output
@@ -18,10 +19,14 @@ if ($BypassVersionCheck) {
 }
 else {
     switch ($Build.Support) {
-        Limited {
-            <# Do nothing lol #>
-        }
         Full {
+            $flags += @{ "Build" = $BuildID }
+            $Flags | ConvertTo-Json | Set-Content -Path "$env:systemDrive\Kon OS\Setup\flags.json" -Force
+        }
+        Limited {
+            $flags += @{ "Build" = $BuildID }
+            $Flags | ConvertTo-Json | Set-Content -Path "$env:systemDrive\Kon OS\Setup\flags.json" -Force
+
             Write-Box -Text "Your version of Windows has limited support."
             Write-Host @(
                 "The version of Windows you're using ($($Build.Name) $($Build.Version)) has limited support.`n",
@@ -33,6 +38,9 @@ else {
             [System.Console]::ReadKey($true) | Out-Null
         }
         None {
+            $flags += @{ "Build" = $BuildID }
+            $Flags | ConvertTo-Json | Set-Content -Path "$env:systemDrive\Kon OS\Setup\flags.json" -Force
+
             Write-Host @(
                 "Your version of Windows ($($Build.Name) $($Build.Version)) is not supported.`n",
                 "I will not maintain support for these versions of Windows,"
