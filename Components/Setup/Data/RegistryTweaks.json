@@ -335,6 +335,7 @@
                     "Description": "Toggles the \"End Task\" button in the taskbar.",
                     "Enabled": [
                         {
+                            "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings",
                             "Value": "TaskbarEndTask",
                             "Data": 1,
@@ -346,13 +347,13 @@
                 "ShowHiddenFilesAndExtensions": {
                     "Name": "Show hidden files and file extensions",
                     "Description": "When enabled, you will be able to see hidden files and all file extensions.",
-                    "Type": "Registry",
                     "Enabled": [
                         {
+                            "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
                             "Value": "HideFileExt",
                             "Data": 0,
-                            "Type": 4
+                            "RegistryType": 4
                         },
                         {
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
@@ -372,9 +373,9 @@
                 "DarkMode": {
                     "Name": "Dark mode",
                     "Description": "Toggles dark mode.",
-                    "Type": "Registry",
                     "Enabled": [
                         {
+                            "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
                             "Value": "SystemUsesLightTheme",
                             "Data": 0,
@@ -392,13 +393,13 @@
                 "DisableTransparency": {
                     "Name": "Disable Transparency",
                     "Description": "When enabled, all transparency in Windows will be disabled.",
-                    "Type": "Registry",
                     "Enabled": [
                         {
+                            "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
                             "Value": "EnableTransparency",
                             "Data": 0,
-                            "Type": 4
+                            "RegistryType": 4
                         }
                     ]
                 },
@@ -406,9 +407,9 @@
                 "LogonBlur": {
                     "Name": "Disable Logon Blur",
                     "Description": "When enabled, the blur on the logon screen will be disabled.",
-                    "Type": "Registry",
                     "Enabled": [
                         {
+                            "Type": "Registry",
                             "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
                             "Value": "DisableAcrylicBackgroundOnLogon",
                             "Data": 1,
@@ -421,9 +422,9 @@
                     "Name": "Disable Live Tiles",
                     "Description": "When enabled, Live Tiles will be disabled on Windows 10.",
                     "MaxBuild": "19045",
-                    "Type": "Registry",
                     "Enabled": [
                         {
+                            "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications",
                             "Value": "NoTileApplicationNotification",
                             "Data": 1,
@@ -467,9 +468,9 @@
                 "ShutdownTweaks": {
                     "Name": "Shutdown Tweaks",
                     "Description": "When enabled, Windows will no longer prompt you to save your work before shutting down.",
-                    "Type": "Registry",
                     "Enabled": [
                         {
+                            "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Control Panel\\Desktop",
                             "Value": "AutoEndTasks",
                             "Data": "1",
@@ -509,6 +510,20 @@
                             "Value": "HiberbootEnabled",
                             "Data": 0,
                             "DataType": 4
+                        }
+                    ]
+                },
+
+                "StickyKeys": {
+                    "Name": "Sticky keys",
+                    "Description": "Toggle sticky keys shortcut",
+                    "Enabled": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKCU\\Control Panel\\Accessibility\\StickyKeys",
+                            "Value": "Flags",
+                            "Data": "506",
+                            "RegistryType": 1
                         }
                     ]
                 }
