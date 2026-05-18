@@ -6,7 +6,7 @@
                 "DisableAccountSync": {
                     "Name": "Disable Cloud Search",
                     "Description": "When enabled, Microsoft account integration will be disabled in search.",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings",
@@ -27,7 +27,7 @@
                 "DisableBingSearch": {
                     "Name": "Disable Bing in Search",
                     "Description": "When enabled, Windows Search will no longer use bing.",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Search",
@@ -41,7 +41,7 @@
                 "DisableSearchSuggestions": {
                     "Name": "Disable Search Suggestions",
                     "Description": "When enabled, Search Suggestions will be disabled.",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\Explorer",
@@ -55,7 +55,7 @@
                 "DisableCopilot": {
                     "Name": "Disable Copilot",
                     "Description": "When enabled, Copilot will be disbaled.",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot",
@@ -71,7 +71,7 @@
                             "DataType": 4
                         }
                     ],
-                    "Disabled": [
+                    "Undo": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\WindowsCopilot",
@@ -92,7 +92,7 @@
                 "DisableBackgroundUsage": {
                     "Name": "Disable search background usage",
                     "Description": "Stops search from running in the background.",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Search",
@@ -101,7 +101,7 @@
                             "DataType": 4
                         }
                     ],
-                    "Disabled": [
+                    "Undo": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Search",
@@ -121,7 +121,7 @@
                     "Name": "Recommended Section",
                     "Description": "Disables Recommended Section in Start Menu",
                     "MinBuild": 22000,
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\Explorer",
@@ -140,7 +140,7 @@
                 "TaskbarAnimations": {
                     "Name": "Taskbar Animations",
                     "Description": "Toggles Taskbar Animations",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\VisualEffects",
@@ -161,7 +161,7 @@
                 "AeroPeek": {
                     "Name": "Aero Peek",
                     "Description": "Toggle Aero Peek",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\DWM",
@@ -175,7 +175,7 @@
                 "MenuAnimations": {
                     "Name": "Menu Animations",
                     "Description": "Toggle Menu Animations",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Control Panel\\Desktop",
@@ -217,7 +217,7 @@
                 "SelectionRectangle": {
                     "Name": "Selection Rectangle",
                     "Description": "Toggle selection rectangle",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
@@ -231,7 +231,7 @@
                 "FontSmoothing": {
                     "Name": "Font Smoothing",
                     "Description": "Toggle font smoothing",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
@@ -252,7 +252,7 @@
                 "SlideComboBoxes": {
                     "Name": "Slide Combo Boxes",
                     "Description": "Toggles sliding combo boxes",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
@@ -266,7 +266,7 @@
                 "DesktopShadows": {
                     "Name": "Desktop Shadows",
                     "Description": "Toggles desktop shadows",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
@@ -280,7 +280,7 @@
                 "MediaThumbnails": {
                     "Name": "Media Thumbnails",
                     "Description": "Toggles photo and video file thumbnails",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
@@ -301,7 +301,7 @@
                 "ThumbnailCaching": {
                     "Name": "Thumbnail Caching",
                     "Description": "Toggles thumbnail caching",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\DWM",
@@ -315,7 +315,7 @@
                 "SmoothScrolling": {
                     "Name": "Smooth Scrolling",
                     "Description": "Toggles smooth scrolling",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Control Panel\\Desktop",
@@ -333,7 +333,7 @@
                 "EndTaskButton": {
                     "Name": "End Task in Taskbar",
                     "Description": "Toggles the \"End Task\" button in the taskbar.",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\TaskbarDeveloperSettings",
@@ -347,7 +347,7 @@
                 "ShowHiddenFilesAndExtensions": {
                     "Name": "Show hidden files and file extensions",
                     "Description": "When enabled, you will be able to see hidden files and all file extensions.",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
@@ -373,7 +373,7 @@
                 "DarkMode": {
                     "Name": "Dark mode",
                     "Description": "Toggles dark mode.",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
@@ -393,7 +393,7 @@
                 "DisableTransparency": {
                     "Name": "Disable Transparency",
                     "Description": "When enabled, all transparency in Windows will be disabled.",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
@@ -407,7 +407,7 @@
                 "LogonBlur": {
                     "Name": "Disable Logon Blur",
                     "Description": "When enabled, the blur on the logon screen will be disabled.",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
@@ -422,7 +422,7 @@
                     "Name": "Disable Live Tiles",
                     "Description": "When enabled, Live Tiles will be disabled on Windows 10.",
                     "MaxBuild": "19045",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Policies\\Microsoft\\Windows\\CurrentVersion\\PushNotifications",
@@ -440,7 +440,7 @@
                 "MouseAcceleration": {
                     "Name": "Mouse Acceleration",
                     "Description": "Toggles mouse acceleration",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Control Panel\\Mouse",
@@ -468,7 +468,7 @@
                 "ShutdownTweaks": {
                     "Name": "Shutdown Tweaks",
                     "Description": "When enabled, Windows will no longer prompt you to save your work before shutting down.",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_CURRENT_USER\\Control Panel\\Desktop",
@@ -517,13 +517,27 @@
                 "StickyKeys": {
                     "Name": "Sticky keys",
                     "Description": "Toggle sticky keys shortcut",
-                    "Enabled": [
+                    "Apply": [
                         {
                             "Type": "Registry",
-                            "Key": "HKCU\\Control Panel\\Accessibility\\StickyKeys",
+                            "Key": "HKEY_CURRENT_USER\\Control Panel\\Accessibility\\StickyKeys",
                             "Value": "Flags",
                             "Data": "506",
                             "RegistryType": 1
+                        }
+                    ]
+                },
+
+                "CoreIsolation": {
+                    "Name": "Core Isolation Tweaks",
+                    "Description": "When enabled, core isolation will be disabled.",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity",
+                            "Value": "Enabled",
+                            "Data": 0,
+                            "RegistryType": 4
                         }
                     ]
                 }
@@ -536,7 +550,23 @@
                 "DisableTelemetry": {
                     "Name": "Disable Telemetry",
                     "Description": "When enabled, Kon OS will attempt to disable as much telemetry as it can.",
-                    "Enabled": [{}]
+                    "DefaultAction": "Enabled",
+                    "Apply": [
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "Microsoft\\Windows\\Windows Error Reporting",
+                            "TaskName": "QueueReporting"
+                        }
+                    ],
+                    "Undo": [
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "Microsoft\\Windows\\Windows Error Reporting",
+                            "TaskName": "QueueReporting"
+                        }
+                    ]
                 }
             }
         }
