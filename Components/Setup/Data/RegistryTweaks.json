@@ -434,6 +434,21 @@
                             "DataType": 4
                         }
                     ]
+                },
+
+                "LegacyContextMenu": {
+                    "Name": "Legacy Context Menu",
+                    "Description": "When enabled, this disables the Windows 11 context menu.",
+                    "MinBuild": "22000",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32",
+                            "Value": null,
+                            "Data": "",
+                            "DataType": 1
+                        }
+                    ]
                 }
             }
         },
@@ -551,23 +566,285 @@
             "Name": "Privacy Tweaks",
             "Tweaks": {
                 "DisableTelemetry": {
-                    "Name": "Disable Telemetry",
+                    "Name": "Disable Telemetry (UNFINISHED AHHHHHHHAHWDHUAHUYDBW)",
                     "Description": "When enabled, Kon OS will attempt to disable as much telemetry as it can.",
-                    "DefaultAction": "Enabled",
                     "Apply": [
                         {
                             "Type": "ScheduledTask",
                             "State": "Disabled",
-                            "TaskPath": "Microsoft\\Windows\\Windows Error Reporting",
+                            "TaskPath": "\\Microsoft\\Windows\\Windows Error Reporting\\",
                             "TaskName": "QueueReporting"
-                        }
-                    ],
-                    "Undo": [
+                        },
                         {
                             "Type": "ScheduledTask",
                             "State": "Disabled",
-                            "TaskPath": "Microsoft\\Windows\\Windows Error Reporting",
-                            "TaskName": "QueueReporting"
+                            "TaskPath": "\\Microsoft\\Windows\\Maps\\",
+                            "TaskName": "MapsUpdateTask"
+                        },
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "\\Microsoft\\Windows\\DiskDiagnostic\\",
+                            "TaskName": "Microsoft-Windows-DiskDiagnosticDataCollector"
+                        },
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "\\Microsoft\\Windows\\Autochk\\",
+                            "TaskName": "Proxy"
+                        },
+
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\DataCollection",
+                            "Value": "AllowTelemetry",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+                            "Value": "AllowTelemetry",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+                            "Value": "ContentDeliveryAllowed",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+                            "Value": "OemPreInstalledAppsEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+                            "Value": "PreInstalledAppsEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+                            "Value": "PreInstalledAppsEverEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+                            "Value": "SilentInstalledAppsEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+                            "Value": "SubscribedContent-338387Enabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+                            "Value": "SubscribedContent-338388Enabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+                            "Value": "SubscribedContent-338389Enabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+                            "Value": "SubscribedContent-353698Enabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+                            "Value": "SystemPaneSuggestionsEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+                            "Value": "DisableWindowsConsumerFeatures",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Siuf\\Rules",
+                            "Value": "NumberOfSIUFInPeriod",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+                            "Value": "DoNotShowFeedbackNotifications",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Policies\\Microsoft\\Windows\\CloudContent",
+                            "Value": "DisableTailoredExperiencesWithDiagnosticData",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\AdvertisingInfo",
+                            "Value": "DisabledByGroupPolicy",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\Windows Error Reporting",
+                            "Value": "Disabled",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DeliveryOptimization\\Config",
+                            "Value": "DODownloadMode",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Remote Assistance",
+                            "Value": "fAllowToGetHelp",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\OperationStatusManager",
+                            "Value": "EnthusiastMode",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced\\People",
+                            "Value": "PeopleBand",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+                            "Value": "LaunchTo",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem",
+                            "Value": "LongPathsEnabled",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+                            "Value": "SystemResponsiveness",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile",
+                            "Value": "NetworkThrottlingIndex",
+                            "Data": -1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management",
+                            "Value": "ClearPageFileAtShutdown",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SYSTEM\\ControlSet001\\Services\\Ndu",
+                            "Value": "Start",
+                            "Data": 2,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Control Panel\\Mouse",
+                            "Value": "MouseHoverTime",
+                            "Data": "400",
+                            "DataType": 1
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\LanmanServer\\Parameters",
+                            "Value": "IRPStackSize",
+                            "Data": 30,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Feeds",
+                            "Value": "ShellFeedsTaskbarViewMode",
+                            "Data": 2,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+                            "Value": "HideSCAMeetNow",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+                            "Value": "GPU Priority",
+                            "Data": 8,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+                            "Value": "Priority",
+                            "Data": 6,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Multimedia\\SystemProfile\\Tasks\\Games",
+                            "Value": "Scheduling Category",
+                            "Data": "High",
+                            "DataType": 1
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\UserProfileEngagement",
+                            "Value": "ScoobeSystemSettingEnabled",
+                            "Data": 0,
+                            "DataType": 4
                         }
                     ]
                 }
