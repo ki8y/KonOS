@@ -353,7 +353,7 @@
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
                             "Value": "HideFileExt",
                             "Data": 0,
-                            "RegistryType": 4
+                            "DataType": 4
                         },
                         {
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
@@ -399,7 +399,7 @@
                             "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
                             "Value": "EnableTransparency",
                             "Data": 0,
-                            "RegistryType": 4
+                            "DataType": 4
                         }
                     ]
                 },
@@ -523,7 +523,7 @@
                             "Key": "HKEY_CURRENT_USER\\Control Panel\\Accessibility\\StickyKeys",
                             "Value": "Flags",
                             "Data": "506",
-                            "RegistryType": 1
+                            "DataType": 1
                         }
                     ]
                 },
@@ -537,7 +537,7 @@
                             "Key": "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity",
                             "Value": "Enabled",
                             "Data": 0,
-                            "RegistryType": 4
+                            "DataType": 4
                         }
                     ]
                 }
