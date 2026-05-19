@@ -5,7 +5,7 @@
             "Tweaks": {
                 "DisableAccountSync": {
                     "Name": "Disable Cloud Search",
-                    "Description": "When enabled, Microsoft account integration will be disabled in search.",
+                    "Description": "When enabled: Microsoft account integration will be disabled in search.",
                     "Apply": [
                         {
                             "Type": "Registry",
@@ -26,7 +26,7 @@
 
                 "DisableBingSearch": {
                     "Name": "Disable Bing in Search",
-                    "Description": "When enabled, Windows Search will no longer use bing.",
+                    "Description": "When enabled: Windows Search will no longer use bing.",
                     "Apply": [
                         {
                             "Type": "Registry",
@@ -40,7 +40,7 @@
 
                 "DisableSearchSuggestions": {
                     "Name": "Disable Search Suggestions",
-                    "Description": "When enabled, Search Suggestions will be disabled.",
+                    "Description": "When enabled: Search Suggestions will be disabled.",
                     "Apply": [
                         {
                             "Type": "Registry",
@@ -54,7 +54,7 @@
 
                 "DisableCopilot": {
                     "Name": "Disable Copilot",
-                    "Description": "When enabled, Copilot will be disbaled.",
+                    "Description": "When enabled: Copilot will be disbaled.",
                     "Apply": [
                         {
                             "Type": "Registry",
@@ -277,6 +277,29 @@
                     ]
                 },
 
+                "CursorShadow": {
+                    "Name": "Disable Cursor Shadow",
+                    "Description": "When enabled: the shadow under your cursor will be disabled.",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Control Panel\\Desktop",
+                            "Value": "UserPreferencesMask",
+                            "Data": [144, 18, 3, 128, 16, 0, 0, 0],
+                            "DataType": 3
+                        }
+                    ],
+                    "Undo": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Control Panel\\Desktop",
+                            "Value": "UserPreferencesMask",
+                            "Data": [144, 50, 3, 128, 16, 0, 0, 0],
+                            "DataType": 3
+                        }
+                    ]
+                },
+
                 "MediaThumbnails": {
                     "Name": "Media Thumbnails",
                     "Description": "Toggles photo and video file thumbnails",
@@ -327,6 +350,7 @@
                 }
             }
         },
+
         "Shell": {
             "Name": "Shell tweaks",
             "Tweaks": {
@@ -346,7 +370,7 @@
 
                 "ShowHiddenFilesAndExtensions": {
                     "Name": "Show hidden files and file extensions",
-                    "Description": "When enabled, you will be able to see hidden files and all file extensions.",
+                    "Description": "When enabled: you will be able to see hidden files and all file extensions.",
                     "Apply": [
                         {
                             "Type": "Registry",
@@ -368,6 +392,26 @@
                             "Value": "CheckedValue",
                             "Data": 1,
                             "DataType": 4
+                        }
+                    ]
+                },
+
+                "ForceGenericFolderType": {
+                    "Name": "Force Generic FolderType",
+                    "Description": "When enabled: Kon OS will flush the folder view cache and set all folder types to Generic, which can improve the snappiness of File Explorer.",
+                    "Apply": [
+                        {
+                            "Type": "Command",
+                            "InvokeCommand": [
+                                "Remove-Item \"Registry::HKEY_CURRENT_USER\\SOFTWARE\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags\" -Recurse -Force"
+                            ]
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags\\AllFolders\\Shell",
+                            "Value": "FolderType",
+                            "Data": "NotSpecified",
+                            "DataType": 1
                         }
                     ]
                 },
@@ -395,7 +439,7 @@
 
                 "DisableTransparency": {
                     "Name": "Disable Transparency",
-                    "Description": "When enabled, all transparency in Windows will be disabled.",
+                    "Description": "When enabled: all transparency in Windows will be disabled.",
                     "Apply": [
                         {
                             "Type": "Registry",
@@ -409,7 +453,7 @@
 
                 "LogonBlur": {
                     "Name": "Disable Logon Blur",
-                    "Description": "When enabled, the blur on the logon screen will be disabled.",
+                    "Description": "When enabled: the blur on the logon screen will be disabled.",
                     "Apply": [
                         {
                             "Type": "Registry",
@@ -423,7 +467,7 @@
 
                 "LiveTiles": {
                     "Name": "Disable Live Tiles",
-                    "Description": "When enabled, Live Tiles will be disabled on Windows 10.",
+                    "Description": "When enabled: Live Tiles will be disabled on Windows 10.",
                     "MaxBuild": "19045",
                     "Apply": [
                         {
@@ -438,7 +482,7 @@
 
                 "LegacyContextMenu": {
                     "Name": "Legacy Context Menu",
-                    "Description": "When enabled, this disables the Windows 11 context menu.",
+                    "Description": "When enabled: this disables the Windows 11 context menu.",
                     "MinBuild": "22000",
                     "Apply": [
                         {
@@ -483,9 +527,32 @@
                     ]
                 },
 
+                "DisableIPv6": {
+                    "Name": "Disable IPv6",
+                    "Description": "Disables IPv6, which can mitigate privacy risks and improve internet stability.",
+                    "SkipByDefault": true,
+                    "PerformanceImpact": "Varies",
+                    "Apply": [
+                        {
+                            "Type": "Command",
+                            "InvokeCommand": [
+                                "Disable-NetAdapterBinding -Name \"*\" -ComponentID ms_tcpip6"
+                            ]
+                        }
+                    ],
+                    "Undo": [
+                        {
+                            "Type": "Command",
+                            "InvokeCommand": [
+                                "Enable-NetAdapterBinding -Name \"*\" -ComponentID ms_tcpip6"
+                            ]
+                        }
+                    ]
+                },
+
                 "ShutdownTweaks": {
                     "Name": "Shutdown Tweaks",
-                    "Description": "When enabled, Windows will no longer prompt you to save your work before shutting down.",
+                    "Description": "When enabled: Windows will no longer prompt you to save your work before shutting down.",
                     "Apply": [
                         {
                             "Type": "Registry",
@@ -548,13 +615,130 @@
 
                 "CoreIsolation": {
                     "Name": "Core Isolation Tweaks",
-                    "Description": "When enabled, core isolation will be disabled.",
+                    "Description": "When enabled: core isolation will be disabled.",
                     "Apply": [
                         {
                             "Type": "Registry",
                             "Key": "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity",
                             "Value": "Enabled",
                             "Data": 0,
+                            "DataType": 4
+                        }
+                    ]
+                },
+
+                "TeredoTweaks": {
+                    "Name": "Teredo Tweaks",
+                    "Description": "When enabled: Teredo will be disabled. This can improve latency.",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters",
+                            "Value": "DisabledComponents",
+                            "Data": 255,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Command",
+                            "InvokeCommand": [
+                                "netsh.exe interface teredo set state disabled"
+                            ]
+                        }
+                    ],
+                    "Undo": [
+                        {
+                            "Type": "Command",
+                            "InvokeCommand": [
+                                "netsh.exe interface teredo set state default"
+                            ]
+                        }
+                    ]
+                },
+
+                "NoToastNotifications": {
+                    "Name": "No Toast Notifications",
+                    "Description": "Disable CPU-intensive Windows toast notifications completely.",
+                    "PerformanceImpact": "Medium",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\Explorer",
+                            "Value": "DisableNotificationCenter",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications",
+                            "Value": "ToastEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        }
+                    ],
+                    "Undo": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\Explorer",
+                            "Value": "DisableNotificationCenter",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications",
+                            "Value": "ToastEnabled",
+                            "Data": 1,
+                            "DataType": 4
+                        }
+                    ]
+                },
+
+                "DisableBackgroundApps": {
+                    "Name": "Disable Background Apps",
+                    "Description": "When enabled: (Most) apps will no longer run in the background",
+                    "PerformanceImpact": "High",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\BackgroundAccessApplications",
+                            "Value": "GlobalUserDisabled",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\AppPrivacy",
+                            "Value": "LetAppsRunInBackground",
+                            "Data": 2,
+                            "DataType": 4
+                        }
+                    ]
+                },
+
+                "DisableWindowsInk": {
+                    "Name": "Disable Inking and Typing",
+                    "Description": "When Enabled: Inking and Typing will be disabled.",
+                    "PerformanceImpact": "Low",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\WindowsInkWorkspace",
+                            "Value": "AllowWindowsInkWorkspace",
+                            "Data": 0,
+                            "DataType": 4
+                        }
+                    ]
+                },
+
+                "NoFastUserSwitching": {
+                    "Name": "Disable Fast User Swtiching",
+                    "Description": "When Enabled: fast user switching will be disabled.",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+                            "Value": "HideFastUserSwitching",
+                            "Data": 1,
                             "DataType": 4
                         }
                     ]
@@ -567,7 +751,7 @@
             "Tweaks": {
                 "DisableTelemetry": {
                     "Name": "Disable Telemetry (UNFINISHED AHHHHHHHAHWDHUAHUYDBW)",
-                    "Description": "When enabled, Kon OS will attempt to disable as much telemetry as it can.",
+                    "Description": "When enabled: Kon OS will attempt to disable as much telemetry as it can.",
                     "Apply": [
                         {
                             "Type": "ScheduledTask",
@@ -592,6 +776,60 @@
                             "State": "Disabled",
                             "TaskPath": "\\Microsoft\\Windows\\Autochk\\",
                             "TaskName": "Proxy"
+                        },
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "\\Microsoft\\Windows\\Application Experience\\",
+                            "TaskName": "Microsoft Compatibility Appraiser"
+                        },
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "\\Microsoft\\Windows\\Application Experience\\",
+                            "TaskName": "ProgramDataUpdater"
+                        },
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "\\Microsoft\\Windows\\Application Experience\\",
+                            "TaskName": "MareBackup"
+                        },
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "\\Microsoft\\Windows\\Application Experience\\",
+                            "TaskName": "StartupAppTask"
+                        },
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "\\Microsoft\\Windows\\Application Experience\\",
+                            "TaskName": "PcaPatchDbTask"
+                        },
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "\\Microsoft\\Windows\\Feedback\\Siuf\\",
+                            "TaskName": "DmClient"
+                        },
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "\\Microsoft\\Windows\\Feedback\\Siuf\\",
+                            "TaskName": "DmClientOnScenarioDownload"
+                        },
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "\\Microsoft\\Windows\\Customer Experience Improvement Program\\",
+                            "TaskName": "UsbCeip"
+                        },
+                        {
+                            "Type": "ScheduledTask",
+                            "State": "Disabled",
+                            "TaskPath": "\\Microsoft\\Windows\\Customer Experience Improvement Program\\",
+                            "TaskName": "Consolidator"
                         },
 
                         {
@@ -845,6 +1083,396 @@
                             "Value": "ScoobeSystemSettingEnabled",
                             "Data": 0,
                             "DataType": 4
+                        }
+                    ]
+                },
+
+                "DisableActivityHistory": {
+                    "Name": "Disable Activity History",
+                    "Description": "When Enabled: Activity History will be disabled.",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                            "Value": "EnableActivityFeed",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                            "Value": "PublishUserActivities",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                            "Value": "UploadUserActivities",
+                            "Data": 0,
+                            "DataType": 4
+                        }
+                    ]
+                },
+
+                "DisableLocationServices": {
+                    "Name": "Disable Location Services",
+                    "Description": "When Enabled: Location services will be disabled across Windows.",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\location",
+                            "Value": "Value",
+                            "Data": "deny",
+                            "DataType": 1
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Sensor\\Overrides\\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}",
+                            "Value": "SensorPermissionState",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\lfsvc\\Service\\Configuration",
+                            "Value": "Status",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SYSTEM\\Maps",
+                            "Value": "AutoUpdateEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        }
+                    ]
+                }
+            }
+        },
+
+        "Xbox": {
+            "Name": "Xbox Tweaks",
+            "Tweaks": {
+                "DisableGameDVR": {
+                    "Name": "Disable GameDVR",
+                    "Description": "When Enabled: GameDVR will be disabled.",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\System\\GameConfigStore",
+                            "Value": "GameDVR_Enabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\GameDVR",
+                            "Value": "AllowGameDVR",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR",
+                            "Value": "AppCaptureEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR",
+                            "Value": "AudioCaptureEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR",
+                            "Value": "HistoricalCaptureEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        }
+                    ]
+                },
+
+                "DisableFSO": {
+                    "Name": "Disable FullScreen Optimizations",
+                    "Description": "When enabled: Fullscreen optimizations (FSO) will be disabled. Windows will switch back to use Fullscreen Exclusive (FSE), potentially improving latency",
+                    "PerformanceImpact": "Medium",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\System\\GameConfigStore",
+                            "Value": "GameDVR_FSEBehavior",
+                            "Data": 2,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\System\\GameConfigStore",
+                            "Value": "GameDVR_DSEBehavior",
+                            "Data": 2,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\System\\GameConfigStore",
+                            "Value": "GameDVR_DXGIHonorFSEWindowsCompatible",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\System\\GameConfigStore",
+                            "Value": "GameDVR_HonorUserFSEBehaviorMode",
+                            "Data": 1,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\System\\GameConfigStore",
+                            "Value": "GameDVR_EFSEFeatureFlags",
+                            "Data": 0,
+                            "DataType": 4
+                        }
+                    ]
+                },
+
+                "DisableGameBar": {
+                    "Name": "Disable Game Bar",
+                    "Description": "When enabled: Xbox Game Bar will be disabled.",
+                    "PerformanceImpact": "Low",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\GameBar",
+                            "Value": "ShowStartupPanel",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\GameBar",
+                            "Value": "GamePanelStartupTipIndex",
+                            "Data": 3,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\GameBar",
+                            "Value": "UseNexusForGameBarEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\GameBar",
+                            "Value": "AllowAutoGameMode",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\GameBar",
+                            "Value": "AutoGameModeEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\GameBar",
+                            "Value": "GameBarEnabled",
+                            "Data": 0,
+                            "DataType": 4
+                        }
+                    ]
+                }
+            }
+        },
+
+        "SmartScreen": {
+            "Name": "SmartScreen Tweaks",
+            "Tweaks": {
+                "DisableSmartScreen": {
+                    "Name": "Disable SmartScreen",
+                    "Description": "When Enabled: Windows SmartScreen will be disabled.",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer",
+                            "Value": "SmartScreenEnabled",
+                            "Data": "Off",
+                            "DataType": 1
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+                            "Value": "EnableSmartScreen",
+                            "Data": 0,
+                            "DataType": 4
+                        }
+                    ]
+                },
+
+                "DisableEdgeSmartScreen": {
+                    "Name": "Disable SmartScreen (Edge)",
+                    "Description": "When Enabled: Windows SmartScreen for Microsoft Edge will be disabled.",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Edge\\SmartScreenEnabled",
+                            "Value": null,
+                            "Data": 0,
+                            "DataType": 4
+                        }
+                    ]
+                },
+
+                "DisableSmartScreenWS": {
+                    "Name": "Disable Smart Screen (MS Store)",
+                    "Description": "When enabled: Windows SmartScreen will be disabled in the Microsoft Store.",
+                    "Apply": [
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\AppHost",
+                            "Value": "EnableWebContentEvaluation",
+                            "Data": 0,
+                            "DataType": 4
+                        },
+                        {
+                            "Type": "Registry",
+                            "Key": "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\AppHost",
+                            "Value": "PreventOverride",
+                            "Data": 0,
+                            "DataType": 4
+                        }
+                    ]
+                }
+            }
+        },
+
+        "Bootloader": {
+            "Name": "Bootloader Tweaks",
+            "Tweaks": {
+                "LegacyBootMenu": {
+                    "Name": "Legacy Boot Menu",
+                    "Description": "When Enabled: Windows will use the legacy boot menu, which is controlled with the arrow keys. This can improve startup times.",
+                    "PerformanceImpact": "Low",
+                    "Apply": [
+                        {
+                            "Type": "BCD",
+                            "Command": "Set",
+                            "Id": "{ current }",
+                            "Value": "bootmenupolicy",
+                            "Data": "Legacy"
+                        }
+                    ]
+                },
+
+                "OptimizePlatformTimer": {
+                    "Name": "Automatically choose the best platform timer",
+                    "Description": "Deletes \"useplatformclock\" value in BCD, which lets Windows automatically choose the best platform timer for your computer. This can help if your PC has been forced to the wrong platform timer.",
+                    "PerformanceImpact": "High",
+                    "Apply": [
+                        {
+                            "Type": "BCD",
+                            "Command": "DeleteValue",
+                            "Value": "useplatformclock"
+                        }
+                    ]
+                },
+
+                "NoBootGUI": {
+                    "Name": "No Boot GUI",
+                    "Description": "Disables boot gui (spinny circle), slightly increasing startup times.",
+                    "PerformanceImpact": "Low",
+                    "Apply": [
+                        {
+                            "Type": "BCD",
+                            "Command": "Set",
+                            "Value": "bootux",
+                            "Data": "disabled"
+                        }
+                    ]
+                },
+
+                "DisableUsePlatformTick": {
+                    "Name": "Disable useplatformtick in BCD",
+                    "Description": "Disables forced platform timer ticks in Windows, leaving it up to the hardware. potentially improving performance. (Although, your PC is likely already configured to do this automatically)",
+                    "PerformanceImpact": "Varies",
+                    "Apply": [
+                        {
+                            "Type": "BCD",
+                            "Command": "Set",
+                            "Value": "useplatformtick",
+                            "Data": "no"
+                        }
+                    ]
+                },
+
+                "TscSyncPolicyTweaks": {
+                    "Name": "Set TSC sync policy to enhanced",
+                    "Description": "Enables a stricter synchronization policy for your CPU cores, potentially improving performance (especially on older computers)",
+                    "PerformanceImpact": "Medium",
+                    "Apply": [
+                        {
+                            "Type": "BCD",
+                            "Command": "Set",
+                            "Value": "tscsyncpolicy",
+                            "Data": "enhanced"
+                        }
+                    ]
+                },
+
+                "DisableDynamicTick": {
+                    "Name": "Disable Dynamic Tick",
+                    "Description": "Disables dynamic tick, which is a power saving feature on Windows that stops the periodic timer interrupts while idle. Enabling this tweak may improve latency or improve timer resync issues, but most of the time it's completely negligible and only makes your computer work harder.",
+                    "PerformanceImpact": "Low",
+                    "SkipByDefault": true,
+                    "Apply": [
+                        {
+                            "Type": "BCD",
+                            "Command": "Set",
+                            "Value": "disabledynamictick",
+                            "Data": "yes"
+                        }
+                    ],
+                    "Undo": [
+                        {
+                            "Type": "BCD",
+                            "Command": "Set",
+                            "Value": "disabledynamictick",
+                            "Data": "no"
+                        }
+                    ]
+                },
+
+                "DisableLegacyAPICMode": {
+                    "Name": "Disable Legacy APIC mode in BCD",
+                    "Description": "Disables legacy APIC compatibility mode, potentially improving efficiency.",
+                    "PerformanceImpact": "Low",
+                    "Apply": [
+                        {
+                            "Type": "BCD",
+                            "Command": "Set",
+                            "Value": "uselegacyapicmode",
+                            "Data": "no"
+                        }
+                    ]
+                },
+
+                "Enablex2APIC": {
+                    "Name": "Enable x2APIC mode",
+                    "Description": "Enables x2APIC mode, which can improve interrupt latency. Usually on by default, never hurts to apply this tweak.",
+                    "PerformanceImpact": "High",
+                    "Apply": [
+                        {
+                            "Type": "BCD",
+                            "Command": "Set",
+                            "Value": "x2apicpolicy",
+                            "Data": "yes"
                         }
                     ]
                 }
