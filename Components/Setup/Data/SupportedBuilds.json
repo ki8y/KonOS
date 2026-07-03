@@ -1,0 +1,47 @@
+{
+  "17763": {
+    "Name": "Windows 10",
+    "Version": "1809",
+    "Support": "Limited"
+  },
+  "19044": {
+    "Name": "Windows 10",
+    "Version": "21H2",
+    "Support": "Limited"
+  },
+  "19045": {
+    "Name": "Windows 10",
+    "Version": "22H2",
+    "Support": "Limited"
+  },
+  "22000": {
+    "Name": "Windows 11",
+    "Version": "21H2",
+    "Support": "None"
+  },
+  "22621": {
+    "Name": "Windows 11",
+    "Version": "22H2",
+    "Support": "None"
+  },
+  "22631": {
+    "Name": "Windows 11",
+    "Version": "23H2",
+    "Support": "Limited"
+  },
+  "26100": {
+    "Name": "Windows 11",
+    "Version": "24H2",
+    "Support": "Full"
+  },
+  "26200": {
+    "Name": "Windows 11",
+    "Version": "25H2",
+    "Support": "Full"
+  },
+  "28000": {
+    "Name": "Windows 11",
+    "Version": "26H1",
+    "Support": "Experimental"
+  }
+}

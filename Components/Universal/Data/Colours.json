@@ -1,0 +1,46 @@
+{
+    "text": {
+        "Grey": "\u001B[90m",
+        "Red": "\u001B[91m",
+        "Green": "\u001B[92m",
+        "Yellow": "\u001B[93m",
+        "Blue": "\u001B[94m",
+        "Magenta": "\u001B[95m",
+        "Cyan": "\u001B[96m",
+        "White": "\u001B[97m",
+
+        "DarkBlack": "\u001B[30m",
+        "DarkRed": "\u001B[31m",
+        "DarkGreen": "\u001B[32m",
+        "DarkYellow": "\u001B[33m",
+        "DarkBlue": "\u001B[34m",
+        "DarkMagenta": "\u001B[35m",
+        "DarkCyan": "\u001B[36m",
+        
+        "Accent": "\u001B[38;5;99m",
+
+        "Default": "\u001B[39m"
+    },
+    "BG": {
+        "Grey": "\u001B[100m",
+        "Red": "\u001B[101m",
+        "Green": "\u001B[102m",
+        "Yellow": "\u001B[103m",
+        "Blue": "\u001B[104m",
+        "Magenta": "\u001B[105m",
+        "Cyan": "\u001B[106m",
+        "White": "\u001B[107m",
+
+        "DarkBlack": "\u001B[40m",
+        "DarkRed": "\u001B[41m",
+        "DarkGreen": "\u001B[42m",
+        "DarkYellow": "\u001B[43m",
+        "DarkBlue": "\u001B[44m",
+        "DarkMagenta": "\u001B[45m",
+        "DarkCyan": "\u001B[46m",
+
+        "Accent": "\u001B[48;5;99m",
+        
+        "Default": "\u001B[49m"
+    }
+}

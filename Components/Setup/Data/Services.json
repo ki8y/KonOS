@@ -1,0 +1,1084 @@
+{
+    "Xbox": {
+        "Name": "Xbox Services",
+        "Tweaks": {
+            "DisableXboxServices": {
+                "Name": "Disable Xbox Services",
+                "Apply": [
+                    {
+                        "Name": "XblAuthManager",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "BcastDVRUserService",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "XblGameSave",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "XboxGipSvc",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "XboxNetApiSvc",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "xbgm",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "xboxgip",
+                        "StartupType": 4
+                    }
+                ]
+            }
+        }
+    },
+
+    "Intel": {
+        "Tweaks": {
+            "DisableIntelServices": {
+                "Name": "Disable Intel Services",
+                "Apply": [
+                    {
+                        "Name": "dptftcs",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "igccservice",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "IntelDisplayUMService",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "ipfsvc",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "WMIRegistrationService",
+                        "StartupType": 4
+                    }
+                ]
+            }
+        }
+    },
+
+    "HP": {
+        "Tweaks": {
+            "DisableHPServices": {
+                "Name": "Disable HP Services",
+                "Apply": [
+                    {
+                        "Name": "HPNetworkCap",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "HPOmenCap",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "HPSysInfoCap",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "HpTouchpointAnalyticsService",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "HPAppHelperCap",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "HPAudioAnalytics",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "HPDiagsCap",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "HotKeyServiceUWP",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "LanWlanWwanSwitchingServiceUWP",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "hpsvcsscan",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "SFUService",
+                        "StartupType": 4
+                    }
+                ]
+            }
+        }
+    },
+
+    "WindowsUpdate": {
+        "Tweaks": {
+            "DisableWindowsUpdate": {
+                "Name": "Disable Windows Update Services",
+                "Apply": [
+                    {
+                        "Name": "DoSvc",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "InstallService",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "UsoSvc",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "wuauserv",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "WaaSMedicSvc",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "BITS",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "upfc",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "uhssvc",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "ossrs",
+                        "StartupType": 4
+                    }
+                ]
+            }
+        }
+    },
+
+    "Bluetooth": {
+        "Tweaks": {
+            "DisableBluetoothServices": {
+                "Name": "Disable Bluetooth Services",
+                "Apply": [
+                    {
+                        "Name": "BTAGService",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "bthserv",
+                        "StartupType": 4
+                    },
+                    {
+                        "Name": "BluetoothUserService",
+                        "StartupType": 4
+                    }
+                ]
+            }
+        }
+    },
+
+    "General": {
+        "Tweaks": {
+            "DisableGeneralServices": [
+                {
+                    "Name": "AJRouter",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "ALG",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "AppReadiness",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "AppVClient",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "AssignedAccessManagerSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "autotimesvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "AxInstSV",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "BDESVC",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "BthAvctpSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "CaptureService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "cbdhsvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "CDPSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "CDPUserSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "CertPropSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "ClipSVC",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "ConsentUxUserSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "CredentialEnrollmentManagerUserSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "CscService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DeviceAssociationBrokerSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DeviceAssociationService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DevicePickerUserSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DevicesFlowUserSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DevQueryBroker",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "diagnosticshub.standardcollector.service",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DiagTrack",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DialogBlockingService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DisplayEnhancementService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "dLauncherLoopback",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DmEnrollmentSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "dmwappushservice",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DPS",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DsmSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DsSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "DusmSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "edgeupdate",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "edgeupdatem",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "EFS",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "EntAppSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "Fax",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "fdPHost",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "FDResPub",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "fhsvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "FontCache",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "FrameServer",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "FrameServerMonitor",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "HvHost",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "icssvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "IKEEXT",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "iphlpsvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "LanmanServer",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "lfsvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "MapsBroker",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "MessagingService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "MicrosoftEdgeElevationService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "MixedRealityOpenXRSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "MSDTC",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "MsKeyboardFilter",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "NcbService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "Netlogon",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "NetTcpPortSharing",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "NPSMSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "OneSyncSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "P9RdrService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "PcaSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "PenService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "PhoneSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "PimIndexMaintenanceSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "PNRPAutoReg",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "PrintWorkflowUserSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "RasMan",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "RetailDemo",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "SCardSvr",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "seclogon",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "SEMgrSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "SensorDataService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "SensorService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "SensrSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "SessionEnv",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "SharedAccess",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "ShellHWDetection",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "shpamsvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "smphost",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "SSDPSRV",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "ssh-agent",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "SstpSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "StiSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "StorSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "SysMain",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "TabletInputService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "TapiSrv",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "TermService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "TextInputManagementService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "Themes",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "TieringEngineService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "TokenBroker",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "TrkWks",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "tzautoupdate",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "UdkUserSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "UevAgentService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "UnistoreSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "UserDataSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "vmicguestinterface",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "vmicheartbeat",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "vmickvpexchange",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "vmicrdv",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "vmicshutdown",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "vmictimesync",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "vmicvmsession",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "vmicvss",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "VSS",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "W32Time",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WalletService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WbioSrvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "Wcmsvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "wcncsvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WdiServiceHost",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WdiSystemHost",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WebClient",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "webthreatdefusersvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "webthreatdefsvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "Wecsvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "wercplsupport",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WerSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WinHttpAutoProxySvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "wisvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "wlidsvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WMPNetworkSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WpcMonSvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WPDBusEnum",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WpnUserService",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "wscsvc",
+                    "StartupType": 4
+                },
+                {
+                    "Name": "WSearch",
+                    "StartupType": 4
+                }
+            ]
+        }
+    },
+
+    "SetServicesToManual": {
+        "Tweaks": {
+            "Name": "Set Services to Manual",
+            "Apply": [
+                {
+                    "Name": "AppIDSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "Appinfo",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "AppMgmt",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "AppXSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "BFE",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "Browser",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "camsvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "cloudidsvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "COMSysApp",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "DcpSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "dcsvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "defragsvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "DeviceInstall",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "dot3svc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "EapHost",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "embeddedmode",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "GraphicsPerfSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "hidserv",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "HomeGroupListener",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "HomeGroupProvider",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "IEEtwCollectorService",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "InventorySvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "IpxlatCfgSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "KtmRm",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "LanmanWorkstation",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "LicenseManager",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "lltdsvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "LxpSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "McpManagementService",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "MSiSCSI",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "msiserver",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "NaturalAuthentication",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "NcaSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "NcdAutoSetup",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "Netman",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "netprofm",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "NetSetupSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "NgcCtnrSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "NgcSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "NlaSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "p2pimsvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "p2psvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "PeerDistSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "perceptionsimulation",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "PerfHost",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "pla",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "PlugPlay",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "PNRPsvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "PolicyAgent",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "PushToInstall",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "QWAVE",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "RasAuto",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "RpcLocator",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "SCPolicySvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "SDRSVC",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "Sense",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "SharedRealitySvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "SmsRouter",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "spectrum",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "StateRepository",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "svsvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "swprv",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "TimeBroker",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "TimeBrokerSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "TroubleshootingSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "TrustedInstaller",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "UI0Detect",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "UmRdpService",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "upnphost",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "VacSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "vds",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "vm3dservice",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "vmvss",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "WarpJITSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "wbengine",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "WcsPlugInService",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "WdNisSvc",
+                    "StartupType": 3
+                },
+
+                {
+                    "Name": "WEPHOSTSVC",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "WFDSConMgrSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "WiaRpc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "wlpasvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "WManSvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "wmiApSrv",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "workfolderssvc",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "WpnService",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "WSService",
+                    "StartupType": 3
+                },
+                {
+                    "Name": "wudfsvc",
+                    "StartupType": 3
+                }
+            ]
+        }
+    }
+}
