@@ -5,9 +5,9 @@ Import-Module "C:\Users\Wybie\Documents\GitHub\KonOSRedone\Components\Universal\
 # Pull Kon OS version :P
 $Commit = Invoke-RestMethod -Uri "https://api.github.com/repos/ki8y/KonOS/commits/master"
 $Ver = [PSCustomObject]@{
-    Major = 1
-    Minor = 1
-    Patch = 0
+    Major           = 1
+    Minor           = 1
+    Patch           = 0
     PreReleaseLabel = "Development Hell"
 }
 $VerString = "$($Ver.Major).$($Ver.Minor).$($Ver.Patch) $($Ver.PreReleaseLabel) ($($commit.sha.Substring(0,7)))"
