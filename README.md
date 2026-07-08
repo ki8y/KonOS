@@ -25,11 +25,11 @@ For about a year now, KonOS has been stuck in development hell. This is mostly b
      <sup>Unfortunately, redrawing causes a flicker effect on lower end hardware. I don't think I'll be fixing this</sup>
 - "Kon OS" has been renamed to "KonOS". Less emphasis on the "OS" part.
 ### Todo list (planned changes):
-[ ] Add a user friendly GUI so you can toggle every tweak on/off. Currently experimenting with Python, but I might switch to C#. Avoiding powershell since it's clunky with GUI's.
-[ ] Add importing/exporting tweaking profiles (Exporting a tweaking profile creates a json file, which you can import and apply automatically).
-[ ] Port all tweaks from the original KonOS back into this rewrite.
-[ ] Add unattended setup (You input your settings before the setup even starts. Your settings get saved into a config file, you run the script, and it does the rest).
-[ ] Finish Get-Dependencies.ps1
+- [ ] Add a user friendly GUI so you can toggle every tweak on/off. Currently experimenting with Python, but I might switch to C#. Avoiding powershell since it's clunky with GUI's.
+- [ ] Add importing/exporting tweaking profiles (Exporting a tweaking profile creates a json file, which you can import and apply automatically).
+- [ ] Port all tweaks from the original KonOS back into this rewrite.
+- [ ] Add unattended setup (You input your settings before the setup even starts. Your settings get saved into a config file, you run the script, and it does the rest).
+- [ ] Finish Get-Dependencies.ps1
 
 # IMPORTANT:
 ⚠️ Please do not run this on your computer yet, it's extremely unfinished and WILL cause issues. I am not responsible for any damage done to your computer.
