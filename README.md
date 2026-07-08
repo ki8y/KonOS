@@ -1,8 +1,6 @@
 # KonOS Rewrite
 For about a year now, KonOS has been stuck in development hell. This is mostly because KonOS became a mess of unorganized, messy, old code from back when I was a lot worse at writing powershell scripts. Because of this, I decided it would be better to just rewrite the whole thing. This rewrite is still extremely unfinished, so for now it gets it's own branch. Once it's finished, it'll take over the main branch.
 
-⚠️ Please do not run this on your computer yet, it's extremely unfinished and WILL cause issues.
-
 ### What this re-write aims to accomplish:
 - Better organization
    - One of the main reasons KonOS became so hard to maintain was because I have terrible organization. I want to make sure I'm better at it this time.
@@ -32,6 +30,9 @@ For about a year now, KonOS has been stuck in development hell. This is mostly b
 [ ] Port all tweaks from the original KonOS back into this rewrite.
 [ ] Add unattended setup (You input your settings before the setup even starts. Your settings get saved into a config file, you run the script, and it does the rest).
 [ ] Finish Get-Dependencies.ps1
+
+# IMPORTANT:
+⚠️ Please do not run this on your computer yet, it's extremely unfinished and WILL cause issues. I am not responsible for any damage done to your computer.
 
 ### How to run it:
 1. Open PowerShell with admin
