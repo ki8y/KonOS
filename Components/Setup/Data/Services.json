@@ -190,6 +190,21 @@
         }
     },
 
+    "Microsoft": {
+        "Tweaks": {
+            "DisableMicrosoftAccountService": {
+                "Name": "Disable Microsoft Account Services",
+                "Apply": [
+                    {
+                        "Name": "wlidsvc",
+                        "DisplayName": "Microsoft Account Sign-in Assistant",
+                        "StartupType": 4
+                    }
+                ]
+            }
+        }
+    },
+
     "General": {
         "Tweaks": {
             "DisableGeneralServices": [
@@ -691,10 +706,6 @@
                 },
                 {
                     "Name": "wisvc",
-                    "StartupType": 4
-                },
-                {
-                    "Name": "wlidsvc",
                     "StartupType": 4
                 },
                 {
