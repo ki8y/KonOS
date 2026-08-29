@@ -112,7 +112,7 @@
                     {
                         "Type": "Registry",
                         "Key": "HKEY_CURRENT_USER\\Software\\Policies\\Microsoft\\Windows\\Explorer",
-                        "Value": "DisableSearchBoxSuggestions",
+                        "Value": "z",
                         "Data": 1,
                         "DataType": 4
                     }
