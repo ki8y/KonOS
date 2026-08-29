@@ -1,0 +1,113 @@
+[
+    {
+        "CategoryID": "Test",
+        "CategoryLabel": "Test Tweaks",
+        "Tweaks": [
+            {
+                "ID": "TestPropertyRegedit",
+                "Label": "Test Property in registry",
+                "Desc": "Adds a registry value called \"TestProperty\".",
+                "Apply": [
+                    {
+                        "Type": "Registry",
+                        "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Test",
+                        "Value": "TestProperty",
+                        "Data": "Hello!",
+                        "DataType": "String"
+                    }
+                ]
+            },
+            {
+                "ID": "EnableOldBoot",
+                "Label": "Enable Legacy Boot menu",
+                "Desc": "Enables the legacy Windows NT boot menu from Windows 7 and earlier.",
+                "Apply": [
+                    {
+                        "Type": "BCD",
+                        "Command": "Set",
+                        "Id": "{current}",
+                        "Value": "bootmenupolicy",
+                        "Data": "Legacy"
+                    }
+                ]
+            },
+            {
+                "ID": "NoMorePoopooHead",
+                "Label": "Disable Poopoo head",
+                "Desc": "Disables a value called \"Poopoo head\" in task scheduler.",
+                "Apply": [
+                    {
+                        "Type": "ScheduledTask",
+                        "Command": "Disable",
+                        "TaskPath": "\\Mozilla\\",
+                        "TaskName": "Poopoo head"
+                    }
+                ]
+            },
+            {
+                "ID": "DisableSpooler",
+                "Label": "Disable Print Spooler Service",
+                "Desc": "Disables Print Spooler in services.",
+                "Apply": [
+                    {
+                        "Type": "Service",
+                        "Name": "spooler",
+                        "StartupType": 4
+                    }
+                ]
+            },
+            {
+                "ID": "UninstallHEIF",
+                "Label": "Uninstall HEIF extension",
+                "Desc": "Uninstalls the HEIF extension AppXPackage",
+                "Apply": [
+                    {
+                        "Type": "RemovePackage",
+                        "Name": "Microsoft.HEIFImageExtension"
+                    }
+                ]
+            },
+            {
+                "ID": "SayHi",
+                "Label": "Say Hi!",
+                "Desc": "Creates a toast notification that just says \"Hi!\".",
+                "Apply": [
+                    {
+                        "Type": "CustomScript",
+                        "PassThru": true,
+                        "ScriptPath": "C:\\Users\\Wybie\\Downloads\\Hai.ps1"
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "CategoryID": "Test2",
+        "CategoryLabel": "Test Tweaks 2",
+        "Tweaks": [
+            {
+                "ID": "TestPropertyRegedit2",
+                "Label": "Test Property in registry (again)",
+                "Desc": "Adds a registry value called \"TestProperty\".",
+                "Apply": [
+                    {
+                        "Type": "Registry",
+                        "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Test",
+                        "Value": "TestProperty2",
+                        "Data": "Haiii",
+                        "DataType": "String"
+                    },
+
+                    {
+                        "Type": "Registry",
+                        "Key": "HKEY_CURRENT_USER\\SOFTWARE\\Test",
+                        "Value": "TestProperty3",
+                        "Data": [144, 18, 3, 128, 16, 0, 0, 0],
+                        "DataType": "Binary"
+                    }
+                ]
+            }
+        ]
+    }
+]
